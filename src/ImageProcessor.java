@@ -1,50 +1,24 @@
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 public interface ImageProcessor {
   /**
-   * Loads an image from an ASCII PPM file.
+   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
+   * the old image
    *
-   * @param filePath the file path of the file to load
    * @param imgName  the name of the generated image
-   * @return an image representation of the file
+   * @param filePath the file path of the file to load
    */
-  Image loadASCIIPPM(String filePath, String imgName);
+  void loadASCIIPPM(String imgName, String filePath);
+
 
   /**
-   * An enumeration of all possible RGB colors.
+   * visualizes a component based on the given function
+   * @param imgName name of the loaded image we are trying to manipulate
+   * @param f function that is applied the image
    */
-  enum Color {Red, Green, Blue}
+  void visualize(String imgName, Function f);
 
-  /**
-   * Constructs a version of the provided image where the given color is visualized.
-   *
-   * @param img   the image to visualize
-   * @param color the specific color to visualize
-   * @return the visualized image
-   */
-  Image visualizeRGBComponents(Image img, Color color);
-
-  /**
-   * Constructs a version of the provided image where the value is visualized.
-   *
-   * @param img the image to visualize
-   * @return the visualized image
-   */
-  Image visualizeValue(Image img);
-
-  /**
-   * Constructs a version of the provided image where the intensity is visualized.
-   *
-   * @param img the image to visualize
-   * @return the visualized image
-   */
-  Image visualizeIntensity(Image img);
-
-  /**
-   * Constructs a version of the provided image where the luma is visualized.
-   *
-   * @param img the image to visualize
-   * @return the visualized image
-   */
-  Image visualizeLuma(Image img);
 
   /**
    * An enumeration of directions.
@@ -63,12 +37,18 @@ public interface ImageProcessor {
   /**
    * Brightens image by the provided constant and saves into new image.
    *
-   * @param brightenBy the factor to brighten the image by
    * @param imgName    the name of the image to brighten
    * @param newImgName the name of the newly generated image
+   * @param brightenBy the factor to brighten the image by
    */
-  void brighten(int brightenBy, String imgName, String newImgName);
+  void brighten(String imgName, String newImgName, int brightenBy);
 
 
-  void saveImage(String filePath, String imgName);
+  /**
+   * Saves an image to a given location and a given name. If filePath is occupied it will overwrite
+   * @param imgName name of the saved image
+   * @param filePath location to save of an image
+   */
+  void saveImage( String imgName,String filePath);
+
 }
