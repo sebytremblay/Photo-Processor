@@ -33,4 +33,22 @@ public interface Image {
    * @return the specific pixel at the row and col
    */
   Pixel getPixelAt(int row, int col);
+
+  /**
+   * determines the width of the board
+   * @return the width of the board
+   */
+  int getWidth();
+
+  /**
+   * determines the height of the board
+   * @return the height of the board
+   */
+  int getHeight();
+
+  /**
+   * determines the maxValue of the board
+   * @return the maxValue of the board
+   */
+  int getMaxValue();
 }

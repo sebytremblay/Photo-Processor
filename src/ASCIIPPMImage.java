@@ -3,8 +3,10 @@ import java.util.function.Function;
 public class ASCIIPPMImage implements Image {
 
   private final Pixel[][] pixelGrid;
-  public ASCIIPPMImage(Pixel[][] pixelGrid){
+  private final int maxValue;
+  public ASCIIPPMImage(Pixel[][] pixelGrid,int maxValue){
     this.pixelGrid = pixelGrid;
+    this.maxValue = maxValue;
 
   }
   /**
@@ -19,11 +21,11 @@ public class ASCIIPPMImage implements Image {
     for (int row = 0; row < newPixelGrid.length; row+=1) {
      for (int col = 0; col < newPixelGrid[row].length; col+=1) {
         Pixel pixel = this.getPixelAt(row, col);
-        pixel.visual(f);
+        pixel.visual(f,this.maxValue);
         newPixelGrid[row][col] = pixel;
      }
     }
-    return new ASCIIPPMImage(newPixelGrid);
+    return new ASCIIPPMImage(newPixelGrid,this.maxValue);
   }
 
   /**
@@ -43,7 +45,7 @@ public class ASCIIPPMImage implements Image {
         }
         rowCounter+=1;
       }
-      return new ASCIIPPMImage(newPixelGrid);
+      return new ASCIIPPMImage(newPixelGrid,this.maxValue);
     }
     int colCounter = 0;
     for (int row = 0; row <= newPixelGrid.length; row+=1){
@@ -53,7 +55,7 @@ public class ASCIIPPMImage implements Image {
       }
       colCounter = 0;
     }
-    return new ASCIIPPMImage(newPixelGrid);
+    return new ASCIIPPMImage(newPixelGrid,this.maxValue);
   }
 
   /**
@@ -68,11 +70,11 @@ public class ASCIIPPMImage implements Image {
     for (int row = 0; row < newPixelGrid.length; row+=1) {
       for (int col = 0; col < newPixelGrid[row].length; col+=1) {
         Pixel pixel = this.getPixelAt(row, col);
-        pixel.brightenPixel(value);
+        pixel.brightenPixel(value, this.maxValue);
         newPixelGrid[row][col] = pixel;
       }
     }
-    return new ASCIIPPMImage(newPixelGrid);
+    return new ASCIIPPMImage(newPixelGrid,this.maxValue);
   }
 
 
@@ -86,5 +88,35 @@ public class ASCIIPPMImage implements Image {
   @Override
   public Pixel getPixelAt(int row, int col) {
     return this.pixelGrid[row][col];
+  }
+
+  /**
+   * determines the width of the board
+   *
+   * @return the width of the board
+   */
+  @Override
+  public int getWidth() {
+    return this.pixelGrid.length;
+  }
+
+  /**
+   * determines the height of the board
+   *
+   * @return the height of the board
+   */
+  @Override
+  public int getHeight() {
+    return this.pixelGrid[0].length;
+  }
+
+  /**
+   * determines the maxValue of the board
+   *
+   * @return the maxValue of the board
+   */
+  @Override
+  public int getMaxValue() {
+    return this.maxValue;
   }
 }

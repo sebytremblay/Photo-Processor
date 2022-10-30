@@ -7,17 +7,18 @@ public interface ImageProcessor {
    * the old image
    *
    * @param imgName  the name of the generated image
-   * @param filePath the file path of the file to load
+   * @param filename the file path of the file to load
    */
-  void loadASCIIPPM(String imgName, String filePath);
+  void loadASCIIPPM(String imgName, String filename);
 
 
   /**
    * visualizes a component based on the given function
    * @param imgName name of the loaded image we are trying to manipulate
+   * @param newImageName the new modified name in the processor
    * @param f function that is applied the image
    */
-  void visualize(String imgName, Function f);
+  void visualize(String imgName, String newImageName, Function f);
 
 
   /**
@@ -49,6 +50,6 @@ public interface ImageProcessor {
    * @param imgName name of the saved image
    * @param filePath location to save of an image
    */
-  void saveImage( String imgName,String filePath);
+  void saveImage(String imgName,String filePath);
 
 }

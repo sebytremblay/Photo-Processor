@@ -1,6 +1,8 @@
 import java.util.function.Function;
 
-//
+/**
+ * Represents a pixel of color.
+ */
 public interface Pixel {
 
  /**
@@ -8,7 +10,7 @@ public interface Pixel {
   * @Param func takes a function that visualizes
   * @return the visualized pixel
   */
- Pixel visual(Function<Pixel,Integer> func);
+ Pixel visual(Function<Pixel,Integer> func,int maxValue);
 
  /**
   * Gets the list of all the components of this pixel.
@@ -21,5 +23,5 @@ public interface Pixel {
   * @param factor amount of brightness to add or reduce to pixel
   * @return the new pixel brightened.
   */
- Pixel brightenPixel(int factor);
+ Pixel brightenPixel(int factor, int maxValue);
 }

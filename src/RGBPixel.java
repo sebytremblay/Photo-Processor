@@ -4,9 +4,8 @@ public class RGBPixel implements Pixel {
   private final int red; // must be between 0-maxValue
   private final int green; // must be between 0-maxValue
   private final int blue; // must be between 0-maxValue
-  private final int maxValue;
 
-  public RGBPixel(int red, int green, int blue,int maxValue) {
+  public RGBPixel(int red, int green, int blue, int maxValue) {
     if (red < 0 || red > maxValue
             || green < 0 || green > maxValue
             || blue < 0 || blue > maxValue) {
@@ -16,7 +15,6 @@ public class RGBPixel implements Pixel {
     this.red = red;
     this.green = green;
     this.blue = blue;
-    this.maxValue = maxValue;
   }
 
   /**
@@ -25,7 +23,7 @@ public class RGBPixel implements Pixel {
    * @return the visualized pixel
    */
   @Override
-  public Pixel visual(Function<Pixel, Integer> func) {
+  public Pixel visual(Function<Pixel, Integer> func, int maxValue) {
     int value = func.apply(this);
     return new RGBPixel(value, value, value,maxValue);
   }
@@ -48,15 +46,15 @@ public class RGBPixel implements Pixel {
    * @return the new pixel brightened.
    */
   @Override
-  public Pixel brightenPixel(int factor) {
-    int brightenRed = imposeRange(this.red + factor);
-    int brightenGreen = imposeRange(this.green + factor);
-    int brightenBlue = imposeRange(this.blue + factor);
+  public Pixel brightenPixel(int factor,int maxValue) {
+    int brightenRed = imposeRange(this.red + factor,maxValue);
+    int brightenGreen = imposeRange(this.green + factor,maxValue);
+    int brightenBlue = imposeRange(this.blue + factor,maxValue);
 
     return new RGBPixel(brightenRed, brightenGreen, brightenBlue,maxValue);
   }
 
-  private int imposeRange(int comp) {
+  private int imposeRange(int comp,int maxValue) {
     if (comp < 0) {
       return 0;
     }
@@ -66,6 +64,19 @@ public class RGBPixel implements Pixel {
     return comp;
   }
 
+  /**
+   * creates a string representation of the pixel as an enumeration of its components
+   * @return the string represents as an enumeration of the components
+   */
+  @Override
+  public String toString(){
+    StringBuilder build = new StringBuilder();
+    build.append(this.red + "\n");
+    build.append(this.green + "\n");
+    build.append(this.blue+ "\n");
+
+    return build.toString();
+  }
 
 }
 
