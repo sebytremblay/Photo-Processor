@@ -151,7 +151,7 @@ public class ASCIIPPMImageProcessor implements ImageProcessor{
     try{
       Files.writeString(Path.of(filePath),result);
     }catch (IOException e){
-      throw new IllegalArgumentException("the save filePath is not valid");
+      throw new IllegalArgumentException("the filePath you are saving to is not valid");
     }
   }
 
