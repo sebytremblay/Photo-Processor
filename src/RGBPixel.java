@@ -25,7 +25,7 @@ public class RGBPixel implements Pixel {
   @Override
   public Pixel visual(Function<Pixel, Integer> func, int maxValue) {
     int value = func.apply(this);
-    return new RGBPixel(value, value, value,maxValue);
+    return new RGBPixel(value, value, value, maxValue);
   }
 
   /**
@@ -46,15 +46,15 @@ public class RGBPixel implements Pixel {
    * @return the new pixel brightened.
    */
   @Override
-  public Pixel brightenPixel(int factor,int maxValue) {
-    int brightenRed = imposeRange(this.red + factor,maxValue);
-    int brightenGreen = imposeRange(this.green + factor,maxValue);
-    int brightenBlue = imposeRange(this.blue + factor,maxValue);
+  public Pixel brightenPixel(int factor, int maxValue) {
+    int brightenRed = imposeRange(this.red + factor, maxValue);
+    int brightenGreen = imposeRange(this.green + factor, maxValue);
+    int brightenBlue = imposeRange(this.blue + factor, maxValue);
 
-    return new RGBPixel(brightenRed, brightenGreen, brightenBlue,maxValue);
+    return new RGBPixel(brightenRed, brightenGreen, brightenBlue, maxValue);
   }
 
-  private int imposeRange(int comp,int maxValue) {
+  private int imposeRange(int comp, int maxValue) {
     if (comp < 0) {
       return 0;
     }
@@ -66,127 +66,17 @@ public class RGBPixel implements Pixel {
 
   /**
    * creates a string representation of the pixel as an enumeration of its components
+   *
    * @return the string represents as an enumeration of the components
    */
   @Override
-  public String toString(){
+  public String toString() {
     StringBuilder build = new StringBuilder();
     build.append(this.red + "\n");
     build.append(this.green + "\n");
-    build.append(this.blue+ "\n");
+    build.append(this.blue + "\n");
 
     return build.toString();
   }
 
-}
-
-
-/**
- * Finds the value of the pixel - the maximum value of the components.
- */
-class visualizeValue implements Function<Pixel, Integer> {
-
-  /**
-   * Applies this function to the given argument.
-   *
-   * @param pixel the function argument
-   * @return the function result
-   */
-  @Override
-  public Integer apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    int max = components[0];
-    for (int comp : components) {
-      max = Math.max(max, comp);
-    }
-    return max;
-  }
-}
-
-/**
- * Finds the intensity of the pixel by averaging all the components. Will round down if the
- * result is non-integer.
- */
-class visualizeIntensity implements Function<Pixel, Integer> {
-
-  /**
-   * Applies this function to the given argument.
-   *
-   * @param pixel the function argument
-   * @return the function result
-   */
-  @Override
-  public Integer apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    int sum = 0;
-    for (int comp : components) {
-      sum += comp;
-    }
-    return sum / components.length;
-  }
-}
-
-/**
- * Finds the Luma of the pixel by multiplying each component by a specific value all the components.
- * Will round down if the result is non-integer.
- */
-class visualizeLuma implements Function<Pixel, Integer> {
-
-  /**
-   * Applies this function to the given argument.
-   *
-   * @param pixel the function argument
-   * @return the function result
-   */
-  @Override
-  public Integer apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    return (int) (0.2126 * components[0]
-            + 0.7152 * components[1]
-            + 0.0722 * components[2]);
-  }
-
-}
-class visualizeBlue implements Function<Pixel, Integer>{
-
-  /**
-   * Applies this function to the given argument.
-   *
-   * @param pixel the function argument
-   * @return the function result
-   */
-  @Override
-  public Integer apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    return components[2];
-  }
-}
-
-class visualizeGreen implements Function<Pixel, Integer>{
-
-  /**
-   * Applies this function to the given argument.
-   *
-   * @param pixel the function argument
-   * @return the function result
-   */
-  @Override
-  public Integer apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    return components[1];
-  }
-}
-class visualizeRed implements Function<Pixel, Integer>{
-
-  /**
-   * Applies this function to the given argument.
-   *
-   * @param pixel the function argument
-   * @return the function result
-   */
-  @Override
-  public Integer apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    return components[0];
-  }
 }

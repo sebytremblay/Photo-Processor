@@ -1,14 +1,15 @@
 import java.util.function.Function;
 
 public class ASCIIPPMImage implements Image {
-
   private final Pixel[][] pixelGrid;
   private final int maxValue;
-  public ASCIIPPMImage(Pixel[][] pixelGrid,int maxValue){
+
+  public ASCIIPPMImage(Pixel[][] pixelGrid, int maxValue) {
     this.pixelGrid = pixelGrid;
     this.maxValue = maxValue;
 
   }
+
   /**
    * Visualizes this image based on a given function.
    *
@@ -18,14 +19,14 @@ public class ASCIIPPMImage implements Image {
   @Override
   public Image visualize(Function f) {
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
-    for (int row = 0; row < newPixelGrid.length; row+=1) {
-     for (int col = 0; col < newPixelGrid[row].length; col+=1) {
+    for (int row = 0; row < newPixelGrid.length; row += 1) {
+      for (int col = 0; col < newPixelGrid[row].length; col += 1) {
         Pixel pixel = this.getPixelAt(row, col);
-        pixel.visual(f,this.maxValue);
-        newPixelGrid[row][col] = pixel;
-     }
+        Pixel newPixel = pixel.visual(f, this.maxValue);
+        newPixelGrid[row][col] = newPixel;
+      }
     }
-    return new ASCIIPPMImage(newPixelGrid,this.maxValue);
+    return new ASCIIPPMImage(newPixelGrid, this.maxValue);
   }
 
   /**
@@ -37,25 +38,26 @@ public class ASCIIPPMImage implements Image {
   @Override
   public Image flipImage(ImageProcessor.Direction dir) {
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
-    if (dir == ImageProcessor.Direction.Vertical){
-      int rowCounter =0;
-      for (int row = newPixelGrid.length-1; row >= 0; row-=1){
-        for (int col = 0; col < newPixelGrid[row].length; col+=1){
-         newPixelGrid[rowCounter][col] = getPixelAt(row,col);
+    if (dir == ImageProcessor.Direction.Vertical) {
+      int rowCounter = 0;
+      for (int row = newPixelGrid.length - 1; row >= 0; row -= 1) {
+        for (int col = 0; col < newPixelGrid[row].length; col += 1) {
+          newPixelGrid[rowCounter][col] = getPixelAt(row, col);
         }
-        rowCounter+=1;
+        rowCounter += 1;
       }
-      return new ASCIIPPMImage(newPixelGrid,this.maxValue);
+      return new ASCIIPPMImage(newPixelGrid, this.maxValue);
     }
+
     int colCounter = 0;
-    for (int row = 0; row <= newPixelGrid.length; row+=1){
-      for (int col = newPixelGrid[row].length; col >= 0; col-=1){
-        newPixelGrid[row][colCounter] = getPixelAt(row,col);
-        colCounter+=1;
+    for (int row = 0; row < newPixelGrid.length; row += 1) {
+      for (int col = newPixelGrid[row].length - 1; col >= 0; col -= 1) {
+        newPixelGrid[row][colCounter] = getPixelAt(row, col);
+        colCounter += 1;
       }
       colCounter = 0;
     }
-    return new ASCIIPPMImage(newPixelGrid,this.maxValue);
+    return new ASCIIPPMImage(newPixelGrid, this.maxValue);
   }
 
   /**
@@ -67,14 +69,14 @@ public class ASCIIPPMImage implements Image {
   @Override
   public Image brightenImage(int value) {
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
-    for (int row = 0; row < newPixelGrid.length; row+=1) {
-      for (int col = 0; col < newPixelGrid[row].length; col+=1) {
+    for (int row = 0; row < newPixelGrid.length; row += 1) {
+      for (int col = 0; col < newPixelGrid[row].length; col += 1) {
         Pixel pixel = this.getPixelAt(row, col);
         pixel.brightenPixel(value, this.maxValue);
         newPixelGrid[row][col] = pixel;
       }
     }
-    return new ASCIIPPMImage(newPixelGrid,this.maxValue);
+    return new ASCIIPPMImage(newPixelGrid, this.maxValue);
   }
 
 

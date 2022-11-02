@@ -63,8 +63,8 @@ public class ASCIIPPMImageProcessor implements ImageProcessor{
     int maxValue = sc.nextInt();
     Pixel[][] pixelGrid = new Pixel[width][height];
 
-    for (int row=0;row<height;row++) {
-      for (int col=0;col<width;col++) {
+    for (int row=0;row<width;row++) {
+      for (int col=0;col<height;col++) {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
@@ -93,7 +93,7 @@ public class ASCIIPPMImageProcessor implements ImageProcessor{
   // determines is an image is loaded, and throws an error if not
   private void isLoadedImgName(String imgName) {
     if (!loadedImages.containsKey(imgName)){
-     throw new IllegalArgumentException("The image" + imgName + " is not loaded in the processor");
+     throw new IllegalArgumentException("The image " + imgName + " is not loaded in the processor");
     }
   }
 
