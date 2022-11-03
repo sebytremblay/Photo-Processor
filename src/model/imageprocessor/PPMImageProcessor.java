@@ -1,19 +1,13 @@
 package model.imageprocessor;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.function.Function;
 
-import jdk.jshell.execution.Util;
 import model.pixel.Pixel;
-import model.pixel.RGBPixel;
-import utils.ImageUtil;
 
 
 /**
@@ -38,9 +32,9 @@ public class PPMImageProcessor implements ImageProcessor {
    * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
    * the old image
    *
-   * @param imgName the name of the generated image
+   * @param imgName   the name of the generated image
    * @param pixelGrid the grid you loaded
-   * @param maxValue the max value a particular pixel can be.
+   * @param maxValue  the max value a particular pixel can be.
    */
   @Override
   public void loadASCIIPPM(String imgName, Pixel[][] pixelGrid, int maxValue) {
@@ -93,23 +87,24 @@ public class PPMImageProcessor implements ImageProcessor {
   public void flipImage(String imgName, String newImageName, Direction dir) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    System.out.println(pixelGrid.length);
-    System.out.println(pixelGrid[0].length);
 
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     if (dir == ImageProcessor.Direction.Vertical) {
-      int rowCounter = pixelGrid.length - 1;
-      for (int row = 0; row < pixelGrid.length; row += 1) {
-        newPixelGrid[row] = pixelGrid[rowCounter];
+      int rowCounter = 0;
+      for (int row = newPixelGrid.length - 1; row >= 0; row -= 1) {
+        for (int col = 0; col < newPixelGrid[row].length; col += 1) {
+          newPixelGrid[rowCounter][col] = pixelGrid[row][col];
+        }
+        rowCounter += 1;
       }
     } else {
-      int colCounter = newPixelGrid[0].length;
+      int colCounter = 0;
       for (int row = 0; row < newPixelGrid.length; row += 1) {
-        for (int col = 0; col < newPixelGrid[0].length; col += 1) {
+        for (int col = newPixelGrid[row].length - 1; col >= 0; col -= 1) {
           newPixelGrid[row][colCounter] = pixelGrid[row][col];
-          colCounter -= 1;
+          colCounter += 1;
         }
-        colCounter = newPixelGrid[0].length;
+        colCounter = 0;
       }
     }
     loadedImages.put(newImageName, newPixelGrid);
@@ -148,7 +143,7 @@ public class PPMImageProcessor implements ImageProcessor {
    */
   @Override
   public void saveImage(String filePath, String imgName) {
-    StringBuilder result = getPPMImage(imgName);
+    StringBuilder result = getImageString(imgName);
     result.deleteCharAt(result.length() - 1);
     try {
       Files.writeString(Path.of(filePath), result);
@@ -158,12 +153,8 @@ public class PPMImageProcessor implements ImageProcessor {
   }
 
 
-  /**
-   * gets the text of a PPM Image
-   * @param imgName
-   * @return
-   */
-  public StringBuilder getPPMImage(String imgName) {
+  @Override
+  public StringBuilder getImageString(String imgName) {
     isLoadedImgName(imgName);
     StringBuilder result = new StringBuilder();
     Pixel[][] saveImage = loadedImages.get(imgName);

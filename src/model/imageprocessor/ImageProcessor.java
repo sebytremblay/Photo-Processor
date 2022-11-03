@@ -13,16 +13,17 @@ public interface ImageProcessor {
    * the old image
    *
    * @param imgPath the file path of the file to load
-   * @param imgName  the name of the generated image
+   * @param imgName the name of the generated image
    */
   void loadASCIIPPM(String imgName, Pixel[][] grid, int maxValue);
 
 
   /**
    * visualizes a component based on the given function
-   * @param imgName name of the loaded image we are trying to manipulate
+   *
+   * @param imgName      name of the loaded image we are trying to manipulate
    * @param newImageName the new modified name in the processor
-   * @param f function that is applied the image
+   * @param f            function that is applied the image
    */
   void visualize(String imgName, String newImageName, Function f);
 
@@ -53,9 +54,17 @@ public interface ImageProcessor {
 
   /**
    * Saves an image to a given location and a given name. If filePath is occupied it will overwrite
+   *
    * @param filePath location to save of an image
-   * @param imgName name of the saved image
+   * @param imgName  name of the saved image
    */
-  void saveImage(String filePath,String imgName);
+  void saveImage(String filePath, String imgName);
 
+  /**
+   * Gets a string representation of the provided image.
+   *
+   * @param imgName the desired image
+   * @return the image as a string
+   */
+  StringBuilder getImageString(String imgName);
 }
