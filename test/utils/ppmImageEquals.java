@@ -4,10 +4,27 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import model.pixel.Pixel;
 
 public class ppmImageEquals {
-
+  public static boolean twoPPMStringsTheSame(String ppm1,String ppm2){
+    StringBuilder builder1 = new StringBuilder();
+    Scanner sc1 = new Scanner(String.valueOf(builder1));
+    while (sc1.hasNextLine()) {
+      String s = sc1.nextLine();
+      if (s.charAt(0)!='#') {
+        builder1.append(s+System.lineSeparator());
+      }
+    }
+    StringBuilder builder2 = new StringBuilder();
+    Scanner sc2 = new Scanner(String.valueOf(builder2));
+    while (sc2.hasNextLine()) {
+      String s = sc2.nextLine();
+      if (s.charAt(0)!='#') {
+        builder2.append(s+System.lineSeparator());
+      }
+    }
+    return builder1.equals(builder2);
+  }
   /**
    * Determines if two Images are equals to each other by checking if each bit is the same
    *

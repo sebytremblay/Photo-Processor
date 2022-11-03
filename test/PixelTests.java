@@ -19,4 +19,12 @@ public class PixelTests {
   public void testPixelValueAboveMax(){
     Pixel pixel1 = new RGBPixel(120,503,23, 450);
   }
+  @Test(expected = IllegalArgumentException.class)
+  public void negativePixel(){
+    Pixel pixel2 = new RGBPixel(-1120,120,120,255);
+  }
+  @Test()
+  public void validPixel(){
+    Pixel pixel2 = new RGBPixel(120,120,120,255);
+  }
 }

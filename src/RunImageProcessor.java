@@ -15,7 +15,6 @@ public class RunImageProcessor {
   public static void main(String[] args) {
     ImageProcessor model = new PPMImageProcessor();
     ImageProcessorController controller = new ImageProcessorControllerImp(model);
-
     controller.run();
   }
 }

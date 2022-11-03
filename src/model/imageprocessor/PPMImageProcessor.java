@@ -22,20 +22,22 @@ public class PPMImageProcessor implements ImageProcessor {
 
   private final Map<String, Pixel[][]> loadedImages;
   private final Map<String, Integer> loadedImagesMaxValue;
+
   /**
    * Constructor the Image Processor with no laaded Images.
    */
-  public PPMImageProcessor(){
+  public PPMImageProcessor() {
     // INVARIANT: loadedImages size is always equal to the loadedImagesMaxValue size
     loadedImages = new HashMap<String, Pixel[][]>();
     loadedImagesMaxValue = new HashMap<String, Integer>();
   }
+
   /**
    * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
    * the old image
    *
    * @param imgPath the file path of the file to load
-   * @param imgName  the name of the generated image
+   * @param imgName the name of the generated image
    */
   @Override
   public void loadASCIIPPM(String imgPath, String imgName) {
@@ -43,17 +45,16 @@ public class PPMImageProcessor implements ImageProcessor {
 
     try {
       sc = new Scanner(new FileInputStream(imgPath));
-    }
-    catch (FileNotFoundException e) {
-      System.out.println("File "+imgPath+ " not found!");
+    } catch (FileNotFoundException e) {
+      System.out.println("File " + imgPath + " not found!");
       return;
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
-      if (s.charAt(0)!='#') {
-        builder.append(s+System.lineSeparator());
+      if (s.charAt(0) != '#') {
+        builder.append(s + System.lineSeparator());
       }
     }
 
@@ -71,24 +72,24 @@ public class PPMImageProcessor implements ImageProcessor {
     int maxValue = sc.nextInt();
     Pixel[][] pixelGrid = new Pixel[width][height];
 
-    for (int row=0;row<width;row++) {
-      for (int col=0;col<height;col++) {
+    for (int row = 0; row < width; row++) {
+      for (int col = 0; col < height; col++) {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
-        Pixel pixel = new RGBPixel(r,g,b,maxValue);
+        Pixel pixel = new RGBPixel(r, g, b, maxValue);
         pixelGrid[row][col] = pixel;
       }
     }
-    loadedImages.put(imgName,pixelGrid);
-    loadedImagesMaxValue.put(imgName,maxValue);
+    loadedImages.put(imgName, pixelGrid);
+    loadedImagesMaxValue.put(imgName, maxValue);
   }
 
   /**
    * visualizes a component based on the given function
    *
-   * @param imgName name of the loaded image we are trying to manipulate
-   * @param f       function that is applied the image
+   * @param imgName      name of the loaded image we are trying to manipulate
+   * @param f            function that is applied the image
    * @param newImageName the new modified name in the processor
    */
   @Override
@@ -102,19 +103,19 @@ public class PPMImageProcessor implements ImageProcessor {
     for (int row = 0; row < newPixelGrid.length; row += 1) {
       for (int col = 0; col < newPixelGrid[row].length; col += 1) {
         Pixel pixel = pixelGrid[row][col];
-        Pixel newPixel = pixel.visual(f,maxValue);
+        Pixel newPixel = pixel.visual(f, maxValue);
         newPixelGrid[row][col] = newPixel;
       }
     }
 
-    loadedImages.put(newImageName,newPixelGrid);
-    loadedImagesMaxValue.put(newImageName,maxValue);
+    loadedImages.put(newImageName, newPixelGrid);
+    loadedImagesMaxValue.put(newImageName, maxValue);
   }
 
   // determines is an image is loaded, and throws an error if not
   private void isLoadedImgName(String imgName) {
-    if (!loadedImages.containsKey(imgName)){
-     throw new IllegalArgumentException("The image " + imgName + " is not loaded in the processor");
+    if (!loadedImages.containsKey(imgName)) {
+      throw new IllegalArgumentException("The image " + imgName + " is not loaded in the processor");
     }
   }
 
@@ -131,12 +132,12 @@ public class PPMImageProcessor implements ImageProcessor {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     if (dir == ImageProcessor.Direction.Vertical) {
-      int rowCounter = pixelGrid.length-1;
+      int rowCounter = pixelGrid.length - 1;
       for (int row = 0; row < pixelGrid.length; row += 1) {
-        newPixelGrid[row] = pixelGrid[rowCounter];
-        rowCounter-=1;
+        newPixelGrid[row] = pixelGrid[rowCounter].clone();
+        rowCounter -= 1;
       }
-    }else {
+    } else {
       int colCounter = 0;
       for (int row = 0; row < newPixelGrid.length; row += 1) {
         for (int col = newPixelGrid[row].length - 1; col >= 0; col -= 1) {
@@ -171,7 +172,7 @@ public class PPMImageProcessor implements ImageProcessor {
       }
     }
     loadedImages.put(newImgName, newPixelGrid);
-    loadedImagesMaxValue.put(newImgName,maxValue);
+    loadedImagesMaxValue.put(newImgName, maxValue);
   }
 
   /**
@@ -182,30 +183,40 @@ public class PPMImageProcessor implements ImageProcessor {
    */
   @Override
   public void saveImage(String filePath, String imgName) {
-    isLoadedImgName(imgName);
-    StringBuilder result = new StringBuilder();
-    Pixel[][] saveImage = loadedImages.get(imgName);
-    Integer maxValue = loadedImagesMaxValue.get(imgName);
-    writeMessage("P3",result);
-    writeMessage(saveImage.length + " " + saveImage[0].length,result);
-    writeMessage(String.valueOf(maxValue), result);
-
-    for (int row = 0; row < saveImage.length; row+=1){
-      for (int col = 0; col < saveImage[0].length; col +=1){
-        Pixel pixel = saveImage[row][col];
-        writeMessage(pixel.toString(),result);
-      }
-    }
-    result.deleteCharAt(result.length()-1);
-    try{
-      Files.writeString(Path.of(filePath),result);
-    }catch (IOException e){
+    StringBuilder result = getPPMImage(imgName);
+    result.deleteCharAt(result.length() - 1);
+    try {
+      Files.writeString(Path.of(filePath), result);
+    } catch (IOException e) {
       throw new IllegalArgumentException("the filePath you are saving to is not valid");
     }
   }
 
 
-  private void writeMessage(String message, StringBuilder builder){
+  /**
+   * gets the text of a PPM Image
+   * @param imgName
+   * @return
+   */
+  public StringBuilder getPPMImage(String imgName) {
+    isLoadedImgName(imgName);
+    StringBuilder result = new StringBuilder();
+    Pixel[][] saveImage = loadedImages.get(imgName);
+    Integer maxValue = loadedImagesMaxValue.get(imgName);
+    writeMessage("P3", result);
+    writeMessage(saveImage.length + " " + saveImage[0].length, result);
+    writeMessage(String.valueOf(maxValue), result);
+
+    for (int row = 0; row < saveImage.length; row += 1) {
+      for (int col = 0; col < saveImage[0].length; col += 1) {
+        Pixel pixel = saveImage[row][col];
+        writeMessage(pixel.toString(), result);
+      }
+    }
+    return result.deleteCharAt(result.length()-1);
+  }
+
+  private void writeMessage(String message, StringBuilder builder) {
     builder.append(message + "\n");
   }
 }

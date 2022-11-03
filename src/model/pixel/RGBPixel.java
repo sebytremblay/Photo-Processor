@@ -11,7 +11,7 @@ public class RGBPixel implements Pixel {
   public RGBPixel(int red, int green, int blue, int maxValue) {
     if (red < 0 || red > maxValue
             || green < 0 || green > maxValue
-            || blue < 0 || blue > maxValue) {
+            || blue < 0 || blue > maxValue || maxValue < 0) {
       throw new IllegalArgumentException("The pixel colors must be" +
               "between 0 and maxValue");
     }
