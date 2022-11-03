@@ -1,5 +1,6 @@
 package model.imageprocessor;
 
+import java.util.Scanner;
 import java.util.function.Function;
 
 import model.pixel.Pixel;
@@ -9,13 +10,13 @@ import model.pixel.Pixel;
  */
 public interface ImageProcessor {
   /**
-   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
-   * the old image
+   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will
+   * overwrite the old image.
    *
-   * @param imgPath the file path of the file to load
-   * @param imgName the name of the generated image
+   * @param image the image loaded as a file
+   * @param imgName  the name of the generated image
    */
-  void loadASCIIPPM(String imgName, Pixel[][] grid, int maxValue);
+  void loadASCIIPPM(Scanner image, String imgName);
 
 
   /**

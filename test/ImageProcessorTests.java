@@ -25,7 +25,6 @@ public class ImageProcessorTests {
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
 
     controller.run();
-    System.out.println(builder);
     String expectedOutput = "P3\n" +
             "4 4\n" +
             "255\n" +
@@ -189,47 +188,27 @@ public class ImageProcessorTests {
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectd = "P3\n" +
-            "20 5\n" +
+            "5 20\n" +
             "255\n" +
-            "221\n" +
-            "104\n" +
-            "133\n" +
+            "197\n" +
+            "108\n" +
+            "9\n" +
             "\n" +
-            "218\n" +
-            "198\n" +
-            "13\n" +
+            "167\n" +
+            "46\n" +
+            "211\n" +
             "\n" +
-            "3\n" +
-            "47\n" +
-            "120\n" +
+            "121\n" +
+            "61\n" +
+            "44\n" +
             "\n" +
-            "222\n" +
-            "158\n" +
-            "135\n" +
+            "41\n" +
+            "254\n" +
+            "157\n" +
             "\n" +
-            "57\n" +
-            "102\n" +
-            "91\n" +
-            "\n" +
-            "22\n" +
-            "164\n" +
-            "96\n" +
-            "\n" +
-            "119\n" +
-            "55\n" +
-            "11\n" +
-            "\n" +
-            "107\n" +
-            "62\n" +
-            "2\n" +
-            "\n" +
-            "16\n" +
-            "95\n" +
-            "59\n" +
-            "\n" +
-            "217\n" +
-            "60\n" +
-            "137\n" +
+            "10\n" +
+            "112\n" +
+            "204\n" +
             "\n" +
             "136\n" +
             "171\n" +
@@ -251,85 +230,45 @@ public class ImageProcessorTests {
             "113\n" +
             "52\n" +
             "\n" +
-            "197\n" +
-            "108\n" +
-            "9\n" +
+            "22\n" +
+            "164\n" +
+            "96\n" +
             "\n" +
-            "167\n" +
-            "46\n" +
-            "211\n" +
+            "119\n" +
+            "55\n" +
+            "11\n" +
             "\n" +
-            "121\n" +
-            "61\n" +
-            "44\n" +
+            "107\n" +
+            "62\n" +
+            "2\n" +
             "\n" +
-            "41\n" +
-            "254\n" +
-            "157\n" +
+            "16\n" +
+            "95\n" +
+            "59\n" +
             "\n" +
-            "10\n" +
-            "112\n" +
-            "204\n" +
+            "217\n" +
+            "60\n" +
+            "137\n" +
             "\n" +
-            "4\n" +
-            "90\n" +
-            "196\n" +
+            "221\n" +
+            "104\n" +
+            "133\n" +
             "\n" +
-            "210\n" +
-            "100\n" +
-            "178\n" +
+            "218\n" +
+            "198\n" +
+            "13\n" +
             "\n" +
-            "67\n" +
-            "8\n" +
-            "188\n" +
+            "3\n" +
+            "47\n" +
+            "120\n" +
             "\n" +
-            "208\n" +
-            "17\n" +
-            "255\n" +
+            "222\n" +
+            "158\n" +
+            "135\n" +
             "\n" +
-            "54\n" +
-            "64\n" +
-            "129\n" +
-            "\n" +
-            "237\n" +
-            "239\n" +
-            "173\n" +
-            "\n" +
-            "242\n" +
-            "43\n" +
-            "99\n" +
-            "\n" +
-            "177\n" +
-            "51\n" +
-            "151\n" +
-            "\n" +
-            "159\n" +
-            "103\n" +
-            "139\n" +
-            "\n" +
-            "124\n" +
-            "150\n" +
-            "175\n" +
-            "\n" +
-            "243\n" +
-            "88\n" +
-            "76\n" +
-            "\n" +
-            "186\n" +
-            "160\n" +
-            "30\n" +
-            "\n" +
-            "86\n" +
-            "179\n" +
-            "248\n" +
-            "\n" +
-            "187\n" +
-            "109\n" +
-            "232\n" +
-            "\n" +
-            "115\n" +
-            "127\n" +
-            "199\n" +
+            "57\n" +
+            "102\n" +
+            "91\n" +
             "\n" +
             "201\n" +
             "12\n" +
@@ -351,65 +290,65 @@ public class ImageProcessorTests {
             "34\n" +
             "72\n" +
             "\n" +
-            "39\n" +
-            "74\n" +
-            "105\n" +
+            "243\n" +
+            "88\n" +
+            "76\n" +
             "\n" +
-            "193\n" +
-            "172\n" +
-            "58\n" +
+            "186\n" +
+            "160\n" +
+            "30\n" +
             "\n" +
-            "117\n" +
-            "128\n" +
-            "140\n" +
+            "86\n" +
+            "179\n" +
+            "248\n" +
             "\n" +
-            "252\n" +
-            "181\n" +
-            "27\n" +
+            "187\n" +
+            "109\n" +
+            "232\n" +
             "\n" +
-            "155\n" +
-            "92\n" +
-            "28\n" +
+            "115\n" +
+            "127\n" +
+            "199\n" +
             "\n" +
-            "141\n" +
-            "125\n" +
-            "223\n" +
+            "237\n" +
+            "239\n" +
+            "173\n" +
             "\n" +
-            "84\n" +
-            "233\n" +
-            "114\n" +
+            "242\n" +
+            "43\n" +
+            "99\n" +
             "\n" +
-            "94\n" +
-            "49\n" +
-            "26\n" +
+            "177\n" +
+            "51\n" +
+            "151\n" +
             "\n" +
-            "42\n" +
-            "116\n" +
-            "80\n" +
+            "159\n" +
+            "103\n" +
+            "139\n" +
             "\n" +
-            "154\n" +
-            "147\n" +
-            "122\n" +
+            "124\n" +
+            "150\n" +
+            "175\n" +
             "\n" +
-            "250\n" +
-            "148\n" +
-            "24\n" +
+            "4\n" +
+            "90\n" +
+            "196\n" +
             "\n" +
-            "98\n" +
-            "87\n" +
-            "224\n" +
+            "210\n" +
+            "100\n" +
+            "178\n" +
             "\n" +
-            "228\n" +
-            "89\n" +
-            "182\n" +
+            "67\n" +
+            "8\n" +
+            "188\n" +
             "\n" +
-            "153\n" +
-            "244\n" +
-            "214\n" +
+            "208\n" +
+            "17\n" +
+            "255\n" +
             "\n" +
-            "209\n" +
-            "215\n" +
-            "53\n" +
+            "54\n" +
+            "64\n" +
+            "129\n" +
             "\n" +
             "23\n" +
             "174\n" +
@@ -431,65 +370,65 @@ public class ImageProcessorTests {
             "180\n" +
             "37\n" +
             "\n" +
-            "85\n" +
-            "162\n" +
-            "194\n" +
+            "250\n" +
+            "148\n" +
+            "24\n" +
             "\n" +
-            "200\n" +
-            "144\n" +
-            "79\n" +
+            "98\n" +
+            "87\n" +
+            "224\n" +
             "\n" +
-            "78\n" +
-            "152\n" +
-            "36\n" +
+            "228\n" +
+            "89\n" +
+            "182\n" +
             "\n" +
-            "249\n" +
-            "216\n" +
-            "227\n" +
+            "153\n" +
+            "244\n" +
+            "214\n" +
             "\n" +
-            "33\n" +
-            "247\n" +
-            "145\n" +
+            "209\n" +
+            "215\n" +
+            "53\n" +
             "\n" +
-            "185\n" +
-            "50\n" +
-            "195\n" +
+            "141\n" +
+            "125\n" +
+            "223\n" +
             "\n" +
-            "235\n" +
-            "245\n" +
-            "176\n" +
+            "84\n" +
+            "233\n" +
+            "114\n" +
             "\n" +
-            "161\n" +
-            "101\n" +
-            "118\n" +
+            "94\n" +
+            "49\n" +
+            "26\n" +
             "\n" +
-            "68\n" +
-            "138\n" +
-            "82\n" +
+            "42\n" +
+            "116\n" +
+            "80\n" +
             "\n" +
-            "241\n" +
-            "65\n" +
-            "15\n" +
+            "154\n" +
+            "147\n" +
+            "122\n" +
             "\n" +
-            "130\n" +
-            "184\n" +
-            "149\n" +
+            "39\n" +
+            "74\n" +
+            "105\n" +
             "\n" +
-            "45\n" +
-            "48\n" +
-            "207\n" +
+            "193\n" +
+            "172\n" +
+            "58\n" +
             "\n" +
-            "246\n" +
-            "163\n" +
-            "69\n" +
+            "117\n" +
+            "128\n" +
+            "140\n" +
             "\n" +
-            "63\n" +
-            "213\n" +
-            "14\n" +
+            "252\n" +
+            "181\n" +
+            "27\n" +
             "\n" +
-            "225\n" +
-            "132\n" +
-            "240\n" +
+            "155\n" +
+            "92\n" +
+            "28\n" +
             "\n" +
             "236\n" +
             "205\n" +
@@ -511,25 +450,105 @@ public class ImageProcessorTests {
             "202\n" +
             "134\n" +
             "\n" +
-            "40\n" +
-            "222\n" +
-            "123\n" +
+            "130\n" +
+            "184\n" +
+            "149\n" +
             "\n" +
-            "150\n" +
             "45\n" +
+            "48\n" +
+            "207\n" +
+            "\n" +
+            "246\n" +
+            "163\n" +
+            "69\n" +
+            "\n" +
+            "63\n" +
+            "213\n" +
+            "14\n" +
+            "\n" +
+            "225\n" +
+            "132\n" +
+            "240\n" +
+            "\n" +
+            "185\n" +
+            "50\n" +
+            "195\n" +
+            "\n" +
+            "235\n" +
+            "245\n" +
+            "176\n" +
+            "\n" +
+            "161\n" +
+            "101\n" +
+            "118\n" +
+            "\n" +
+            "68\n" +
+            "138\n" +
+            "82\n" +
+            "\n" +
+            "241\n" +
+            "65\n" +
+            "15\n" +
+            "\n" +
+            "85\n" +
+            "162\n" +
+            "194\n" +
+            "\n" +
+            "200\n" +
+            "144\n" +
+            "79\n" +
+            "\n" +
+            "78\n" +
+            "152\n" +
+            "36\n" +
+            "\n" +
+            "249\n" +
+            "216\n" +
+            "227\n" +
+            "\n" +
+            "33\n" +
+            "247\n" +
+            "145\n" +
+            "\n" +
+            "0\n" +
+            "0\n" +
+            "0\n" +
+            "\n" +
+            "0\n" +
+            "0\n" +
+            "0\n" +
+            "\n" +
+            "71\n" +
+            "75\n" +
+            "168\n" +
+            "\n" +
+            "5\n" +
+            "166\n" +
+            "83\n" +
+            "\n" +
+            "70\n" +
+            "234\n" +
+            "32\n" +
+            "\n" +
+            "40\n" +
+            "231\n" +
             "34\n" +
             "\n" +
             "0\n" +
             "0\n" +
             "0\n" +
             "\n" +
-            "125\n" +
-            "125\n" +
-            "125\n" +
+            "0\n" +
+            "0\n" +
+            "0\n" +
             "\n" +
-            "255\n" +
-            "255\n" +
-            "255\n" +
+            "0\n" +
+            "0\n" +
+            "0\n" +
+            "\n" +
+            "0\n" +
+            "0\n" +
+            "0\n" +
             "\n" +
             "60\n" +
             "34\n" +
@@ -552,44 +571,24 @@ public class ImageProcessorTests {
             "34\n" +
             "\n" +
             "40\n" +
-            "231\n" +
+            "222\n" +
+            "123\n" +
+            "\n" +
+            "150\n" +
+            "45\n" +
             "34\n" +
             "\n" +
             "0\n" +
             "0\n" +
             "0\n" +
             "\n" +
-            "0\n" +
-            "0\n" +
-            "0\n" +
+            "125\n" +
+            "125\n" +
+            "125\n" +
             "\n" +
-            "0\n" +
-            "0\n" +
-            "0\n" +
-            "\n" +
-            "0\n" +
-            "0\n" +
-            "0\n" +
-            "\n" +
-            "0\n" +
-            "0\n" +
-            "0\n" +
-            "\n" +
-            "0\n" +
-            "0\n" +
-            "0\n" +
-            "\n" +
-            "71\n" +
-            "75\n" +
-            "168\n" +
-            "\n" +
-            "5\n" +
-            "166\n" +
-            "83\n" +
-            "\n" +
-            "70\n" +
-            "234\n" +
-            "32\n" +
+            "255\n" +
+            "255\n" +
+            "255\n" +
             "\n";
     assertEquals(model.getImageString("kb").toString(), expectd);
   }
@@ -672,7 +671,7 @@ public class ImageProcessorTests {
   }
 
   @Test
-  public void TestFlipHorizontally() {
+  public void testFlipHorizontally() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "horizontal-flip four test\n");
     StringBuilder builder = new StringBuilder();
@@ -750,7 +749,7 @@ public class ImageProcessorTests {
   }
 
   @Test
-  public void TestRedComponent() {
+  public void testRedComponent() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "red-component four test\n");
     StringBuilder builder = new StringBuilder();
@@ -828,7 +827,7 @@ public class ImageProcessorTests {
   }
 
   @Test
-  public void TestBlueComponent() {
+  public void testBlueComponent() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "blue-component four test\n");
     StringBuilder builder = new StringBuilder();
@@ -906,7 +905,7 @@ public class ImageProcessorTests {
   }
 
   @Test
-  public void TestGreenComponent() {
+  public void testGreenComponent() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "green-component four test\n");
     StringBuilder builder = new StringBuilder();
@@ -984,7 +983,7 @@ public class ImageProcessorTests {
   }
 
   @Test
-  public void TestIntensityComponent() {
+  public void testIntensityComponent() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "intensity-component four test\n");
     StringBuilder builder = new StringBuilder();
@@ -1062,7 +1061,7 @@ public class ImageProcessorTests {
   }
 
   @Test
-  public void TestLumaComponent() {
+  public void testLumaComponent() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "luma-component four test\n");
     StringBuilder builder = new StringBuilder();
@@ -1140,7 +1139,7 @@ public class ImageProcessorTests {
   }
 
   @Test
-  public void TestValueComponent() {
+  public void testValueComponent() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "value-component four test\n");
     StringBuilder builder = new StringBuilder();

@@ -1,13 +1,17 @@
 package model.imageprocessor;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.function.Function;
 
 import model.pixel.Pixel;
+import model.pixel.RGBPixel;
 
 
 /**
@@ -32,14 +36,45 @@ public class PPMImageProcessor implements ImageProcessor {
    * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
    * the old image
    *
-   * @param imgName   the name of the generated image
-   * @param pixelGrid the grid you loaded
-   * @param maxValue  the max value a particular pixel can be.
+   * @param imgPath the file path of the file to load
+   * @param imgName  the name of the generated image
    */
   @Override
-  public void loadASCIIPPM(String imgName, Pixel[][] pixelGrid, int maxValue) {
-    loadedImages.put(imgName, pixelGrid);
-    loadedImagesMaxValue.put(imgName, maxValue);
+  public void loadASCIIPPM(Scanner sc, String imgName) {
+    StringBuilder builder = new StringBuilder();
+    //read the file line by line, and populate a string. This will throw away any comment lines
+    while (sc.hasNextLine()) {
+      String s = sc.nextLine();
+      if (!s.equals("") && s.charAt(0)!='#') {
+        builder.append(s+System.lineSeparator());
+      }
+    }
+
+    //now set up the scanner to read from the string we just built
+    sc = new Scanner(builder.toString());
+
+    String token;
+
+    token = sc.next();
+    if (!token.equals("P3")) {
+      throw new IllegalArgumentException("Invalid PPM file: plain RAW file should begin with P3");
+    }
+    int width = sc.nextInt();
+    int height = sc.nextInt();
+    int maxValue = sc.nextInt();
+    Pixel[][] pixelGrid = new Pixel[width][height];
+
+    for (int row=0;row<width;row++) {
+      for (int col=0;col<height;col++) {
+        int r = sc.nextInt();
+        int g = sc.nextInt();
+        int b = sc.nextInt();
+        Pixel pixel = new RGBPixel(r,g,b,maxValue);
+        pixelGrid[row][col] = pixel;
+      }
+    }
+    loadedImages.put(imgName,pixelGrid);
+    loadedImagesMaxValue.put(imgName,maxValue);
   }
 
   /**
