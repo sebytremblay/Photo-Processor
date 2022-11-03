@@ -18,26 +18,25 @@ public class Load extends AbstractCommand {
    *
    * @param imgPath the path of the image to load
    * @param imgName what to name the image after its loaded
-   * @param append place to informative information about success of command
+   * @param append  place to informative information about success of command
    */
-  public Load(String imgPath, String imgName,Appendable append) {
+  public Load(String imgPath, String imgName, Appendable append) {
     super(append);
     this.imgName = imgName;
     Scanner sc;
 
     try {
       sc = new Scanner(new FileInputStream(imgPath));
-    }
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       sc = new Scanner("");
-      super.successMessage("File "+imgPath+ " not found!");
+      super.successMessage("File " + imgPath + " not found!");
     }
 
     this.imageFile = sc;
   }
 
   @Override
-  public void go(ImageProcessor model) {
+  public void run(ImageProcessor model) {
     model.loadASCIIPPM(this.imageFile, this.imgName);
     super.successMessage("Load");
   }

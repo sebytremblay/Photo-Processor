@@ -25,41 +25,44 @@ public class ControllerTests {
 
   @Test
   public void testMockModelVertical() {
-    assertControllerMock("load 4by4.ppm l\nvertical-flip l lk", "imgName: l maxValue:255\n" +
-            "imgName: l, newImageName:lk, Direction: Vertical");
+    assertControllerMock("load 4by4.ppm l\nvertical-flip l lk",
+            "loaded image: l\n" +
+                    "imgName: l, newImageName:lk, Direction: Vertical");
   }
 
   @Test
   public void testMockModelHorz() {
-    assertControllerMock("load 4by4.ppm l\nhorizontal-flip l lk", "imgName: l maxValue:255\n" +
-            "imgName: l, newImageName:lk, Direction: Horizontal");
+    assertControllerMock("load 4by4.ppm l\nhorizontal-flip l lk",
+            "loaded image: l\n" +
+                    "imgName: l, newImageName:lk, Direction: Horizontal");
   }
 
   @Test
   public void testMockLoad() {
-    assertControllerMock("load 4by4.ppm l", "imgName: l maxValue:255");
+    assertControllerMock("load 4by4.ppm l", "loaded image: l\n");
   }
 
   @Test
   public void testBrighten() {
-    assertControllerMock("imgName: l maxValue:255imgName: l, newImageName:lk, brightenBy: 50", "load 4by4.ppm l\n brighten 50 l lk");
+    assertControllerMock("load 4by4.ppm l\n brighten 50 l lk", "loaded image: l\n" +
+            "imgName: l, newImageName:lk, brightenBy: 50");
   }
 
   @Test
   public void testVisualizeIntensity() {
-    assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "imgName: l maxValue:255\n" +
+    assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "loaded image: l\n" +
             "imgName: l, newImageName:lk");
   }
 
   @Test
   public void testVisualizeBlue() {
-    assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "imgName: l maxValue:255\n" +
+    assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "loaded image: l\n" +
             "imgName: l, newImageName:lk");
   }
 
   @Test
   public void testSave() {
-    assertControllerMock("load 4by4.ppm l\nsave l lk", "imgName: l maxValue:255\n" +
+    assertControllerMock("load 4by4.ppm l\nsave l lk", "loaded image: l\n" +
             "filePath: l, imgName:lk");
   }
 }
