@@ -8,20 +8,18 @@ import model.imageprocessor.ImageProcessor;
 import model.pixel.Pixel;
 
 public class MockImageProcessor implements ImageProcessor {
+  StringBuilder log;
+
   MockImageProcessor(StringBuilder log) {
     this.log = log;
   }
-
-  StringBuilder log = new StringBuilder("");
-
 
   /**
    * Loads an image from an ASCII PPM file. If imgName is already taken, the new image
    * will overwrite the old image
    *
-   * @param imgName  the name of the generated image
-   * @param grid
-   * @param maxValue
+   * @param image the image loaded as a file
+   * @param imgName the name for the new image
    */
   @Override
   public void loadASCIIPPM(Scanner image, String imgName) {

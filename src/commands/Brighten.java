@@ -29,7 +29,7 @@ public class Brighten extends AbstractCommand {
   }
 
   @Override
-  public void go(ImageProcessor model) {
+  public void run(ImageProcessor model) {
     model.brighten(this.imgName, this.newImageName, this.brightenBy);
     super.successMessage("Brighten");
   }

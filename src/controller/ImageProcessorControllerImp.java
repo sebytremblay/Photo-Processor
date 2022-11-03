@@ -15,16 +15,15 @@ import commands.Load;
 import commands.ProcessCommand;
 import commands.Save;
 import model.imageprocessor.ImageProcessor;
-import model.operations.visualizeBlue;
-import model.operations.visualizeGreen;
-import model.operations.visualizeIntensity;
-import model.operations.visualizeLuma;
-import model.operations.visualizeRed;
-import model.operations.visualizeValue;
+import model.operations.VisualizeBlue;
+import model.operations.VisualizeGreen;
+import model.operations.VisualizeIntensity;
+import model.operations.VisualizeLuma;
+import model.operations.VisualizeRed;
+import model.operations.VisualizeValue;
 
 /**
  * Is the controller of the ImageProcessor that takes in commands and executes them on the model.
- *
  */
 public class ImageProcessorControllerImp implements ImageProcessorController {
   private final Readable input;
@@ -35,14 +34,23 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
   /**
    * Is a constructor for the controller. It takes in a model, and sets the readable and appendable
    * to a default value
+   *
    * @param processor the model of the controller
    */
   public ImageProcessorControllerImp(ImageProcessor processor) {
     this(new InputStreamReader(System.in), System.out, processor);
   }
 
+  /**
+   * A constructor for the controller. It takes in a model, and sets the readable and appendable
+   * to a default value
+   *
+   * @param input     how the controller reads input
+   * @param output    how the controller reads output
+   * @param processor the image processor
+   */
   public ImageProcessorControllerImp(Readable input, Appendable output, ImageProcessor processor) {
-    if (input == null || output == null || processor == null){
+    if (input == null || output == null || processor == null) {
       throw new IllegalArgumentException("Readable, Appendable, and ImageProcessor all must not be" +
               "null");
     }
@@ -54,25 +62,25 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
     commands.put("load",
             s -> new Load(s.next(), s.next(), output));
     commands.put("save",
-            s -> new Save(s.next(), s.next(),output));
+            s -> new Save(s.next(), s.next(), output));
     commands.put("red-component",
-            s -> new DisplayComponent(s.next(), s.next(), new visualizeRed(),output));
+            s -> new DisplayComponent(s.next(), s.next(), new VisualizeRed(), output));
     commands.put("blue-component",
-            s -> new DisplayComponent(s.next(), s.next(), new visualizeBlue(),output));
+            s -> new DisplayComponent(s.next(), s.next(), new VisualizeBlue(), output));
     commands.put("green-component",
-            s -> new DisplayComponent(s.next(), s.next(), new visualizeGreen(),output));
+            s -> new DisplayComponent(s.next(), s.next(), new VisualizeGreen(), output));
     commands.put("value-component",
-            s -> new DisplayComponent(s.next(), s.next(), new visualizeValue(),output));
+            s -> new DisplayComponent(s.next(), s.next(), new VisualizeValue(), output));
     commands.put("intensity-component",
-            s -> new DisplayComponent(s.next(), s.next(), new visualizeIntensity(),output));
+            s -> new DisplayComponent(s.next(), s.next(), new VisualizeIntensity(), output));
     commands.put("luma-component",
-            s -> new DisplayComponent(s.next(), s.next(), new visualizeLuma(),output));
+            s -> new DisplayComponent(s.next(), s.next(), new VisualizeLuma(), output));
     commands.put("horizontal-flip",
-            s -> new Flip(s.next(), s.next(), ImageProcessor.Direction.Horizontal,output));
+            s -> new Flip(s.next(), s.next(), ImageProcessor.Direction.Horizontal, output));
     commands.put("vertical-flip",
-            s -> new Flip(s.next(), s.next(), ImageProcessor.Direction.Vertical,output));
+            s -> new Flip(s.next(), s.next(), ImageProcessor.Direction.Vertical, output));
     commands.put("brighten",
-            s -> new Brighten(s.next(), s.next(), s.next(),output));
+            s -> new Brighten(s.next(), s.next(), s.next(), output));
   }
 
   @Override
@@ -82,24 +90,24 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
       String input = scan.next();
       Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(input, null);
       if (cmd == null) {
-        Error("Command Not Recognized");
+        error("Command Not Recognized");
       } else {
         try {
           ProcessCommand c = cmd.apply(scan);
-          c.go(this.processor);
+          c.run(this.processor);
         } catch (NoSuchElementException e) {
-          Error("Insufficient arguments");
-        }catch (IllegalArgumentException e){
-          Error("Invalid arguments.");
+          error("Insufficient arguments");
+        } catch (IllegalArgumentException e) {
+          error("Invalid arguments.");
         }
       }
     }
   }
 
   // Notifies the user that there was an error with the input.
-  private void Error(String message) {
+  private void error(String message) {
     try {
-      this.output.append(message+"\n");
+      this.output.append(message + "\n");
     } catch (IOException e) {
       throw new IllegalStateException();
     }

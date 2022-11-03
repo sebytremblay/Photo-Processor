@@ -1,12 +1,12 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import model.operations.visualizeBlue;
-import model.operations.visualizeGreen;
-import model.operations.visualizeIntensity;
-import model.operations.visualizeLuma;
-import model.operations.visualizeRed;
-import model.operations.visualizeValue;
+import model.operations.VisualizeBlue;
+import model.operations.VisualizeGreen;
+import model.operations.VisualizeIntensity;
+import model.operations.VisualizeLuma;
+import model.operations.VisualizeRed;
+import model.operations.VisualizeValue;
 import model.pixel.Pixel;
 import model.pixel.RGBPixel;
 
@@ -37,39 +37,41 @@ public class PixelTests {
   @Test()
   public void validPixel() {
     Pixel pixel2 = new RGBPixel(120, 120, 120, 255);
+    int[] expected = {120, 120, 120};
+    assertArrayEquals(expected, pixel2.getComponents());
   }
 
   @Test()
   public void testVisualizeBlue() {
     Pixel pixel1 = new RGBPixel(10, 20, 30, 255);
-    Pixel newPixel1 = pixel1.visual(new visualizeBlue(), 255);
+    Pixel newPixel1 = pixel1.visual(new VisualizeBlue(), 255);
     assertEquals(new RGBPixel(30, 30, 30, 255).toString(), newPixel1.toString());
 
     Pixel pixel2 = new RGBPixel(53, 201, 122, 255);
-    Pixel newPixel = pixel2.visual(new visualizeBlue(), 255);
+    Pixel newPixel = pixel2.visual(new VisualizeBlue(), 255);
     assertEquals(new RGBPixel(122, 122, 122, 255).toString(), newPixel.toString());
   }
 
   @Test()
   public void testVisualizeGreen() {
     Pixel pixel1 = new RGBPixel(10, 20, 30, 255);
-    Pixel newPixel1 = pixel1.visual(new visualizeGreen(), 255);
+    Pixel newPixel1 = pixel1.visual(new VisualizeGreen(), 255);
     assertEquals(new RGBPixel(20, 20, 20, 255).toString(), newPixel1.toString());
 
     Pixel pixel2 = new RGBPixel(53, 201, 122, 255);
-    Pixel newPixel = pixel2.visual(new visualizeGreen(), 255);
+    Pixel newPixel = pixel2.visual(new VisualizeGreen(), 255);
     assertEquals(new RGBPixel(201, 201, 201, 255).toString(), newPixel.toString());
   }
 
   @Test()
   public void testVisualizeIntensity() {
     Pixel pixel1 = new RGBPixel(10, 20, 30, 255);
-    Pixel newPixel1 = pixel1.visual(new visualizeIntensity(), 255);
+    Pixel newPixel1 = pixel1.visual(new VisualizeIntensity(), 255);
     assertEquals(new RGBPixel(20, 20, 20, 255).toString(), newPixel1.toString());
 
     Pixel pixel2 = new RGBPixel(53, 201, 122, 255);
     int avg = (53 + 201 + 122) / 3;
-    Pixel newPixel = pixel2.visual(new visualizeIntensity(), 255);
+    Pixel newPixel = pixel2.visual(new VisualizeIntensity(), 255);
     assertEquals(new RGBPixel(avg, avg, avg, 255).toString(), newPixel.toString());
   }
 
@@ -79,25 +81,25 @@ public class PixelTests {
             + 0.7152 * 20
             + 0.0722 * 30);
     Pixel pixel1 = new RGBPixel(10, 20, 30, 255);
-    Pixel newPixel1 = pixel1.visual(new visualizeLuma(), 255);
+    Pixel newPixel1 = pixel1.visual(new VisualizeLuma(), 255);
     assertEquals(new RGBPixel(val1, val1, val1, 255).toString(), newPixel1.toString());
 
     int val2 = (int) (0.2126 * 53
             + 0.7152 * 201
             + 0.0722 * 122);
     Pixel pixel2 = new RGBPixel(53, 201, 122, 255);
-    Pixel newPixel = pixel2.visual(new visualizeLuma(), 255);
+    Pixel newPixel = pixel2.visual(new VisualizeLuma(), 255);
     assertEquals(new RGBPixel(val2, val2, val2, 255).toString(), newPixel.toString());
   }
 
   @Test()
   public void testVisualizeRed() {
     Pixel pixel1 = new RGBPixel(10, 20, 30, 255);
-    Pixel newPixel1 = pixel1.visual(new visualizeRed(), 255);
+    Pixel newPixel1 = pixel1.visual(new VisualizeRed(), 255);
     assertEquals(new RGBPixel(10, 10, 10, 255).toString(), newPixel1.toString());
 
     Pixel pixel2 = new RGBPixel(53, 201, 122, 255);
-    Pixel newPixel = pixel2.visual(new visualizeRed(), 255);
+    Pixel newPixel = pixel2.visual(new VisualizeRed(), 255);
     assertEquals(new RGBPixel(53, 53, 53, 255).toString(), newPixel.toString());
 
   }
@@ -105,11 +107,11 @@ public class PixelTests {
   @Test()
   public void testVisualizeValue() {
     Pixel pixel1 = new RGBPixel(10, 20, 30, 255);
-    Pixel newPixel1 = pixel1.visual(new visualizeValue(), 255);
+    Pixel newPixel1 = pixel1.visual(new VisualizeValue(), 255);
     assertEquals(new RGBPixel(30, 30, 30, 255).toString(), newPixel1.toString());
 
     Pixel pixel2 = new RGBPixel(53, 201, 122, 255);
-    Pixel newPixel = pixel2.visual(new visualizeValue(), 255);
+    Pixel newPixel = pixel2.visual(new VisualizeValue(), 255);
     assertEquals(new RGBPixel(201, 201, 201, 255).toString(), newPixel.toString());
   }
 

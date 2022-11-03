@@ -6,25 +6,26 @@ import java.util.Scanner;
 
 
 public class ppmImageEquals {
-  public static boolean twoPPMStringsTheSame(String ppm1,String ppm2){
+  public static boolean twoPPMStringsTheSame(String ppm1, String ppm2) {
     StringBuilder builder1 = new StringBuilder();
     Scanner sc1 = new Scanner(String.valueOf(builder1));
     while (sc1.hasNextLine()) {
       String s = sc1.nextLine();
-      if (s.charAt(0)!='#') {
-        builder1.append(s+System.lineSeparator());
+      if (s.charAt(0) != '#') {
+        builder1.append(s + System.lineSeparator());
       }
     }
     StringBuilder builder2 = new StringBuilder();
     Scanner sc2 = new Scanner(String.valueOf(builder2));
     while (sc2.hasNextLine()) {
       String s = sc2.nextLine();
-      if (s.charAt(0)!='#') {
-        builder2.append(s+System.lineSeparator());
+      if (s.charAt(0) != '#') {
+        builder2.append(s + System.lineSeparator());
       }
     }
     return builder1.equals(builder2);
   }
+
   /**
    * Determines if two Images are equals to each other by checking if each bit is the same
    *
@@ -36,9 +37,7 @@ public class ppmImageEquals {
     try {
       sc1 = new Scanner(new FileInputStream(filePath1));
       sc2 = new Scanner(new FileInputStream(filePath2));
-    }
-
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       return false;
     }
     System.out.println("test here");
@@ -47,14 +46,14 @@ public class ppmImageEquals {
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc1.hasNextLine()) {
       String s = sc1.nextLine();
-      if (s.charAt(0)!='#') {
-        builder1.append(s+System.lineSeparator());
+      if (s.charAt(0) != '#') {
+        builder1.append(s + System.lineSeparator());
       }
     }
     while (sc2.hasNextLine()) {
       String s = sc2.nextLine();
-      if (s.charAt(0)!='#') {
-        builder2.append(s+System.lineSeparator());
+      if (s.charAt(0) != '#') {
+        builder2.append(s + System.lineSeparator());
       }
     }
 
@@ -66,31 +65,31 @@ public class ppmImageEquals {
     String token2;
     String val = sc1.next();
     String val2 = sc2.next();
-    if (!val.equals(val2)){
+    if (!val.equals(val2)) {
       return false;
     }
     int width = sc1.nextInt();
     int height = sc1.nextInt();
-    if (width != sc2.nextInt()){
+    if (width != sc2.nextInt()) {
       return false;
     }
 
-    if (height !=  sc2.nextInt()){
+    if (height != sc2.nextInt()) {
       return false;
     }
-    if (!sc1.next().equals(sc2.next())){
+    if (!sc1.next().equals(sc2.next())) {
       return false;
     }
 
-    for (int i=0;i<height;i++) {
-      for (int j=0;j<width;j++) {
-        if (sc1.nextInt() != sc2.nextInt()){
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        if (sc1.nextInt() != sc2.nextInt()) {
           return false;
         }
-        if (sc1.nextInt() != sc2.nextInt()){
+        if (sc1.nextInt() != sc2.nextInt()) {
           return false;
         }
-        if (sc1.nextInt() != sc2.nextInt()){
+        if (sc1.nextInt() != sc2.nextInt()) {
           return false;
         }
       }

@@ -1,7 +1,5 @@
 package model.imageprocessor;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,11 +31,11 @@ public class PPMImageProcessor implements ImageProcessor {
   }
 
   /**
-   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
-   * the old image
+   * Loads an image from an ASCII PPM file. If imgName is already taken,
+   * the new image will overwrite the old image.
    *
-   * @param imgPath the file path of the file to load
-   * @param imgName  the name of the generated image
+   * @param sc      the image loaded into the file
+   * @param imgName the name of the generated image
    */
   @Override
   public void loadASCIIPPM(Scanner sc, String imgName) {
@@ -45,8 +43,8 @@ public class PPMImageProcessor implements ImageProcessor {
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
-      if (!s.equals("") && s.charAt(0)!='#') {
-        builder.append(s+System.lineSeparator());
+      if (!s.equals("") && s.charAt(0) != '#') {
+        builder.append(s + System.lineSeparator());
       }
     }
 
@@ -64,21 +62,21 @@ public class PPMImageProcessor implements ImageProcessor {
     int maxValue = sc.nextInt();
     Pixel[][] pixelGrid = new Pixel[width][height];
 
-    for (int row=0;row<width;row++) {
-      for (int col=0;col<height;col++) {
+    for (int row = 0; row < width; row++) {
+      for (int col = 0; col < height; col++) {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
-        Pixel pixel = new RGBPixel(r,g,b,maxValue);
+        Pixel pixel = new RGBPixel(r, g, b, maxValue);
         pixelGrid[row][col] = pixel;
       }
     }
-    loadedImages.put(imgName,pixelGrid);
-    loadedImagesMaxValue.put(imgName,maxValue);
+    loadedImages.put(imgName, pixelGrid);
+    loadedImagesMaxValue.put(imgName, maxValue);
   }
 
   /**
-   * visualizes a component based on the given function
+   * Visualizes a component based on the given function.
    *
    * @param imgName      name of the loaded image we are trying to manipulate
    * @param f            function that is applied the image
@@ -107,7 +105,8 @@ public class PPMImageProcessor implements ImageProcessor {
   // determines is an image is loaded, and throws an error if not
   private void isLoadedImgName(String imgName) {
     if (!loadedImages.containsKey(imgName)) {
-      throw new IllegalArgumentException("The image " + imgName + " is not loaded in the processor");
+      throw new IllegalArgumentException("The image " + imgName
+              + " is not loaded in the processor");
     }
   }
 
@@ -171,7 +170,8 @@ public class PPMImageProcessor implements ImageProcessor {
   }
 
   /**
-   * Saves an image to a given location and a given name. If filePath is occupied it will overwrite
+   * Saves an image to a given location and a given name.
+   * If filePath is occupied it will overwrite.
    *
    * @param filePath location to save of an image
    * @param imgName  name of the saved image

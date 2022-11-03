@@ -3,24 +3,22 @@ package model.imageprocessor;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import model.pixel.Pixel;
-
 /**
- * Represents the ImageProcessor
+ * Represents the ImageProcessor.
  */
 public interface ImageProcessor {
   /**
    * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will
    * overwrite the old image.
    *
-   * @param image the image loaded as a file
-   * @param imgName  the name of the generated image
+   * @param image   the image loaded as a file
+   * @param imgName the name of the generated image
    */
   void loadASCIIPPM(Scanner image, String imgName);
 
 
   /**
-   * visualizes a component based on the given function
+   * Visualizes a component based on the given function.
    *
    * @param imgName      name of the loaded image we are trying to manipulate
    * @param newImageName the new modified name in the processor
@@ -32,7 +30,7 @@ public interface ImageProcessor {
   /**
    * An enumeration of directions.
    */
-  enum Direction {Horizontal, Vertical}
+  enum Direction { Horizontal, Vertical }
 
   /**
    * Flips an image in the given direction.
