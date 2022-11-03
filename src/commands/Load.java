@@ -1,15 +1,16 @@
 package commands;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import model.imageprocessor.ImageProcessor;
-import model.pixel.Pixel;
-import utils.ImageUtil;
 
 /**
  * A command to load an image.
  */
 public class Load extends AbstractCommand {
-  private final String imgPath;
+  private final Scanner imageFile;
   private final String imgName;
 
   /**
@@ -21,15 +22,23 @@ public class Load extends AbstractCommand {
    */
   public Load(String imgPath, String imgName,Appendable append) {
     super(append);
-    this.imgPath = imgPath;
     this.imgName = imgName;
+    Scanner sc;
+
+    try {
+      sc = new Scanner(new FileInputStream(imgPath));
+    }
+    catch (FileNotFoundException e) {
+      sc = new Scanner("");
+      super.successMessage("File "+imgPath+ " not found!");
+    }
+
+    this.imageFile = sc;
   }
 
   @Override
   public void go(ImageProcessor model) {
-    Pixel[][] grid = ImageUtil.loadPPM(imgPath);
-    int maxValue = ImageUtil.getMaxValue(imgPath);
-    model.loadASCIIPPM(imgName,grid,maxValue);
+    model.loadASCIIPPM(this.imageFile, this.imgName);
     super.successMessage("Load");
   }
 

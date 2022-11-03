@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
@@ -28,8 +29,8 @@ public class MockImageProcessor implements ImageProcessor {
   Map<Function,String> vals = new HashMap<>();
 
   @Override
-  public void loadASCIIPPM(String imgName, Pixel[][] grid, int maxValue) {
-    log.append("imgName: " + imgName + ", grid:" + grid.toString() + ", " + "maxValue:" + maxValue);
+  public void loadASCIIPPM(Scanner image, String imgName) {
+    log.append("loaded image: " + imgName + "\n");
   }
 
   /**
