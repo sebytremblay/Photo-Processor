@@ -2,6 +2,8 @@ package commands;
 
 
 import model.imageprocessor.ImageProcessor;
+import model.pixel.Pixel;
+import utils.ImageUtil;
 
 /**
  * A command to load an image.
@@ -25,7 +27,9 @@ public class Load extends AbstractCommand {
 
   @Override
   public void go(ImageProcessor model) {
-    model.loadASCIIPPM(this.imgPath, this.imgName);
+    Pixel[][] grid = ImageUtil.loadPPM(imgPath);
+    int maxValue = ImageUtil.getMaxValue(imgPath);
+    model.loadASCIIPPM(imgName,grid,maxValue);
     super.successMessage("Load");
   }
 

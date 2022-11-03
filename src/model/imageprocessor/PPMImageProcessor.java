@@ -10,8 +10,10 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import jdk.jshell.execution.Util;
 import model.pixel.Pixel;
 import model.pixel.RGBPixel;
+import utils.ImageUtil;
 
 
 /**
@@ -36,51 +38,12 @@ public class PPMImageProcessor implements ImageProcessor {
    * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
    * the old image
    *
-   * @param imgPath the file path of the file to load
    * @param imgName the name of the generated image
+   * @param pixelGrid the grid you loaded
+   * @param maxValue the max value a particular pixel can be.
    */
   @Override
-  public void loadASCIIPPM(String imgPath, String imgName) {
-    Scanner sc;
-
-    try {
-      sc = new Scanner(new FileInputStream(imgPath));
-    } catch (FileNotFoundException e) {
-      System.out.println("File " + imgPath + " not found!");
-      return;
-    }
-    StringBuilder builder = new StringBuilder();
-    //read the file line by line, and populate a string. This will throw away any comment lines
-    while (sc.hasNextLine()) {
-      String s = sc.nextLine();
-      if (s.charAt(0) != '#') {
-        builder.append(s + System.lineSeparator());
-      }
-    }
-
-    //now set up the scanner to read from the string we just built
-    sc = new Scanner(builder.toString());
-
-    String token;
-
-    token = sc.next();
-    if (!token.equals("P3")) {
-      throw new IllegalArgumentException("Invalid PPM file: plain RAW file should begin with P3");
-    }
-    int width = sc.nextInt();
-    int height = sc.nextInt();
-    int maxValue = sc.nextInt();
-    Pixel[][] pixelGrid = new Pixel[width][height];
-
-    for (int row = 0; row < width; row++) {
-      for (int col = 0; col < height; col++) {
-        int r = sc.nextInt();
-        int g = sc.nextInt();
-        int b = sc.nextInt();
-        Pixel pixel = new RGBPixel(r, g, b, maxValue);
-        pixelGrid[row][col] = pixel;
-      }
-    }
+  public void loadASCIIPPM(String imgName, Pixel[][] pixelGrid, int maxValue) {
     loadedImages.put(imgName, pixelGrid);
     loadedImagesMaxValue.put(imgName, maxValue);
   }
@@ -101,7 +64,7 @@ public class PPMImageProcessor implements ImageProcessor {
 
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < newPixelGrid.length; row += 1) {
-      for (int col = 0; col < newPixelGrid[row].length; col += 1) {
+      for (int col = 0; col < newPixelGrid[0].length; col += 1) {
         Pixel pixel = pixelGrid[row][col];
         Pixel newPixel = pixel.visual(f, maxValue);
         newPixelGrid[row][col] = newPixel;
@@ -130,21 +93,23 @@ public class PPMImageProcessor implements ImageProcessor {
   public void flipImage(String imgName, String newImageName, Direction dir) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
+    System.out.println(pixelGrid.length);
+    System.out.println(pixelGrid[0].length);
+
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     if (dir == ImageProcessor.Direction.Vertical) {
       int rowCounter = pixelGrid.length - 1;
       for (int row = 0; row < pixelGrid.length; row += 1) {
-        newPixelGrid[row] = pixelGrid[rowCounter].clone();
-        rowCounter -= 1;
+        newPixelGrid[row] = pixelGrid[rowCounter];
       }
     } else {
-      int colCounter = 0;
+      int colCounter = newPixelGrid[0].length;
       for (int row = 0; row < newPixelGrid.length; row += 1) {
-        for (int col = newPixelGrid[row].length - 1; col >= 0; col -= 1) {
+        for (int col = 0; col < newPixelGrid[0].length; col += 1) {
           newPixelGrid[row][colCounter] = pixelGrid[row][col];
-          colCounter += 1;
+          colCounter -= 1;
         }
-        colCounter = 0;
+        colCounter = newPixelGrid[0].length;
       }
     }
     loadedImages.put(newImageName, newPixelGrid);
@@ -204,7 +169,7 @@ public class PPMImageProcessor implements ImageProcessor {
     Pixel[][] saveImage = loadedImages.get(imgName);
     Integer maxValue = loadedImagesMaxValue.get(imgName);
     writeMessage("P3", result);
-    writeMessage(saveImage.length + " " + saveImage[0].length, result);
+    writeMessage(saveImage[0].length + " " + saveImage.length, result);
     writeMessage(String.valueOf(maxValue), result);
 
     for (int row = 0; row < saveImage.length; row += 1) {
@@ -213,7 +178,7 @@ public class PPMImageProcessor implements ImageProcessor {
         writeMessage(pixel.toString(), result);
       }
     }
-    return result.deleteCharAt(result.length()-1);
+    return result;
   }
 
   private void writeMessage(String message, StringBuilder builder) {

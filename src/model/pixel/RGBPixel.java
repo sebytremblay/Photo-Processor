@@ -57,6 +57,13 @@ public class RGBPixel implements Pixel {
     return new RGBPixel(brightenRed, brightenGreen, brightenBlue, maxValue);
   }
 
+  /**
+   * makes sure that value is between zero and a particular max value. If it is above or below, it
+   * is set to the maxValue and minValue respectively.
+   * @param comp
+   * @param maxValue
+   * @return
+   */
   private int imposeRange(int comp,int maxValue) {
     if (comp < 0) {
       return 0;
@@ -69,7 +76,6 @@ public class RGBPixel implements Pixel {
 
   /**
    * creates a string representation of the pixel as an enumeration of its components
-   *
    * @return the string represents as an enumeration of the components
    */
   @Override

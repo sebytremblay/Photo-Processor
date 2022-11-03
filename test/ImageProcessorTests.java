@@ -36,13 +36,13 @@ public class ImageProcessorTests {
   }
   @Test
   public void testFlipVertically2() {
-    StringReader reader = new StringReader("load 5by5.ppm k\n"+
+    StringReader reader = new StringReader("load 4by4.ppm k\n"+
           "vertical-flip k kb\n");
     StringBuilder builder = new StringBuilder();
     PPMImageProcessor model = new PPMImageProcessor();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
-    assertEquals(model.getPPMImage("kb").toString(),"P3\n" +
+    assertEquals(model.getPPMImage("kb"),"P3\n" +
             "4 4\n" +
             "255\n" +
             "0\n" +
@@ -107,8 +107,19 @@ public class ImageProcessorTests {
             "\n" +
             "125\n" +
             "125\n" +
-            "125\n");
+            "125\n\n");
 
+  }
+  @Test
+  public void testFlipVertically3() {
+    StringReader reader = new StringReader("load 10by10.ppm k\n" +
+            "vertical-flip k kb\n"+
+            "save vf110.ppm kb");
+    StringBuilder builder = new StringBuilder();
+    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    //assertEquals(model.getPPMImage("kb").toString(),"P3\n" +"");
   }
 
 }

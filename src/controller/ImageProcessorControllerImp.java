@@ -22,12 +22,21 @@ import model.operations.visualizeLuma;
 import model.operations.visualizeRed;
 import model.operations.visualizeValue;
 
+/**
+ * Is the controller of the ImageProcessor that takes in commands and executes them on the model.
+ *
+ */
 public class ImageProcessorControllerImp implements ImageProcessorController {
   private final Readable input;
   private final Appendable output;
   private final ImageProcessor processor;
   private final Map<String, Function<Scanner, ProcessCommand>> commands;
 
+  /**
+   * Is a constructor for the controller. It takes in a model, and sets the readable and appendable
+   * to a default value
+   * @param processor the model of the controller
+   */
   public ImageProcessorControllerImp(ImageProcessor processor) {
     this(new InputStreamReader(System.in), System.out, processor);
   }
@@ -69,47 +78,28 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
   @Override
   public void run() throws IllegalStateException {
     Scanner scan = new Scanner(this.input);
-
     while (scan.hasNext()) {
       String input = scan.next();
-
       Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(input, null);
-
       if (cmd == null) {
-        invalidCommandError();
+        Error("Command Not Recognized");
       } else {
         try {
           ProcessCommand c = cmd.apply(scan);
           c.go(this.processor);
         } catch (NoSuchElementException e) {
-          insufficientArgumentsError();
+          Error("Insufficient arguments");
         }catch (IllegalArgumentException e){
-          invalidArgumentsError();
+          Error("Invalid arguments.");
         }
       }
     }
   }
 
-  // Notifies the user invalid arguments
-  private void insufficientArgumentsError() {
+  // Notifies the user that there was an error with the input.
+  private void Error(String message) {
     try {
-      this.output.append("Insufficient arguments.\n");
-    } catch (IOException e) {
-      throw new IllegalStateException();
-    }
-  }
-  private void invalidArgumentsError() {
-    try {
-      this.output.append("Invalid arguments.\n");
-    } catch (IOException e) {
-      throw new IllegalStateException();
-    }
-  }
-
-  // Notifies the user of an invalid input
-  private void invalidCommandError() {
-    try {
-      this.output.append("Command is not recognized.\n");
+      this.output.append(message+"\n");
     } catch (IOException e) {
       throw new IllegalStateException();
     }

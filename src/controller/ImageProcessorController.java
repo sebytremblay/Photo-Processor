@@ -1,5 +1,8 @@
 package controller;
 
+/**
+ * represents the controller for the ImageProcessor.
+ */
 public interface ImageProcessorController {
   /**
    * Runs the processor.
