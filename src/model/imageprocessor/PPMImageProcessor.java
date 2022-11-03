@@ -133,10 +133,8 @@ public class PPMImageProcessor implements ImageProcessor {
     if (dir == ImageProcessor.Direction.Vertical) {
       int rowCounter = pixelGrid.length-1;
       for (int row = 0; row < pixelGrid.length; row += 1) {
-        for (int col = 0; col < pixelGrid[0].length; col += 1) {
-          newPixelGrid[pixelGrid.length-1-row][col] = pixelGrid[row][col];
-        }
-        rowCounter -= 1;
+        newPixelGrid[row] = pixelGrid[rowCounter];
+        rowCounter-=1;
       }
     }else {
       int colCounter = 0;
