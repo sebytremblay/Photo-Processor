@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * class that tests to see if the Image equal method works as intended
+ * Class that tests to see if the Image equal method works as intended.
  */
 public class testPPMImageEquals {
   @Test

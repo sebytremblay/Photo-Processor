@@ -37,6 +37,8 @@ public class PixelTests {
   @Test()
   public void validPixel() {
     Pixel pixel2 = new RGBPixel(120, 120, 120, 255);
+    int[] expected = {120, 120, 120};
+    assertArrayEquals(expected, pixel2.getComponents());
   }
 
   @Test()

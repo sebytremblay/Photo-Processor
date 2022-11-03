@@ -30,7 +30,7 @@ public interface ImageProcessor {
   /**
    * An enumeration of directions.
    */
-  enum Direction {Horizontal, Vertical}
+  enum Direction { Horizontal, Vertical }
 
   /**
    * Flips an image in the given direction.
