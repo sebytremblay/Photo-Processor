@@ -67,10 +67,6 @@ public class ppmImageEquals {
     String val = sc1.next();
     String val2 = sc2.next();
     if (!val.equals(val2)){
-      System.out.println(val);
-      System.out.println(val2);
-
-      System.out.println("test heres");
       return false;
     }
     int width = sc1.nextInt();
