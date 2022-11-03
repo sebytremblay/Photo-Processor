@@ -3,6 +3,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
+import model.operations.visualizeBlue;
+import model.operations.visualizeGreen;
+import model.operations.visualizeIntensity;
+import model.operations.visualizeLuma;
+import model.operations.visualizeRed;
+import model.operations.visualizeValue;
 import model.pixel.Pixel;
 
 public class MockImageProcessor implements ImageProcessor {
@@ -14,6 +20,9 @@ public class MockImageProcessor implements ImageProcessor {
    * @param grid
    * @param maxValue
    */
+  MockImageProcessor(StringBuilder log, Map<Function,String> vals){
+   this.log = log;
+  }
   StringBuilder log = new StringBuilder("");
 
   Map<Function,String> vals = new HashMap<>();
@@ -32,6 +41,12 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public void visualize(String imgName, String newImageName, Function f) {
+    vals.put(new visualizeIntensity(), "visualizeIntensity");
+    vals.put(new visualizeBlue(), "visualizeBlue");
+    vals.put(new visualizeGreen(), "visualizeGreen");
+    vals.put(new visualizeLuma(), "visualizeLuma");
+    vals.put(new visualizeRed(), "visualizeRed");
+    vals.put(new visualizeValue(), "visualizeValue");
     log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " + "function:" + "ADD");
 
   }
@@ -74,5 +89,17 @@ public class MockImageProcessor implements ImageProcessor {
   @Override
   public void saveImage(String filePath, String imgName) {
     log.append("filePath: " + filePath + ", imgName:" + imgName);
+  }
+
+  /**
+   * Gets a string representation of the provided image.
+   *
+   * @param imgName the desired image
+   * @return the image as a string
+   */
+  @Override
+  public StringBuilder getImageString(String imgName) {
+    log.append("imgName "+imgName);
+    return new StringBuilder("");
   }
 }
