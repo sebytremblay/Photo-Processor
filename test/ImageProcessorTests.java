@@ -10,6 +10,9 @@ import model.imageprocessor.ImageProcessor;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Is the ImageProcessorTests of the file.
+ */
 public class ImageProcessorTests {
 
   @Test

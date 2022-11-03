@@ -3,37 +3,32 @@ import java.util.Map;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
-import model.operations.visualizeBlue;
-import model.operations.visualizeGreen;
-import model.operations.visualizeIntensity;
-import model.operations.visualizeLuma;
-import model.operations.visualizeRed;
-import model.operations.visualizeValue;
+
 import model.pixel.Pixel;
 
 public class MockImageProcessor implements ImageProcessor {
+  MockImageProcessor(StringBuilder log) {
+    this.log = log;
+  }
+
+  StringBuilder log = new StringBuilder("");
+
+
   /**
-   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will overwrite
-   * the old image
+   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image
+   * will overwrite the old image
    *
    * @param imgName  the name of the generated image
    * @param grid
    * @param maxValue
    */
-  MockImageProcessor(StringBuilder log, Map<Function,String> vals){
-   this.log = log;
-  }
-  StringBuilder log = new StringBuilder("");
-
-  Map<Function,String> vals = new HashMap<>();
-
   @Override
   public void loadASCIIPPM(String imgName, Pixel[][] grid, int maxValue) {
-    log.append("imgName: " + imgName + ", grid:" + grid.toString() + ", " + "maxValue:" + maxValue);
+    log.append("imgName: " + imgName + " " + "maxValue:" + maxValue + "\n");
   }
 
   /**
-   * visualizes a component based on the given function
+   * visualizes a component based on the given function.
    *
    * @param imgName      name of the loaded image we are trying to manipulate
    * @param newImageName the new modified name in the processor
@@ -41,14 +36,7 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public void visualize(String imgName, String newImageName, Function f) {
-    vals.put(new visualizeIntensity(), "visualizeIntensity");
-    vals.put(new visualizeBlue(), "visualizeBlue");
-    vals.put(new visualizeGreen(), "visualizeGreen");
-    vals.put(new visualizeLuma(), "visualizeLuma");
-    vals.put(new visualizeRed(), "visualizeRed");
-    vals.put(new visualizeValue(), "visualizeValue");
-    log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " + "function:" + "ADD");
-
+    log.append("imgName: " + imgName + ", newImageName:" + newImageName);
   }
 
   /**
@@ -61,10 +49,12 @@ public class MockImageProcessor implements ImageProcessor {
   @Override
   public void flipImage(String imgName, String newImageName, Direction dir) {
     if (dir == Direction.Vertical) {
-      log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " + "Direction: Vertical");
+      log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " +
+              "Direction: Vertical");
     } else {
 
-      log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " + "Direction: Horizontal");
+      log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " +
+              "Direction: Horizontal");
     }
   }
 
@@ -77,7 +67,8 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public void brighten(String imgName, String newImgName, int brightenBy) {
-    log.append("imgName: " + imgName + ", newImageName:" + newImgName + ", " + "brightenBy: " + brightenBy);
+    log.append("imgName: " + imgName + ", newImageName:" + newImgName + ", " +
+            "brightenBy: " + brightenBy);
   }
 
   /**
@@ -99,7 +90,7 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public StringBuilder getImageString(String imgName) {
-    log.append("imgName "+imgName);
+    log.append("imgName " + imgName);
     return new StringBuilder("");
   }
 }
