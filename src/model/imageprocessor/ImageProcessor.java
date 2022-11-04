@@ -1,20 +1,19 @@
 package model.imageprocessor;
 
-import java.util.Scanner;
 import java.util.function.Function;
 
 /**
- * Represents the ImageProcessor.
+ * Represents the ImageProcessor that holds the information and modifies the Images.
  */
 public interface ImageProcessor {
   /**
    * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will
    * overwrite the old image.
    *
-   * @param image   the image loaded as a file
+   * @param imageAsString  the image loaded as a String
    * @param imgName the name of the generated image
    */
-  void loadASCIIPPM(Scanner image, String imgName);
+  void loadPPM(String imageAsString, String imgName);
 
 
   /**
@@ -51,13 +50,6 @@ public interface ImageProcessor {
   void brighten(String imgName, String newImgName, int brightenBy);
 
 
-  /**
-   * Saves an image to a given location and a given name. If filePath is occupied it will overwrite
-   *
-   * @param filePath location to save of an image
-   * @param imgName  name of the saved image
-   */
-  void saveImage(String filePath, String imgName);
 
   /**
    * Gets a string representation of the provided image.
@@ -65,5 +57,5 @@ public interface ImageProcessor {
    * @param imgName the desired image
    * @return the image as a string
    */
-  StringBuilder getImageString(String imgName);
+  String getImageAsString(String imgName);
 }

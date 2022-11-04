@@ -2,18 +2,26 @@ package model.pixel;
 
 import java.util.function.Function;
 
+/**
+ * Represents an RGB pixel.
+ */
 public class RGBPixel implements Pixel {
   private final int red; // must be between 0-maxValue
   private final int green; // must be between 0-maxValue
   private final int blue; // must be between 0-maxValue
 
-
+  /**
+   * Constructor for RBG pixel.
+   *
+   * @param red      red color of pixel
+   * @param green    green color of pixel
+   * @param blue     blue color of pixel
+   * @param maxValue maxValue of pixel
+   */
   public RGBPixel(int red, int green, int blue, int maxValue) {
-    if (red < 0 || red > maxValue
-            || green < 0 || green > maxValue
-            || blue < 0 || blue > maxValue || maxValue < 0) {
-      throw new IllegalArgumentException("The pixel colors must be" +
-              "between 0 and maxValue");
+    if (red < 0 || red > maxValue || green < 0 || green > maxValue ||
+            blue < 0 || blue > maxValue || maxValue < 0) {
+      throw new IllegalArgumentException("The pixel colors must be" + "between 0 and maxValue");
     }
     this.red = red;
     this.green = green;
@@ -26,9 +34,9 @@ public class RGBPixel implements Pixel {
    * @return the visualized pixel
    */
   @Override
-  public Pixel visual(Function<Pixel, Integer> func,int maxValue) {
+  public Pixel visual(Function<Pixel, Integer> func, int maxValue) {
     int value = func.apply(this);
-    return new RGBPixel(value, value, value,maxValue);
+    return new RGBPixel(value, value, value, maxValue);
   }
 
   /**
@@ -43,16 +51,17 @@ public class RGBPixel implements Pixel {
   }
 
   /**
-   * Changes the image brightness by a given factor -Will not brighten if new values are out of range.
+   * Changes the image brightness by a given factor -Will not brighten
+   * if new values are out of range.
    *
    * @param factor amount of brightness to add or reduce to pixel
    * @return the new pixel brightened.
    */
   @Override
-  public Pixel brightenPixel(int factor,int maxValue) {
-    int brightenRed = imposeRange(this.red + factor,maxValue);
-    int brightenGreen = imposeRange(this.green + factor,maxValue);
-    int brightenBlue = imposeRange(this.blue + factor,maxValue);
+  public Pixel brightenPixel(int factor, int maxValue) {
+    int brightenRed = imposeRange(this.red + factor, maxValue);
+    int brightenGreen = imposeRange(this.green + factor, maxValue);
+    int brightenBlue = imposeRange(this.blue + factor, maxValue);
 
     return new RGBPixel(brightenRed, brightenGreen, brightenBlue, maxValue);
   }
@@ -60,11 +69,12 @@ public class RGBPixel implements Pixel {
   /**
    * makes sure that value is between zero and a particular max value. If it is above or below, it
    * is set to the maxValue and minValue respectively.
-   * @param comp
-   * @param maxValue
+   *
+   * @param comp     the value we are imposing
+   * @param maxValue gets the max value.
    * @return
    */
-  private int imposeRange(int comp,int maxValue) {
+  private int imposeRange(int comp, int maxValue) {
     if (comp < 0) {
       return 0;
     }
@@ -75,7 +85,8 @@ public class RGBPixel implements Pixel {
   }
 
   /**
-   * creates a string representation of the pixel as an enumeration of its components
+   * Creates a string representation of the pixel as an enumeration of its components.
+   *
    * @return the string represents as an enumeration of the components
    */
   @Override

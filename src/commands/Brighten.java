@@ -1,7 +1,4 @@
 package commands;
-
-
-
 import model.imageprocessor.ImageProcessor;
 
 /**

@@ -1,8 +1,5 @@
 package model.imageprocessor;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -16,15 +13,13 @@ import model.pixel.RGBPixel;
  * Represents an ASCII PPM Image Processor.
  */
 public class PPMImageProcessor implements ImageProcessor {
-
-
   private final Map<String, Pixel[][]> loadedImages;
   private final Map<String, Integer> loadedImagesMaxValue;
 
   /**
-   * Constructor the Image Processor with no laaded Images.
+   * Constructor the Image Processor with no loaded Images.
    */
-  public PPMImageProcessor() {
+  public PPMImageProcessor(){
     // INVARIANT: loadedImages size is always equal to the loadedImagesMaxValue size
     loadedImages = new HashMap<String, Pixel[][]>();
     loadedImagesMaxValue = new HashMap<String, Integer>();
@@ -34,45 +29,26 @@ public class PPMImageProcessor implements ImageProcessor {
    * Loads an image from an ASCII PPM file. If imgName is already taken,
    * the new image will overwrite the old image.
    *
-   * @param sc      the image loaded into the file
-   * @param imgName the name of the generated image
+   * @param imgAsString the image loaded into the file
+   * @param imgName     the name of the generated image
    */
   @Override
-  public void loadASCIIPPM(Scanner sc, String imgName) {
-    StringBuilder builder = new StringBuilder();
-    //read the file line by line, and populate a string. This will throw away any comment lines
-    while (sc.hasNextLine()) {
-      String s = sc.nextLine();
-      if (!s.equals("") && s.charAt(0) != '#') {
-        builder.append(s + System.lineSeparator());
+  public void loadPPM(String imgAsString, String imgName) {
+    Scanner scan = new Scanner(imgAsString);
+    scan.next();
+    int width = scan.nextInt();
+    int height = scan.nextInt();
+    int maxValue = scan.nextInt();
+    Pixel[][] pixelGrid = new Pixel[height][width];
+    for (int row = 0; row < height; row += 1) {
+      for (int col = 0; col < width; col += 1) {
+        int r = scan.nextInt();
+        int g = scan.nextInt();
+        int b = scan.nextInt();
+        pixelGrid[row][col] = new RGBPixel(r, g, b, maxValue);
       }
     }
-
-    //now set up the scanner to read from the string we just built
-    sc = new Scanner(builder.toString());
-
-    String token;
-
-    token = sc.next();
-    if (!token.equals("P3")) {
-      throw new IllegalArgumentException("Invalid PPM file: plain RAW file should begin with P3");
-    }
-    int width = sc.nextInt();
-    int height = sc.nextInt();
-    int maxValue = sc.nextInt();
-    Pixel[][] pixelGrid = new Pixel[width][height];
-
-    for (int row = 0; row < width; row++) {
-      for (int col = 0; col < height; col++) {
-        int r = sc.nextInt();
-        int g = sc.nextInt();
-        int b = sc.nextInt();
-        Pixel pixel = new RGBPixel(r, g, b, maxValue);
-        pixelGrid[row][col] = pixel;
-      }
-    }
-    loadedImages.put(imgName, pixelGrid);
-    loadedImagesMaxValue.put(imgName, maxValue);
+    addPixelGridToProcessor(imgName,pixelGrid,maxValue);
   }
 
   /**
@@ -80,15 +56,13 @@ public class PPMImageProcessor implements ImageProcessor {
    *
    * @param imgName      name of the loaded image we are trying to manipulate
    * @param f            function that is applied the image
-   * @param newImageName the new modified name in the processor
+   * @param newImgName the new modified name in the processor
    */
   @Override
-  public void visualize(String imgName, String newImageName, Function f) {
+  public void visualize(String imgName, String newImgName, Function f) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Integer maxValue = loadedImagesMaxValue.get(imgName);
-
-
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < newPixelGrid.length; row += 1) {
       for (int col = 0; col < newPixelGrid[0].length; col += 1) {
@@ -97,9 +71,7 @@ public class PPMImageProcessor implements ImageProcessor {
         newPixelGrid[row][col] = newPixel;
       }
     }
-
-    loadedImages.put(newImageName, newPixelGrid);
-    loadedImagesMaxValue.put(newImageName, maxValue);
+    addPixelGridToProcessor(newImgName,newPixelGrid,maxValue);
   }
 
   // determines is an image is loaded, and throws an error if not
@@ -114,35 +86,26 @@ public class PPMImageProcessor implements ImageProcessor {
    * Flips an image in the given direction.
    *
    * @param imgName      the name of the image to flip
-   * @param newImageName the name of the newly flipped image
+   * @param newImgName the name of the newly flipped image
    * @param dir          the direction to flip
    */
   @Override
-  public void flipImage(String imgName, String newImageName, Direction dir) {
+  public void flipImage(String imgName, String newImgName, Direction dir) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-
+    int maxValue = loadedImagesMaxValue.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
-    if (dir == ImageProcessor.Direction.Vertical) {
-      int rowCounter = 0;
-      for (int row = newPixelGrid.length - 1; row >= 0; row -= 1) {
-        for (int col = 0; col < newPixelGrid[row].length; col += 1) {
-          newPixelGrid[rowCounter][col] = pixelGrid[row][col];
+    for (int row = 0; row < newPixelGrid.length; row += 1) {
+      for (int col = 0; col < newPixelGrid[row].length; col += 1) {
+        if (dir == Direction.Vertical) {
+          newPixelGrid[newPixelGrid.length - row - 1][col] = pixelGrid[row][col];
         }
-        rowCounter += 1;
-      }
-    } else {
-      int colCounter = 0;
-      for (int row = 0; row < newPixelGrid.length; row += 1) {
-        for (int col = newPixelGrid[row].length - 1; col >= 0; col -= 1) {
-          newPixelGrid[row][colCounter] = pixelGrid[row][col];
-          colCounter += 1;
+        if (dir == Direction.Horizontal){
+          newPixelGrid[row][newPixelGrid[0].length - col - 1] = pixelGrid[row][col];
         }
-        colCounter = 0;
       }
     }
-    loadedImages.put(newImageName, newPixelGrid);
-    loadedImagesMaxValue.put(newImageName, loadedImagesMaxValue.get(imgName));
+    addPixelGridToProcessor(newImgName,newPixelGrid,maxValue);
   }
 
   /**
@@ -165,31 +128,11 @@ public class PPMImageProcessor implements ImageProcessor {
         newPixelGrid[row][col] = pixel;
       }
     }
-    loadedImages.put(newImgName, newPixelGrid);
-    loadedImagesMaxValue.put(newImgName, maxValue);
+    addPixelGridToProcessor(newImgName,newPixelGrid,maxValue);
   }
 
-  /**
-   * Saves an image to a given location and a given name.
-   * If filePath is occupied it will overwrite.
-   *
-   * @param filePath location to save of an image
-   * @param imgName  name of the saved image
-   */
   @Override
-  public void saveImage(String filePath, String imgName) {
-    StringBuilder result = getImageString(imgName);
-    result.deleteCharAt(result.length() - 1);
-    try {
-      Files.writeString(Path.of(filePath), result);
-    } catch (IOException e) {
-      throw new IllegalArgumentException("the filePath you are saving to is not valid");
-    }
-  }
-
-
-  @Override
-  public StringBuilder getImageString(String imgName) {
+  public String getImageAsString(String imgName) {
     isLoadedImgName(imgName);
     StringBuilder result = new StringBuilder();
     Pixel[][] saveImage = loadedImages.get(imgName);
@@ -204,10 +147,20 @@ public class PPMImageProcessor implements ImageProcessor {
         writeMessage(pixel.toString(), result);
       }
     }
-    return result;
+
+    return result.deleteCharAt(result.length() - 1).toString();
   }
 
+  // Writes a given message in a given builder and adds a new line
   private void writeMessage(String message, StringBuilder builder) {
     builder.append(message + "\n");
+  }
+
+  // Adds the given Image to the map based off a given ImgName, and adds a maxValue to a maxValue
+  // map based off of a given ImgName
+  private void addPixelGridToProcessor(String newImgName, Pixel[][] newPixelGrid, int maxValue){
+    loadedImages.put(newImgName, newPixelGrid);
+    loadedImagesMaxValue.put(newImgName, maxValue);
+
   }
 }

@@ -1,12 +1,12 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
 
-import model.pixel.Pixel;
 
+/**
+ * Is a Mock Image processor.
+ */
 public class MockImageProcessor implements ImageProcessor {
   StringBuilder log;
 
@@ -15,14 +15,14 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   /**
-   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image
-   * will overwrite the old image
+   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image.
+   * will overwrite the old image.
    *
-   * @param image the image loaded as a file
+   * @param image   the image loaded as a file
    * @param imgName the name for the new image
    */
   @Override
-  public void loadASCIIPPM(Scanner image, String imgName) {
+  public void loadPPM(String image, String imgName) {
     log.append("loaded image: " + imgName + "\n");
   }
 
@@ -76,10 +76,6 @@ public class MockImageProcessor implements ImageProcessor {
    * @param filePath location to save of an image
    * @param imgName  name of the saved image
    */
-  @Override
-  public void saveImage(String filePath, String imgName) {
-    log.append("filePath: " + filePath + ", imgName:" + imgName);
-  }
 
   /**
    * Gets a string representation of the provided image.
@@ -88,8 +84,8 @@ public class MockImageProcessor implements ImageProcessor {
    * @return the image as a string
    */
   @Override
-  public StringBuilder getImageString(String imgName) {
+  public String getImageAsString(String imgName) {
     log.append("imgName " + imgName);
-    return new StringBuilder("");
+    return "";
   }
 }

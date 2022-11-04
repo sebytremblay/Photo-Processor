@@ -1,6 +1,7 @@
 package commands;
 
 
+import Utils.ImageUtils;
 import model.imageprocessor.ImageProcessor;
 
 /**
@@ -25,7 +26,8 @@ public class Save extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-    model.saveImage(this.imgPath, this.imgName);
+    String result = model.getImageAsString(this.imgName);
+    ImageUtils.saveImage(imgPath,result);
     super.successMessage("Save");
 
   }

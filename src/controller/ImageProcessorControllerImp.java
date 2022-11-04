@@ -51,36 +51,33 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
    */
   public ImageProcessorControllerImp(Readable input, Appendable output, ImageProcessor processor) {
     if (input == null || output == null || processor == null) {
-      throw new IllegalArgumentException("Readable, Appendable, and ImageProcessor all must not be" +
-              "null");
+      throw new IllegalArgumentException("Readable, Appendable, and ImageProcessor " +
+              "all must not be" + "null");
     }
     this.input = input;
     this.output = output;
     this.processor = processor;
 
     this.commands = new HashMap<String, Function<Scanner, ProcessCommand>>();
-    commands.put("load",
-            s -> new Load(s.next(), s.next(), output));
-    commands.put("save",
-            s -> new Save(s.next(), s.next(), output));
-    commands.put("red-component",
-            s -> new DisplayComponent(s.next(), s.next(), new VisualizeRed(), output));
-    commands.put("blue-component",
-            s -> new DisplayComponent(s.next(), s.next(), new VisualizeBlue(), output));
-    commands.put("green-component",
-            s -> new DisplayComponent(s.next(), s.next(), new VisualizeGreen(), output));
-    commands.put("value-component",
-            s -> new DisplayComponent(s.next(), s.next(), new VisualizeValue(), output));
-    commands.put("intensity-component",
-            s -> new DisplayComponent(s.next(), s.next(), new VisualizeIntensity(), output));
-    commands.put("luma-component",
-            s -> new DisplayComponent(s.next(), s.next(), new VisualizeLuma(), output));
-    commands.put("horizontal-flip",
-            s -> new Flip(s.next(), s.next(), ImageProcessor.Direction.Horizontal, output));
-    commands.put("vertical-flip",
-            s -> new Flip(s.next(), s.next(), ImageProcessor.Direction.Vertical, output));
-    commands.put("brighten",
-            s -> new Brighten(s.next(), s.next(), s.next(), output));
+    commands.put("load", s -> new Load(s.next(), s.next(), output));
+    commands.put("save", s -> new Save(s.next(), s.next(), output));
+    commands.put("red-component", s -> new DisplayComponent(s.next(), s.next(),
+            new VisualizeRed(), output));
+    commands.put("blue-component", s -> new DisplayComponent(s.next(), s.next(),
+            new VisualizeBlue(), output));
+    commands.put("green-component", s -> new DisplayComponent(s.next(), s.next(),
+            new VisualizeGreen(), output));
+    commands.put("value-component", s -> new DisplayComponent(s.next(), s.next(),
+            new VisualizeValue(), output));
+    commands.put("intensity-component", s -> new DisplayComponent(s.next(), s.next(),
+            new VisualizeIntensity(), output));
+    commands.put("luma-component", s -> new DisplayComponent(s.next(), s.next(),
+            new VisualizeLuma(), output));
+    commands.put("horizontal-flip", s -> new Flip(s.next(), s.next(),
+            ImageProcessor.Direction.Horizontal, output));
+    commands.put("vertical-flip", s -> new Flip(s.next(), s.next(),
+            ImageProcessor.Direction.Vertical, output));
+    commands.put("brighten", s -> new Brighten(s.next(), s.next(), s.next(), output));
   }
 
   @Override
@@ -90,7 +87,7 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
       String input = scan.next();
       Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(input, null);
       if (cmd == null) {
-        error("Command Not Recognized");
+        error("Command not recognized");
       } else {
         try {
           ProcessCommand c = cmd.apply(scan);
