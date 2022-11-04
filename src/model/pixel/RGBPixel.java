@@ -6,9 +6,9 @@ import java.util.function.Function;
  * Represents an RGB pixel.
  */
 public class RGBPixel implements Pixel {
-  private final int red; // must be between 0-maxValue
-  private final int green; // must be between 0-maxValue
-  private final int blue; // must be between 0-maxValue
+  private final int red; // must be between 0- and a maxValue
+  private final int green; // must be between 0- and a maxValue
+  private final int blue; // must be between 0- and a maxValue
 
   /**
    * Constructor for RBG pixel.

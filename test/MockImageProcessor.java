@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
@@ -35,7 +34,7 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public void visualize(String imgName, String newImageName, Function f) {
-    log.append("imgName: " + imgName + ", newImageName:" + newImageName);
+    log.append("imgName: " + imgName + ", newImageName:" + newImageName + "");
   }
 
   /**
@@ -70,12 +69,6 @@ public class MockImageProcessor implements ImageProcessor {
             "brightenBy: " + brightenBy);
   }
 
-  /**
-   * Saves an image to a given location and a given name. If filePath is occupied it will overwrite
-   *
-   * @param filePath location to save of an image
-   * @param imgName  name of the saved image
-   */
 
   /**
    * Gets a string representation of the provided image.

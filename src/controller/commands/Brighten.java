@@ -1,4 +1,5 @@
-package commands;
+package controller.commands;
+
 import model.imageprocessor.ImageProcessor;
 
 /**
@@ -12,11 +13,10 @@ public class Brighten extends AbstractCommand {
   /**
    * Creates an instance of the brightened command.
    *
-   * @param brightenBy how much to brighten the image by
-   * @param imgName    what to name the image after its flipped
-   * @param newImageName   new Image name of the brightened image
-   * @param append place to informative information about success of command
-   *
+   * @param brightenBy   how much to brighten the image by
+   * @param imgName      what to name the image after its flipped
+   * @param newImageName new Image name of the brightened image
+   * @param append       place to informative information about success of command
    */
   public Brighten(String brightenBy, String imgName, String newImageName, Appendable append) {
     super(append);

@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,10 +14,11 @@ public class ImageUtils {
 
   /**
    * Reads and stores the PPM image from a specific filePath.
+   *
    * @param filePath the filePath where the ppm is
    * @return the stored PPM image represented as a string.
    */
-  public static String readPPM(String filePath){
+  public static String readPPM(String filePath) {
     StringBuilder builder = new StringBuilder();
     Scanner sc;
 
@@ -68,10 +69,11 @@ public class ImageUtils {
 
   /**
    * Saves an Image a designated file path.
+   *
    * @param filePath the file path where the image is stored
-   * @param img the img in which is being stored
+   * @param img      the img in which is being stored
    */
-  public static void saveImage(String filePath, String img){
+  public static void saveImage(String filePath, String img) {
     try {
       Files.writeString(Path.of(filePath), img);
     } catch (IOException e) {

@@ -1,4 +1,4 @@
-package commands;
+package controller.commands;
 
 import model.imageprocessor.ImageProcessor;
 

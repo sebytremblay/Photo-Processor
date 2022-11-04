@@ -19,7 +19,7 @@ public class PPMImageProcessor implements ImageProcessor {
   /**
    * Constructor the Image Processor with no loaded Images.
    */
-  public PPMImageProcessor(){
+  public PPMImageProcessor() {
     // INVARIANT: loadedImages size is always equal to the loadedImagesMaxValue size
     loadedImages = new HashMap<String, Pixel[][]>();
     loadedImagesMaxValue = new HashMap<String, Integer>();
@@ -48,14 +48,14 @@ public class PPMImageProcessor implements ImageProcessor {
         pixelGrid[row][col] = new RGBPixel(r, g, b, maxValue);
       }
     }
-    addPixelGridToProcessor(imgName,pixelGrid,maxValue);
+    addPixelGridToProcessor(imgName, pixelGrid, maxValue);
   }
 
   /**
    * Visualizes a component based on the given function.
    *
-   * @param imgName      name of the loaded image we are trying to manipulate
-   * @param f            function that is applied the image
+   * @param imgName    name of the loaded image we are trying to manipulate
+   * @param f          function that is applied the image
    * @param newImgName the new modified name in the processor
    */
   @Override
@@ -71,7 +71,7 @@ public class PPMImageProcessor implements ImageProcessor {
         newPixelGrid[row][col] = newPixel;
       }
     }
-    addPixelGridToProcessor(newImgName,newPixelGrid,maxValue);
+    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
   }
 
   // determines is an image is loaded, and throws an error if not
@@ -85,9 +85,9 @@ public class PPMImageProcessor implements ImageProcessor {
   /**
    * Flips an image in the given direction.
    *
-   * @param imgName      the name of the image to flip
+   * @param imgName    the name of the image to flip
    * @param newImgName the name of the newly flipped image
-   * @param dir          the direction to flip
+   * @param dir        the direction to flip
    */
   @Override
   public void flipImage(String imgName, String newImgName, Direction dir) {
@@ -100,12 +100,12 @@ public class PPMImageProcessor implements ImageProcessor {
         if (dir == Direction.Vertical) {
           newPixelGrid[newPixelGrid.length - row - 1][col] = pixelGrid[row][col];
         }
-        if (dir == Direction.Horizontal){
+        if (dir == Direction.Horizontal) {
           newPixelGrid[row][newPixelGrid[0].length - col - 1] = pixelGrid[row][col];
         }
       }
     }
-    addPixelGridToProcessor(newImgName,newPixelGrid,maxValue);
+    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
   }
 
   /**
@@ -128,7 +128,7 @@ public class PPMImageProcessor implements ImageProcessor {
         newPixelGrid[row][col] = pixel;
       }
     }
-    addPixelGridToProcessor(newImgName,newPixelGrid,maxValue);
+    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class PPMImageProcessor implements ImageProcessor {
 
   // Adds the given Image to the map based off a given ImgName, and adds a maxValue to a maxValue
   // map based off of a given ImgName
-  private void addPixelGridToProcessor(String newImgName, Pixel[][] newPixelGrid, int maxValue){
+  private void addPixelGridToProcessor(String newImgName, Pixel[][] newPixelGrid, int maxValue) {
     loadedImages.put(newImgName, newPixelGrid);
     loadedImagesMaxValue.put(newImgName, maxValue);
 

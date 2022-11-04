@@ -8,12 +8,12 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import commands.Brighten;
-import commands.DisplayComponent;
-import commands.Flip;
-import commands.Load;
-import commands.ProcessCommand;
-import commands.Save;
+import controller.commands.Brighten;
+import controller.commands.DisplayComponent;
+import controller.commands.Flip;
+import controller.commands.Load;
+import controller.commands.ProcessCommand;
+import controller.commands.Save;
 import model.imageprocessor.ImageProcessor;
 import model.operations.VisualizeBlue;
 import model.operations.VisualizeGreen;
@@ -29,7 +29,7 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
   private final Readable input;
   private final Appendable output;
   private final ImageProcessor processor;
-  private final Map<String, Function<Scanner, ProcessCommand>> commands;
+  protected final Map<String, Function<Scanner, ProcessCommand>> commands;
 
   /**
    * Is a constructor for the controller. It takes in a model, and sets the readable and appendable
@@ -51,28 +51,28 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
    */
   public ImageProcessorControllerImp(Readable input, Appendable output, ImageProcessor processor) {
     if (input == null || output == null || processor == null) {
-      throw new IllegalArgumentException("Readable, Appendable, and ImageProcessor " +
-              "all must not be" + "null");
+      throw new IllegalArgumentException("Readable, Appendable, and ImageProcessor "
+              + "all must not be" + "null");
     }
     this.input = input;
     this.output = output;
     this.processor = processor;
-
     this.commands = new HashMap<String, Function<Scanner, ProcessCommand>>();
+
     commands.put("load", s -> new Load(s.next(), s.next(), output));
     commands.put("save", s -> new Save(s.next(), s.next(), output));
-    commands.put("red-component", s -> new DisplayComponent(s.next(), s.next(),
-            new VisualizeRed(), output));
-    commands.put("blue-component", s -> new DisplayComponent(s.next(), s.next(),
-            new VisualizeBlue(), output));
-    commands.put("green-component", s -> new DisplayComponent(s.next(), s.next(),
-            new VisualizeGreen(), output));
-    commands.put("value-component", s -> new DisplayComponent(s.next(), s.next(),
-            new VisualizeValue(), output));
-    commands.put("intensity-component", s -> new DisplayComponent(s.next(), s.next(),
-            new VisualizeIntensity(), output));
-    commands.put("luma-component", s -> new DisplayComponent(s.next(), s.next(),
-            new VisualizeLuma(), output));
+    commands.put("red-component", s -> new DisplayComponent(s.next(),
+            s.next(), new VisualizeRed(), output));
+    commands.put("blue-component", s -> new DisplayComponent(s.next(),
+            s.next(), new VisualizeBlue(), output));
+    commands.put("green-component", s -> new DisplayComponent(s.next(),
+            s.next(), new VisualizeGreen(), output));
+    commands.put("value-component", s -> new DisplayComponent(s.next(),
+            s.next(), new VisualizeValue(), output));
+    commands.put("intensity-component", s -> new DisplayComponent(s.next(),
+            s.next(), new VisualizeIntensity(), output));
+    commands.put("luma-component", s -> new DisplayComponent(s.next(),
+            s.next(), new VisualizeLuma(), output));
     commands.put("horizontal-flip", s -> new Flip(s.next(), s.next(),
             ImageProcessor.Direction.Horizontal, output));
     commands.put("vertical-flip", s -> new Flip(s.next(), s.next(),

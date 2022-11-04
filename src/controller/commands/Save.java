@@ -1,7 +1,7 @@
-package commands;
+package controller.commands;
 
 
-import Utils.ImageUtils;
+import utils.ImageUtils;
 import model.imageprocessor.ImageProcessor;
 
 /**

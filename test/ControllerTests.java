@@ -5,6 +5,7 @@ import java.io.StringReader;
 import controller.ImageProcessorController;
 import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessor;
+import model.imageprocessor.PPMImageProcessor;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,6 +22,27 @@ public class ControllerTests {
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals(output, build.toString());
+  }
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNull() {
+    ImageProcessor model = new PPMImageProcessor();
+    ImageProcessorController controller = new ImageProcessorControllerImp(null,
+            new StringBuilder(), model);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNull3() {
+    ImageProcessorController controller = new ImageProcessorControllerImp(new StringReader(""),
+            new StringBuilder(), null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNull2() {
+    ImageProcessor model = new PPMImageProcessor();
+    ImageProcessorController controller = new ImageProcessorControllerImp(new StringReader(""),
+            null, model);
   }
 
   @Test

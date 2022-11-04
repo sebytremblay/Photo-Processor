@@ -1,4 +1,4 @@
-package commands;
+package controller.commands;
 
 import java.util.function.Function;
 import model.imageprocessor.ImageProcessor;
