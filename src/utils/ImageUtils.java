@@ -1,11 +1,14 @@
 package utils;
 
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 /**
  * An Utilities class that exists for PPM images.
@@ -65,6 +68,42 @@ public class ImageUtils {
       }
     }
     return build.toString();
+  }
+
+  public static String readPNG(String filePath) {
+    StringBuilder builder = new StringBuilder();
+    BufferedImage file;
+
+    try {
+      file = ImageIO.read(new FileInputStream(filePath));
+    } catch (FileNotFoundException e) {
+      throw new IllegalArgumentException("File not found");
+    } catch (IOException e) {
+      throw new IllegalArgumentException("File cannot be read");
+    }
+
+    // Add width, height, max value
+    builder.append("PNG \n");
+    builder.append(file.getWidth() + " " + file.getHeight() + "\n");
+    builder.append(255 + "\n");
+
+    for (int row = 0; row < file.getHeight(); row++) {
+      for (int col = 0; col < file.getWidth(); col++) {
+        int binaryPixel = file.getRGB(col, row);
+
+        int blue = binaryPixel & 0xff;
+        int green = (binaryPixel & 0xff00) >> 8;
+        int red = (binaryPixel & 0xff0000) >> 16;
+        int alpha = (binaryPixel & 0xff000000) >>> 24;
+
+        builder.append(red + "\n");
+        builder.append(green + "\n");
+        builder.append(blue + "\n");
+        builder.append(alpha + "\n");
+      }
+    }
+
+    return builder.toString();
   }
 
   /**

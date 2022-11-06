@@ -1,6 +1,6 @@
 import controller.ImageProcessorController;
 import controller.ImageProcessorControllerImp;
-import model.imageprocessor.PPMImageProcessor;
+import model.imageprocessor.ImageProcessorModel;
 import model.imageprocessor.ImageProcessor;
 
 /**
@@ -13,7 +13,7 @@ public class RunImageProcessor {
    * @param args arguments for the main method.
    */
   public static void main(String[] args) {
-    ImageProcessor model = new PPMImageProcessor();
+    ImageProcessor model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(model);
     controller.run();
   }

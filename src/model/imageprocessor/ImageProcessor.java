@@ -7,13 +7,14 @@ import java.util.function.Function;
  */
 public interface ImageProcessor {
   /**
-   * Loads an image from an ASCII PPM file. If imgName is already taken, the new image will
-   * overwrite the old image.
+   * Loads an image from a string representation of a file. If imgName is already taken,
+   * the new image will overwrite the old image.
    *
-   * @param imageAsString  the image loaded as a String
-   * @param imgName the name of the generated image
+   * @param imgAsString        the image as a string
+   * @param imgName            the name of the generated image
+   * @param componentsPerPixel how many components each pixel has
    */
-  void loadPPM(String imageAsString, String imgName);
+  void load(String imgAsString, String imgName, int componentsPerPixel);
 
 
   /**
@@ -29,7 +30,7 @@ public interface ImageProcessor {
   /**
    * An enumeration of directions.
    */
-  enum Direction { Horizontal, Vertical }
+  enum Direction {Horizontal, Vertical}
 
   /**
    * Flips an image in the given direction.
@@ -48,7 +49,6 @@ public interface ImageProcessor {
    * @param brightenBy the factor to brighten the image by
    */
   void brighten(String imgName, String newImgName, int brightenBy);
-
 
 
   /**

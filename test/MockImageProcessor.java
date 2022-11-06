@@ -19,9 +19,10 @@ public class MockImageProcessor implements ImageProcessor {
    *
    * @param image   the image loaded as a file
    * @param imgName the name for the new image
+   * @param componentsPerPixel components per pixel
    */
   @Override
-  public void loadPPM(String image, String imgName) {
+  public void load(String image, String imgName, int componentsPerPixel) {
     log.append("loaded image: " + imgName + "\n");
   }
 

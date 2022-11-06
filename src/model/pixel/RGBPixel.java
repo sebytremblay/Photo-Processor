@@ -6,9 +6,7 @@ import java.util.function.Function;
  * Represents an RGB pixel.
  */
 public class RGBPixel implements Pixel {
-  private final int red; // must be between 0- and a maxValue
-  private final int green; // must be between 0- and a maxValue
-  private final int blue; // must be between 0- and a maxValue
+  private final int[] components;
 
   /**
    * Constructor for RBG pixel.
@@ -19,13 +17,26 @@ public class RGBPixel implements Pixel {
    * @param maxValue maxValue of pixel
    */
   public RGBPixel(int red, int green, int blue, int maxValue) {
-    if (red < 0 || red > maxValue || green < 0 || green > maxValue ||
-            blue < 0 || blue > maxValue || maxValue < 0) {
-      throw new IllegalArgumentException("The pixel colors must be" + "between 0 and maxValue");
+    this(new int[]{red, green, blue}, maxValue);
+  }
+
+  public RGBPixel(int[] components, int maxValue) {
+    if (components.length < 3) {
+      throw new IllegalArgumentException("Not enough components provided.");
     }
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
+
+    this.components = components;
+    validateComponents(maxValue);
+  }
+
+  private void validateComponents(int maxValue) {
+    for (int comp : this.components) {
+      if (comp < 0 || comp > maxValue) {
+        System.out.println("Comp: " + comp);
+        System.out.println("Max: " + maxValue);
+        throw new IllegalArgumentException("The pixel colors must be between 0 and maxValue");
+      }
+    }
   }
 
   /**
@@ -46,8 +57,7 @@ public class RGBPixel implements Pixel {
    */
   @Override
   public int[] getComponents() {
-    int[] comp = {this.red, this.green, this.blue};
-    return comp;
+    return this.components;
   }
 
   /**
@@ -59,9 +69,9 @@ public class RGBPixel implements Pixel {
    */
   @Override
   public Pixel brightenPixel(int factor, int maxValue) {
-    int brightenRed = imposeRange(this.red + factor, maxValue);
-    int brightenGreen = imposeRange(this.green + factor, maxValue);
-    int brightenBlue = imposeRange(this.blue + factor, maxValue);
+    int brightenRed = imposeRange(this.components[0] + factor, maxValue);
+    int brightenGreen = imposeRange(this.components[1] + factor, maxValue);
+    int brightenBlue = imposeRange(this.components[2] + factor, maxValue);
 
     return new RGBPixel(brightenRed, brightenGreen, brightenBlue, maxValue);
   }
@@ -92,9 +102,9 @@ public class RGBPixel implements Pixel {
   @Override
   public String toString() {
     StringBuilder build = new StringBuilder();
-    build.append(this.red + "\n");
-    build.append(this.green + "\n");
-    build.append(this.blue + "\n");
+    for (int comp : this.components) {
+      build.append(comp + "\n");
+    }
 
     return build.toString();
   }

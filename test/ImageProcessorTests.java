@@ -4,7 +4,7 @@ import java.io.StringReader;
 
 import controller.ImageProcessorController;
 import controller.ImageProcessorControllerImp;
-import model.imageprocessor.PPMImageProcessor;
+import model.imageprocessor.ImageProcessorModel;
 import model.imageprocessor.ImageProcessor;
 
 import static org.junit.Assert.assertEquals;
@@ -20,7 +20,7 @@ public class ImageProcessorTests {
             "brighten -50 four four-dark\n" +
             "save four-dark.ppm four");
     StringBuilder builder = new StringBuilder();
-    ImageProcessor model = new PPMImageProcessor();
+    ImageProcessor model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
 
     controller.run();
@@ -100,7 +100,7 @@ public class ImageProcessorTests {
             "brighten 50 four four-bright\n" +
             "save four-bright.ppm four");
     StringBuilder builder = new StringBuilder();
-    ImageProcessor model = new PPMImageProcessor();
+    ImageProcessor model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
 
     controller.run();
@@ -180,7 +180,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load res/20by5.ppm k\n" +
             "vertical-flip k kb\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
 
@@ -594,7 +594,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm k\n" +
             "vertical-flip k kb\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals(model.getImageAsString("kb").toString(), "P3\n" +
@@ -671,7 +671,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "horizontal-flip four test\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectedOutput = "P3\n" +
@@ -748,7 +748,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "red-component four test\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectedOutput = "P3\n" +
@@ -825,7 +825,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "blue-component four test\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectedOutput = "P3\n" +
@@ -902,7 +902,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "green-component four test\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectedOutput = "P3\n" +
@@ -979,7 +979,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "intensity-component four test\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectedOutput = "P3\n" +
@@ -1056,7 +1056,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "luma-component four test\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectedOutput = "P3\n" +
@@ -1133,7 +1133,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "value-component four test\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     String expectedOutput = "P3\n" +
@@ -1209,7 +1209,7 @@ public class ImageProcessorTests {
   public void testLoad() {
     StringReader reader = new StringReader("load 4by4.ppm four\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
 
@@ -1291,7 +1291,7 @@ public class ImageProcessorTests {
             + "save four-save.ppm four\n"
             + "load four-save.ppm four-save");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals(model.getImageAsString("four"),
@@ -1302,7 +1302,7 @@ public class ImageProcessorTests {
   public void illegalCommand() {
     StringReader reader = new StringReader("loadd 4by4.ppm four\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals("Command not recognized\n" +
@@ -1314,7 +1314,7 @@ public class ImageProcessorTests {
   public void illegalArgument() {
     StringReader reader = new StringReader("load 5by5.ppm four\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals("Invalid arguments.\n", builder.toString());
@@ -1325,7 +1325,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "vertical-flip fourrr list");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals("Load Successful!\n" +
@@ -1337,7 +1337,7 @@ public class ImageProcessorTests {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "vertical-flip four four\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals(model.getImageAsString("four"),
@@ -1420,7 +1420,7 @@ public class ImageProcessorTests {
             //restores the original file
             "save 4by4.ppm four\n");
     StringBuilder builder = new StringBuilder();
-    PPMImageProcessor model = new PPMImageProcessor();
+    ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
     controller.run();
     assertEquals(model.getImageAsString("four-ver"), model.getImageAsString("four-override"));
