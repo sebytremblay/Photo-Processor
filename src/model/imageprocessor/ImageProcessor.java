@@ -1,5 +1,7 @@
 package model.imageprocessor;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 /**
@@ -12,9 +14,8 @@ public interface ImageProcessor {
    *
    * @param imgAsString        the image as a string
    * @param imgName            the name of the generated image
-   * @param componentsPerPixel how many components each pixel has
    */
-  void load(String imgAsString, String imgName, int componentsPerPixel);
+  void load(String imgAsString, String imgName);
 
 
   /**
@@ -58,4 +59,21 @@ public interface ImageProcessor {
    * @return the image as a string
    */
   String getImageAsString(String imgName);
+
+
+  /**
+   * Creates a buffered image representation of the provided image
+   * @param imgName the image you want to create the buffered image of
+   * @return the new buffered image
+   */
+  BufferedImage getImageAsBufferedImage(String imgName);
+
+
+  /**
+   * Applies the kernel to the image
+   * @param imgName the image that the kernel is being applied to
+   * @param newImgName the new image that will be the applied image
+   * @param kernel is the operation on the image
+   */
+  void applyKernel(String imgName, String newImgName, int[][] kernel);
 }

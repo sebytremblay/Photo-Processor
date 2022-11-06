@@ -11,6 +11,7 @@ public class RunImageProcessor {
   /**
    * Main method for the ImageProcessor.
    * @param args arguments for the main method.
+   *
    */
   public static void main(String[] args) {
     ImageProcessor model = new ImageProcessorModel();

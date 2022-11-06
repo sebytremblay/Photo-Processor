@@ -1,6 +1,8 @@
 package controller.commands;
 
 
+import java.awt.image.BufferedImage;
+
 import utils.ImageUtils;
 import model.imageprocessor.ImageProcessor;
 
@@ -26,9 +28,24 @@ public class Save extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-    String result = model.getImageAsString(this.imgName);
-    ImageUtils.saveImage(imgPath,result);
-    super.successMessage("Save");
 
+    String fileType = imgPath.substring(imgPath.indexOf("."));
+    switch (fileType){
+      case ".ppm":
+        String result = model.getImageAsString(this.imgName);
+        ImageUtils.savePPM(imgPath,result);
+        break;
+      case ".bmp":
+      case ".png":
+      case ".jpeg":
+      case ".jpg":
+        BufferedImage bufferedImage = model.getImageAsBufferedImage(this.imgName);
+        ImageUtils.saveIOFile(imgPath,bufferedImage);
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid Image file type");
+    }
+
+    super.successMessage("Save");
   }
 }

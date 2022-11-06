@@ -31,11 +31,14 @@ public class Load extends AbstractCommand {
     switch (fileType) {
       case ".ppm":
         imageAsString = ImageUtils.readPPM(imgPath);
-        model.load(imageAsString, imgName, 3);
+        model.load(imageAsString, imgName);
         break;
       case ".png":
-        imageAsString = ImageUtils.readPNG(imgPath);
-        model.load(imageAsString, imgName, 4);
+      case ".jpeg":
+      case ".jpg":
+      case ".bmp":
+        imageAsString = ImageUtils.readImageIO(imgPath);
+        model.load(imageAsString, imgName);
         break;
       default:
         throw new IllegalArgumentException("Illegal file type");

@@ -1,3 +1,4 @@
+import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
@@ -19,10 +20,9 @@ public class MockImageProcessor implements ImageProcessor {
    *
    * @param image   the image loaded as a file
    * @param imgName the name for the new image
-   * @param componentsPerPixel components per pixel
    */
   @Override
-  public void load(String image, String imgName, int componentsPerPixel) {
+  public void load(String image, String imgName) {
     log.append("loaded image: " + imgName + "\n");
   }
 
@@ -81,5 +81,17 @@ public class MockImageProcessor implements ImageProcessor {
   public String getImageAsString(String imgName) {
     log.append("imgName " + imgName);
     return "";
+  }
+
+  /**
+   * Creates a buffered image representation of the provided image
+   *
+   * @param imgName the image you want to create the buffered image of
+   * @return the new buffered image
+   */
+  @Override
+  public BufferedImage getImageAsBufferedImage(String imgName) {
+    log.append("imgName: "+imgName);
+    return null;
   }
 }

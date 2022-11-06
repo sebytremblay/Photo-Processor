@@ -1,6 +1,7 @@
 package utils;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class ImageUtils {
     return build.toString();
   }
 
-  public static String readPNG(String filePath) {
+  public static String readImageIO(String filePath) {
     StringBuilder builder = new StringBuilder();
     BufferedImage file;
 
@@ -94,12 +95,10 @@ public class ImageUtils {
         int blue = binaryPixel & 0xff;
         int green = (binaryPixel & 0xff00) >> 8;
         int red = (binaryPixel & 0xff0000) >> 16;
-        int alpha = (binaryPixel & 0xff000000) >>> 24;
 
         builder.append(red + "\n");
         builder.append(green + "\n");
         builder.append(blue + "\n");
-        builder.append(alpha + "\n");
       }
     }
 
@@ -112,11 +111,20 @@ public class ImageUtils {
    * @param filePath the file path where the image is stored
    * @param img      the img in which is being stored
    */
-  public static void saveImage(String filePath, String img) {
+  public static void savePPM(String filePath,String img){
     try {
       Files.writeString(Path.of(filePath), img);
     } catch (IOException e) {
       throw new IllegalArgumentException("the filePath you are saving to is not valid");
     }
   }
+  public static void saveIOFile(String filePath,BufferedImage bufferedImage){
+    String fileType = filePath.substring(filePath.indexOf(".")+1);
+    try {
+      ImageIO.write(bufferedImage,fileType,new File(filePath));
+    } catch (IOException e) {
+      throw new IllegalArgumentException("the filePath you are saving to is not valid");
+    }
+  }
+
 }

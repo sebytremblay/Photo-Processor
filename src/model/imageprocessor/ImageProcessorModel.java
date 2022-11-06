@@ -1,5 +1,6 @@
 package model.imageprocessor;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -26,7 +27,7 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void load(String imgAsString, String imgName, int componentsPerPixel) {
+  public void load(String imgAsString, String imgName) {
     Scanner scan = new Scanner(imgAsString);
     scan.next();
     int width = scan.nextInt();
@@ -35,10 +36,10 @@ public class ImageProcessorModel implements ImageProcessor {
     Pixel[][] pixelGrid = new Pixel[height][width];
     for (int row = 0; row < height; row += 1) {
       for (int col = 0; col < width; col += 1) {
-        int[] components = new int[componentsPerPixel];
+        int[] components = new int[3];
 
         // reads each of the pixel's components
-        for (int comp = 0; comp < componentsPerPixel; comp += 1) {
+        for (int comp = 0; comp < 3; comp += 1) {
           components[comp] = scan.nextInt();
         }
 
@@ -126,6 +127,57 @@ public class ImageProcessorModel implements ImageProcessor {
 
     return result.deleteCharAt(result.length() - 1).toString();
   }
+
+  @Override
+  public BufferedImage getImageAsBufferedImage(String imgName) {
+    Pixel[][] pixelGrid = loadedImages.get(imgName);
+    BufferedImage bufferedImage = new BufferedImage(pixelGrid[0].length, pixelGrid.length, 1);
+    for (int row = 0; row < pixelGrid.length; row += 1) {
+      for (int col = 0; col < pixelGrid[0].length; col += 1) {
+        bufferedImage.setRGB(col, row, pixelGrid[row][col].PixelToHex());
+      }
+    }
+    return bufferedImage;
+  }
+
+  /**
+   * Applies the kernel to the image
+   *
+   * @param imgName    the image that the kernel is being applied to
+   * @param newImgName the new image that will be the applied image
+   * @param kernel     is the operation on the image
+   */
+  @Override
+  public void applyKernel(String imgName, String newImgName, int[][] kernel) {
+    Pixel[][] pixelGrid = loadedImages.get(imgName);
+    int maxValue = loadedImagesMaxValue.get(imgName);
+    Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
+    for (int row = 0; row < pixelGrid.length; row += 1) {
+      for (int col = 0; col < pixelGrid[0].length; col += 1) {
+        Pixel[][] kernelBackground = getKernelBackground(row,col,kernel.length,pixelGrid,maxValue);
+        newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel,kernelBackground,maxValue);
+      }
+    }
+  }
+
+  private Pixel[][] getKernelBackground(int row, int col, int length,Pixel[][] pixelGrid,int maxValue) {
+    Pixel[][] background = new Pixel[length][length];
+    int rowCounter = 0;
+    for (int r = row-length/2; r < row+length;r+=1){
+      int colCounter = 0;
+      for (int c = col-length/2; c < col+length;c+=1){
+        try{
+         background[rowCounter][colCounter] = pixelGrid[r][c];
+        }catch (ArrayIndexOutOfBoundsException e){
+          background[rowCounter][colCounter] = new RGBPixel(new int[]{0,0,0},maxValue);
+        }
+        colCounter+=1;
+      }
+      rowCounter+=1;
+    }
+    return background;
+  }
+
 
   // Writes a given message in a given builder and adds a new line
   private void writeMessage(String message, StringBuilder builder) {
