@@ -160,6 +160,8 @@ public class ImageProcessorModel implements ImageProcessor {
     }
   }
 
+  // Gets the values that will exist behind a particular kernel at a particular position. If a
+  // particular surrounding pixel do not exist, the returned pixel will be zero
   private Pixel[][] getKernelBackground(int row, int col, int length,Pixel[][] pixelGrid,int maxValue) {
     Pixel[][] background = new Pixel[length][length];
     int rowCounter = 0;
