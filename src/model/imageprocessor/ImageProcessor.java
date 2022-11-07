@@ -12,8 +12,8 @@ public interface ImageProcessor {
    * Loads an image from a string representation of a file. If imgName is already taken,
    * the new image will overwrite the old image.
    *
-   * @param imgAsString        the image as a string
-   * @param imgName            the name of the generated image
+   * @param imgAsString the image as a string
+   * @param imgName     the name of the generated image
    */
   void load(String imgAsString, String imgName);
 
@@ -63,6 +63,7 @@ public interface ImageProcessor {
 
   /**
    * Creates a buffered image representation of the provided image
+   *
    * @param imgName the image you want to create the buffered image of
    * @return the new buffered image
    */
@@ -70,10 +71,20 @@ public interface ImageProcessor {
 
 
   /**
-   * Applies the kernel to the image
-   * @param imgName the image that the kernel is being applied to
+   * Applies the kernel to the image.
+   *
+   * @param imgName    the image that the kernel is being applied to
    * @param newImgName the new image that will be the applied image
-   * @param kernel is the operation on the image
+   * @param kernel     is the operation on the image
    */
-  void applyKernel(String imgName, String newImgName, int[][] kernel);
+  void applyKernel(String imgName, String newImgName, double[][] kernel);
+
+  /**
+   * Applies a color transformation to an image.
+   *
+   * @param imgName        the image to transform
+   * @param newImgName     what to call the resulting image
+   * @param transformation the color transformation to apply
+   */
+  void applyColorTransformation(String imgName, String newImgName, double[][] transformation);
 }

@@ -131,7 +131,8 @@ public class ImageProcessorModel implements ImageProcessor {
   @Override
   public BufferedImage getImageAsBufferedImage(String imgName) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    BufferedImage bufferedImage = new BufferedImage(pixelGrid[0].length, pixelGrid.length, 1);
+    BufferedImage bufferedImage = new BufferedImage(pixelGrid[0].length,
+            pixelGrid.length, 1);
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
         bufferedImage.setRGB(col, row, pixelGrid[row][col].PixelToHex());
@@ -148,34 +149,52 @@ public class ImageProcessorModel implements ImageProcessor {
    * @param kernel     is the operation on the image
    */
   @Override
-  public void applyKernel(String imgName, String newImgName, int[][] kernel) {
+  public void applyKernel(String imgName, String newImgName, double[][] kernel) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     int maxValue = loadedImagesMaxValue.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
-        Pixel[][] kernelBackground = getKernelBackground(row,col,kernel.length,pixelGrid,maxValue);
-        newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel,kernelBackground,maxValue);
+        Pixel[][] kernelBackground = getKernelBackground(row, col, kernel.length,
+                pixelGrid, maxValue);
+        newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel, kernelBackground, maxValue);
       }
     }
+
+    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
+  }
+
+  @Override
+  public void applyColorTransformation(String imgName, String newImgName, double[][] transformation) {
+    Pixel[][] pixelGrid = loadedImages.get(imgName);
+    int maxValue = loadedImagesMaxValue.get(imgName);
+    Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
+    for (int row = 0; row < pixelGrid.length; row += 1) {
+      for (int col = 0; col < pixelGrid[0].length; col += 1) {
+        newPixelGrid[row][col] = pixelGrid[row][col].colorTransformation(transformation, maxValue);
+      }
+    }
+
+    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
   }
 
   // Gets the values that will exist behind a particular kernel at a particular position. If a
   // particular surrounding pixel do not exist, the returned pixel will be zero
-  private Pixel[][] getKernelBackground(int row, int col, int length,Pixel[][] pixelGrid,int maxValue) {
+  private Pixel[][] getKernelBackground(int row, int col, int length,
+                                        Pixel[][] pixelGrid, int maxValue) {
     Pixel[][] background = new Pixel[length][length];
     int rowCounter = 0;
-    for (int r = row-length/2; r < row+length;r+=1){
+    for (int r = row - length / 2; r <= row + length / 2; r += 1) {
       int colCounter = 0;
-      for (int c = col-length/2; c < col+length;c+=1){
-        try{
-         background[rowCounter][colCounter] = pixelGrid[r][c];
-        }catch (ArrayIndexOutOfBoundsException e){
-          background[rowCounter][colCounter] = new RGBPixel(new int[]{0,0,0},maxValue);
+      for (int c = col - length / 2; c <= col + length / 2; c += 1) {
+        try {
+          background[rowCounter][colCounter] = pixelGrid[r][c];
+        } catch (ArrayIndexOutOfBoundsException e) {
+          background[rowCounter][colCounter] = new RGBPixel(new int[]{0, 0, 0}, maxValue);
         }
-        colCounter+=1;
+        colCounter += 1;
       }
-      rowCounter+=1;
+      rowCounter += 1;
     }
     return background;
   }

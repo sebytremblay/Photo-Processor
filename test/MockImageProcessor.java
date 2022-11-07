@@ -95,15 +95,13 @@ public class MockImageProcessor implements ImageProcessor {
     return null;
   }
 
-  /**
-   * Applies the kernel to the image
-   *
-   * @param imgName    the image that the kernel is being applied to
-   * @param newImgName the new image that will be the applied image
-   * @param kernel     is the operation on the image
-   */
   @Override
-  public void applyKernel(String imgName, String newImgName, int[][] kernel) {
+  public void applyKernel(String imgName, String newImgName, double[][] kernel) {
+
+  }
+
+  @Override
+  public void applyColorTransformation(String imgName, String newImgName, double[][] transformation) {
 
   }
 }

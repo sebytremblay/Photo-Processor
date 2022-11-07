@@ -33,17 +33,28 @@ public interface Pixel {
 
 
   /**
-   * converts a pixel to a hex representation
+   * Converts a pixel to a hex representation.
+   *
    * @return the hex representation of the pixel
    */
   int PixelToHex();
 
   /**
-   * applies a kernel to this pixel
-   * @param kernel the kernel being applied to the pixel
+   * Applies a kernel to this pixel.
+   *
+   * @param kernel           the kernel being applied to the pixel
    * @param kernelBackground the surrounding pixels on the background
-   * @param maxValue the maxValue
+   * @param maxValue         the maxValue
    * @return the new Pixel with the applied kernel.
    */
-  Pixel kernelEval(int[][] kernel, Pixel[][] kernelBackground,int maxValue);
+  Pixel kernelEval(double[][] kernel, Pixel[][] kernelBackground, int maxValue);
+
+  /**
+   * Applies a given color transformation to the pixel.
+   *
+   * @param transformation the color transformation
+   * @param maxValue       the max value of the pixel
+   * @return
+   */
+  Pixel colorTransformation(double[][] transformation, int maxValue);
 }

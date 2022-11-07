@@ -17,8 +17,8 @@ public class DisplayComponent extends AbstractCommand {
    * Creates an instance of the commands.DisplayComponent command.
    *
    * @param imgName what to name the image after its visualized.
-   * @param newImgName new Image name of the brightened image
-   * @param func new Image name of the brightened image
+   * @param newImgName new Image name of the visualized image
+   * @param func new Image name of the visualized image
    * @param append place to informative information about success of command
    */
   public DisplayComponent(String imgName, String newImgName,

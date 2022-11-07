@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -29,7 +30,7 @@ public class ImageUtils {
     try {
       sc = new Scanner(new FileInputStream(filePath));
     } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException("");
+      throw new IllegalArgumentException("Invalid file path");
     }
 
     //read the file line by line, and populate a string. This will throw away any comment lines
@@ -106,22 +107,38 @@ public class ImageUtils {
   }
 
   /**
+   * Loads an input string stored in a file.
+   *
+   * @param scriptFilePath the file path of the input
+   * @return the input loaded into a readable
+   */
+  public static Readable loadInputFile(String scriptFilePath) {
+    try {
+      Readable file = new StringReader(Files.readString(Path.of(scriptFilePath)));
+      return file;
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Invalid file path provided");
+    }
+  }
+
+  /**
    * Saves an Image a designated file path.
    *
    * @param filePath the file path where the image is stored
    * @param img      the img in which is being stored
    */
-  public static void savePPM(String filePath,String img){
+  public static void savePPM(String filePath, String img) {
     try {
       Files.writeString(Path.of(filePath), img);
     } catch (IOException e) {
       throw new IllegalArgumentException("the filePath you are saving to is not valid");
     }
   }
-  public static void saveIOFile(String filePath,BufferedImage bufferedImage){
-    String fileType = filePath.substring(filePath.indexOf(".")+1);
+
+  public static void saveIOFile(String filePath, BufferedImage bufferedImage) {
+    String fileType = filePath.substring(filePath.indexOf(".") + 1);
     try {
-      ImageIO.write(bufferedImage,fileType,new File(filePath));
+      ImageIO.write(bufferedImage, fileType, new File(filePath));
     } catch (IOException e) {
       throw new IllegalArgumentException("the filePath you are saving to is not valid");
     }
