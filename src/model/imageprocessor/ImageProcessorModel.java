@@ -1,5 +1,6 @@
 package model.imageprocessor;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,6 @@ import model.pixel.RGBPixel;
  */
 public class ImageProcessorModel implements ImageProcessor {
   private final Map<String, Pixel[][]> loadedImages;
-  private final Map<String, Integer> loadedImagesMaxValue;
 
   /**
    * Constructor the Image Processor with no loaded Images.
@@ -23,7 +23,6 @@ public class ImageProcessorModel implements ImageProcessor {
   public ImageProcessorModel() {
     // INVARIANT: loadedImages size is always equal to the loadedImagesMaxValue size
     loadedImages = new HashMap<String, Pixel[][]>();
-    loadedImagesMaxValue = new HashMap<String, Integer>();
   }
 
   @Override
@@ -40,29 +39,29 @@ public class ImageProcessorModel implements ImageProcessor {
 
         // reads each of the pixel's components
         for (int comp = 0; comp < 3; comp += 1) {
-          components[comp] = scan.nextInt();
+
+          components[comp] = (scan.nextInt() * maxValue) / 255;
         }
 
-        pixelGrid[row][col] = new RGBPixel(components, maxValue);
+        pixelGrid[row][col] = new RGBPixel(components);
       }
     }
-    addPixelGridToProcessor(imgName, pixelGrid, maxValue);
+    loadedImages.put(imgName, pixelGrid);
   }
 
   @Override
   public void visualize(String imgName, String newImgName, Function f) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    Integer maxValue = loadedImagesMaxValue.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < newPixelGrid.length; row += 1) {
       for (int col = 0; col < newPixelGrid[0].length; col += 1) {
         Pixel pixel = pixelGrid[row][col];
-        Pixel newPixel = pixel.visual(f, maxValue);
+        Pixel newPixel = pixel.visual(f);
         newPixelGrid[row][col] = newPixel;
       }
     }
-    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
+    loadedImages.put(newImgName, newPixelGrid);
   }
 
   // determines is an image is loaded, and throws an error if not
@@ -77,7 +76,6 @@ public class ImageProcessorModel implements ImageProcessor {
   public void flipImage(String imgName, String newImgName, Direction dir) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    int maxValue = loadedImagesMaxValue.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < newPixelGrid.length; row += 1) {
       for (int col = 0; col < newPixelGrid[row].length; col += 1) {
@@ -89,7 +87,7 @@ public class ImageProcessorModel implements ImageProcessor {
         }
       }
     }
-    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
+    loadedImages.put(newImgName, newPixelGrid);
   }
 
   @Override
@@ -97,15 +95,14 @@ public class ImageProcessorModel implements ImageProcessor {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
-    int maxValue = loadedImagesMaxValue.get(imgName);
     for (int row = 0; row < newPixelGrid.length; row += 1) {
       for (int col = 0; col < newPixelGrid[row].length; col += 1) {
         Pixel pixel = pixelGrid[row][col];
-        pixel = pixel.brightenPixel(brightenBy, maxValue);
+        pixel = pixel.brightenPixel(brightenBy);
         newPixelGrid[row][col] = pixel;
       }
     }
-    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
+    loadedImages.put(newImgName, newPixelGrid);
   }
 
   @Override
@@ -113,10 +110,9 @@ public class ImageProcessorModel implements ImageProcessor {
     isLoadedImgName(imgName);
     StringBuilder result = new StringBuilder();
     Pixel[][] saveImage = loadedImages.get(imgName);
-    Integer maxValue = loadedImagesMaxValue.get(imgName);
     writeMessage("P3", result);
     writeMessage(saveImage[0].length + " " + saveImage.length, result);
-    writeMessage(String.valueOf(maxValue), result);
+    writeMessage("255", result);
 
     for (int row = 0; row < saveImage.length; row += 1) {
       for (int col = 0; col < saveImage[0].length; col += 1) {
@@ -151,46 +147,45 @@ public class ImageProcessorModel implements ImageProcessor {
   @Override
   public void applyKernel(String imgName, String newImgName, double[][] kernel) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    int maxValue = loadedImagesMaxValue.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
         Pixel[][] kernelBackground = getKernelBackground(row, col, kernel.length,
-                pixelGrid, maxValue);
-        newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel, kernelBackground, maxValue);
+                pixelGrid);
+        newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel, kernelBackground);
       }
     }
 
-    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
+    loadedImages.put(newImgName, newPixelGrid);
   }
 
   @Override
   public void applyColorTransformation(String imgName, String newImgName, double[][] transformation) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    int maxValue = loadedImagesMaxValue.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
-        newPixelGrid[row][col] = pixelGrid[row][col].colorTransformation(transformation, maxValue);
+        newPixelGrid[row][col] = pixelGrid[row][col].colorTransformation(transformation);
       }
     }
 
-    addPixelGridToProcessor(newImgName, newPixelGrid, maxValue);
+    loadedImages.put(newImgName, newPixelGrid);
   }
 
   // Gets the values that will exist behind a particular kernel at a particular position. If a
   // particular surrounding pixel do not exist, the returned pixel will be zero
   private Pixel[][] getKernelBackground(int row, int col, int length,
-                                        Pixel[][] pixelGrid, int maxValue) {
+                                        Pixel[][] pixelGrid) {
     Pixel[][] background = new Pixel[length][length];
     int rowCounter = 0;
     for (int r = row - length / 2; r <= row + length / 2; r += 1) {
       int colCounter = 0;
       for (int c = col - length / 2; c <= col + length / 2; c += 1) {
+        Pixel pix = pixelGrid[r][c];
         try {
-          background[rowCounter][colCounter] = pixelGrid[r][c];
+          background[rowCounter][colCounter] = pix;
         } catch (ArrayIndexOutOfBoundsException e) {
-          background[rowCounter][colCounter] = new RGBPixel(new int[]{0, 0, 0}, maxValue);
+          background[rowCounter][colCounter] = new RGBPixel(new int[]{0, 0, 0});
         }
         colCounter += 1;
       }
@@ -205,11 +200,4 @@ public class ImageProcessorModel implements ImageProcessor {
     builder.append(message + "\n");
   }
 
-  // Adds the given Image to the map based off a given ImgName, and adds a maxValue to a maxValue
-  // map based off of a given ImgName
-  private void addPixelGridToProcessor(String newImgName, Pixel[][] newPixelGrid, int maxValue) {
-    loadedImages.put(newImgName, newPixelGrid);
-    loadedImagesMaxValue.put(newImgName, maxValue);
-
-  }
 }

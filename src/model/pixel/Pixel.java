@@ -13,7 +13,7 @@ public interface Pixel {
    * @return the visualized pixel
    * @Param func takes a function that visualizes
    */
-  Pixel visual(Function<Pixel, Integer> func, int maxValue);
+  Pixel visual(Function<Pixel, Integer> func);
 
   /**
    * Gets the list of all the components of this pixel.
@@ -29,7 +29,7 @@ public interface Pixel {
    * @param factor amount of brightness to add or reduce to pixel
    * @return the new pixel brightened.
    */
-  Pixel brightenPixel(int factor, int maxValue);
+  Pixel brightenPixel(int factor);
 
 
   /**
@@ -44,17 +44,16 @@ public interface Pixel {
    *
    * @param kernel           the kernel being applied to the pixel
    * @param kernelBackground the surrounding pixels on the background
-   * @param maxValue         the maxValue
    * @return the new Pixel with the applied kernel.
    */
-  Pixel kernelEval(double[][] kernel, Pixel[][] kernelBackground, int maxValue);
+  Pixel kernelEval(double[][] kernel, Pixel[][] kernelBackground);
 
   /**
    * Applies a given color transformation to the pixel.
    *
    * @param transformation the color transformation
-   * @param maxValue       the max value of the pixel
    * @return
    */
-  Pixel colorTransformation(double[][] transformation, int maxValue);
+  Pixel colorTransformation(double[][] transformation);
+
 }

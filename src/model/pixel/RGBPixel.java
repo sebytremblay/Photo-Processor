@@ -9,24 +9,24 @@ public class RGBPixel implements Pixel {
   private final int[] components;
 
 
-  public RGBPixel(int red, int green, int blue, int maxValue) {
-    this(new int[]{red, green, blue}, maxValue);
+  public RGBPixel(int red, int green, int blue) {
+    this(new int[]{red, green, blue});
   }
 
-  public RGBPixel(int[] components, int maxValue) {
+  public RGBPixel(int[] components) {
     if (components.length < 3) {
       throw new IllegalArgumentException("Not enough components provided.");
     }
 
     this.components = components;
-    imposeRange(maxValue);
+    imposeRange();
   }
 
 
   @Override
-  public Pixel visual(Function<Pixel, Integer> func, int maxValue) {
+  public Pixel visual(Function<Pixel, Integer> func) {
     int value = func.apply(this);
-    return new RGBPixel(value, value, value, maxValue);
+    return new RGBPixel(value, value, value);
   }
 
 
@@ -37,12 +37,12 @@ public class RGBPixel implements Pixel {
 
 
   @Override
-  public Pixel brightenPixel(int factor, int maxValue) {
+  public Pixel brightenPixel(int factor) {
     int brightenRed = this.components[0] + factor;
     int brightenGreen = this.components[1] + factor;
     int brightenBlue = this.components[2] + factor;
 
-    return new RGBPixel(brightenRed, brightenGreen, brightenBlue, maxValue);
+    return new RGBPixel(brightenRed, brightenGreen, brightenBlue);
   }
 
 
@@ -56,7 +56,7 @@ public class RGBPixel implements Pixel {
 
 
   @Override
-  public Pixel kernelEval(double[][] kernel, Pixel[][] kernelBackground, int maxValue) {
+  public Pixel kernelEval(double[][] kernel, Pixel[][] kernelBackground) {
     double updatedValueRed = 0;
     double updatedValueGreen = 0;
     double updatedValueBlue = 0;
@@ -69,12 +69,11 @@ public class RGBPixel implements Pixel {
     }
     return new RGBPixel(new int[]{(int) updatedValueRed,
             (int) updatedValueGreen,
-            (int) updatedValueBlue},
-            maxValue);
+            (int) updatedValueBlue});
   }
 
   @Override
-  public Pixel colorTransformation(double[][] transformation, int maxValue) {
+  public Pixel colorTransformation(double[][] transformation) {
     if (transformation.length != components.length
             || transformation[0].length != components.length) {
       throw new IllegalArgumentException("Transformation matrix needs to be square matrix" +
@@ -87,7 +86,7 @@ public class RGBPixel implements Pixel {
       newComponents[row] = (int) dotProduct(transformation[row], this.components);
     }
 
-    return new RGBPixel(newComponents, maxValue);
+    return new RGBPixel(newComponents);
   }
 
   private double dotProduct(double[] v1, int[] v2) {
@@ -104,17 +103,16 @@ public class RGBPixel implements Pixel {
     return dot;
   }
 
-  private void imposeRange(int maxValue) {
+  private void imposeRange() {
     for (int comp = 0; comp < this.components.length; comp += 1) {
       if (this.components[comp] < 0) {
         components[comp] = 0;
       }
-      if (this.components[comp] > maxValue) {
-        components[comp] = maxValue;
+      if (this.components[comp] > 255) {
+        components[comp] = 255;
       }
     }
   }
-
 
   @Override
   public String toString() {
