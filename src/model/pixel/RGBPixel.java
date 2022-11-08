@@ -6,20 +6,15 @@ import java.util.function.Function;
  * Represents an RGB pixel.
  */
 public class RGBPixel implements Pixel {
-  private final int[] components;
+  private final int red;
+  private final int green;
+  private final int blue;
 
 
   public RGBPixel(int red, int green, int blue) {
-    this(new int[]{red, green, blue});
-  }
-
-  public RGBPixel(int[] components) {
-    if (components.length < 3) {
-      throw new IllegalArgumentException("Not enough components provided.");
-    }
-
-    this.components = components;
-    imposeRange();
+    this.red = imposeRange(red);
+    this.green = imposeRange(green);
+    this.blue = imposeRange(blue);
   }
 
 
@@ -32,15 +27,15 @@ public class RGBPixel implements Pixel {
 
   @Override
   public int[] getComponents() {
-    return this.components;
+    return new int[]{this.red, this.green, this.blue};
   }
 
 
   @Override
   public Pixel brightenPixel(int factor) {
-    int brightenRed = this.components[0] + factor;
-    int brightenGreen = this.components[1] + factor;
-    int brightenBlue = this.components[2] + factor;
+    int brightenRed = this.red + factor;
+    int brightenGreen = this.green + factor;
+    int brightenBlue = this.blue + factor;
 
     return new RGBPixel(brightenRed, brightenGreen, brightenBlue);
   }
@@ -48,9 +43,9 @@ public class RGBPixel implements Pixel {
 
   @Override
   public int PixelToHex() {
-    int rgb = components[0];
-    rgb = (rgb << 8) + components[1];
-    rgb = (rgb << 8) + components[2];
+    int rgb = this.red;
+    rgb = (rgb << 8) + this.green;
+    rgb = (rgb << 8) + this.blue;
     return rgb;
   }
 
@@ -67,59 +62,49 @@ public class RGBPixel implements Pixel {
         updatedValueBlue += kernel[row][col] * kernelBackground[row][col].getComponents()[2];
       }
     }
-    return new RGBPixel(new int[]{(int) updatedValueRed,
-            (int) updatedValueGreen,
-            (int) updatedValueBlue});
+    return new RGBPixel((int) updatedValueRed, (int) updatedValueGreen, (int) updatedValueBlue);
   }
 
   @Override
   public Pixel colorTransformation(double[][] transformation) {
-    if (transformation.length != components.length
-            || transformation[0].length != components.length) {
+    if (transformation.length != 3 || transformation[0].length != 3) {
       throw new IllegalArgumentException("Transformation matrix needs to be square matrix" +
               "with same size as the components matrix");
     }
-
-    int[] newComponents = new int[this.components.length];
-
+    int[] newComponents = new int[3];
     for (int row = 0; row < transformation.length; row += 1) {
-      newComponents[row] = (int) dotProduct(transformation[row], this.components);
+      newComponents[row] = (int) dotProduct(transformation[row], this.getComponents());
     }
-
-    return new RGBPixel(newComponents);
+    return new RGBPixel(newComponents[0], newComponents[1], newComponents[2]);
   }
 
   private double dotProduct(double[] v1, int[] v2) {
     if (v1.length != v2.length) {
       throw new IllegalArgumentException("Cannot dot vectors of different lengths");
     }
-
     double dot = 0;
-
     for (int value = 0; value < v1.length; value += 1) {
       dot += v1[value] * v2[value];
     }
-
     return dot;
   }
 
-  private void imposeRange() {
-    for (int comp = 0; comp < this.components.length; comp += 1) {
-      if (this.components[comp] < 0) {
-        components[comp] = 0;
-      }
-      if (this.components[comp] > 255) {
-        components[comp] = 255;
-      }
+  private int imposeRange(int colorComp) {
+    if (colorComp > 255) {
+      return 255;
     }
+    if (colorComp < 0) {
+      return 0;
+    }
+    return colorComp;
   }
 
   @Override
   public String toString() {
     StringBuilder build = new StringBuilder();
-    for (int comp : this.components) {
-      build.append(comp + "\n");
-    }
+    build.append(red + "\n");
+    build.append(green + "\n");
+    build.append(blue + "\n");
 
     return build.toString();
   }

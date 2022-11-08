@@ -21,7 +21,6 @@ public class ImageProcessorModel implements ImageProcessor {
    * Constructor the Image Processor with no loaded Images.
    */
   public ImageProcessorModel() {
-    // INVARIANT: loadedImages size is always equal to the loadedImagesMaxValue size
     loadedImages = new HashMap<String, Pixel[][]>();
   }
 
@@ -35,15 +34,12 @@ public class ImageProcessorModel implements ImageProcessor {
     Pixel[][] pixelGrid = new Pixel[height][width];
     for (int row = 0; row < height; row += 1) {
       for (int col = 0; col < width; col += 1) {
-        int[] components = new int[3];
-
         // reads each of the pixel's components
-        for (int comp = 0; comp < 3; comp += 1) {
+        int red = (scan.nextInt() * maxValue) / 255;
+        int green = (scan.nextInt() * maxValue) / 255;
+        int blue = (scan.nextInt() * maxValue) / 255;
 
-          components[comp] = (scan.nextInt() * maxValue) / 255;
-        }
-
-        pixelGrid[row][col] = new RGBPixel(components);
+        pixelGrid[row][col] = new RGBPixel(red, green, blue);
       }
     }
     loadedImages.put(imgName, pixelGrid);
@@ -181,11 +177,11 @@ public class ImageProcessorModel implements ImageProcessor {
     for (int r = row - length / 2; r <= row + length / 2; r += 1) {
       int colCounter = 0;
       for (int c = col - length / 2; c <= col + length / 2; c += 1) {
-        Pixel pix = pixelGrid[r][c];
-        try {
-          background[rowCounter][colCounter] = pix;
-        } catch (ArrayIndexOutOfBoundsException e) {
-          background[rowCounter][colCounter] = new RGBPixel(new int[]{0, 0, 0});
+        if (r < 0 || c < 0 || r >= pixelGrid.length || c >= pixelGrid[0].length){
+          background[rowCounter][colCounter] = new RGBPixel(0,0,0);
+        }
+        else{
+          background[rowCounter][colCounter] = pixelGrid[r][c];
         }
         colCounter += 1;
       }

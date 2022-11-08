@@ -81,7 +81,7 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
     commands.put("load", s -> new Load(s.next(), s.next(), output));
     commands.put("save", s -> new Save(s.next(), s.next(), output));
     commands.put("red-component", s -> new DisplayComponent(s.next(),
-            s.next(), new VisualizeRed(), output));
+            s.next(), pixel -> pixel.getComponents()[0], output));
     commands.put("blue-component", s -> new DisplayComponent(s.next(),
             s.next(), new VisualizeBlue(), output));
     commands.put("green-component", s -> new DisplayComponent(s.next(),
