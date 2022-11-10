@@ -25,7 +25,7 @@ public class Load extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-    String fileType = this.imgPath.substring(imgPath.length() - 4);
+    String fileType = this.imgPath.substring(imgPath.indexOf("."));
     String imageAsString;
 
     switch (fileType) {
