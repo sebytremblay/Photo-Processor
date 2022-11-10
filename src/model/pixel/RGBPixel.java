@@ -18,11 +18,6 @@ public class RGBPixel implements Pixel {
   }
 
 
-  @Override
-  public Pixel visual(Function<Pixel, Integer> func) {
-    int value = func.apply(this);
-    return new RGBPixel(value, value, value);
-  }
 
 
   @Override
@@ -31,14 +26,6 @@ public class RGBPixel implements Pixel {
   }
 
 
-  @Override
-  public Pixel brightenPixel(int factor) {
-    int brightenRed = this.red + factor;
-    int brightenGreen = this.green + factor;
-    int brightenBlue = this.blue + factor;
-
-    return new RGBPixel(brightenRed, brightenGreen, brightenBlue);
-  }
 
 
   @Override

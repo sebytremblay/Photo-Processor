@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import model.operations.VisualizeFlip;
 import model.pixel.Pixel;
 import model.pixel.RGBPixel;
 
@@ -46,14 +47,14 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void visualize(String imgName, String newImgName, Function f) {
+  public void visualize(String imgName, String newImgName, Function<Pixel,Pixel> f) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < newPixelGrid.length; row += 1) {
       for (int col = 0; col < newPixelGrid[0].length; col += 1) {
         Pixel pixel = pixelGrid[row][col];
-        Pixel newPixel = pixel.visual(f);
+        Pixel newPixel = f.apply(pixel);
         newPixelGrid[row][col] = newPixel;
       }
     }
@@ -69,37 +70,12 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void flipImage(String imgName, String newImgName, Direction dir) {
+  public void flipImage(String imgName, String newImgName,Function<Pixel[][],Pixel[][]> f) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
-    for (int row = 0; row < newPixelGrid.length; row += 1) {
-      for (int col = 0; col < newPixelGrid[row].length; col += 1) {
-        if (dir == Direction.Vertical) {
-          newPixelGrid[newPixelGrid.length - row - 1][col] = pixelGrid[row][col];
-        }
-        if (dir == Direction.Horizontal) {
-          newPixelGrid[row][newPixelGrid[0].length - col - 1] = pixelGrid[row][col];
-        }
-      }
-    }
-    loadedImages.put(newImgName, newPixelGrid);
+    loadedImages.put(newImgName, f.apply(pixelGrid));
   }
 
-  @Override
-  public void brighten(String imgName, String newImgName, int brightenBy) {
-    isLoadedImgName(imgName);
-    Pixel[][] pixelGrid = loadedImages.get(imgName);
-    Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
-    for (int row = 0; row < newPixelGrid.length; row += 1) {
-      for (int col = 0; col < newPixelGrid[row].length; col += 1) {
-        Pixel pixel = pixelGrid[row][col];
-        pixel = pixel.brightenPixel(brightenBy);
-        newPixelGrid[row][col] = pixel;
-      }
-    }
-    loadedImages.put(newImgName, newPixelGrid);
-  }
 
   @Override
   public String getImageAsString(String imgName) {

@@ -2,6 +2,7 @@ import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
+import model.pixel.Pixel;
 
 
 /**
@@ -35,7 +36,7 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public void visualize(String imgName, String newImageName, Function f) {
-    log.append("imgName: " + imgName + ", newImageName:" + newImageName + "");
+    log.append("visualize imgName: " + imgName + ", newImageName:" + newImageName + "");
   }
 
   /**
@@ -43,32 +44,14 @@ public class MockImageProcessor implements ImageProcessor {
    *
    * @param imgName      the name of the image to flip
    * @param newImageName the name of the newly flipped image
-   * @param dir          the direction to flip
    */
   @Override
-  public void flipImage(String imgName, String newImageName, Direction dir) {
-    if (dir == Direction.Vertical) {
-      log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " +
-              "Direction: Vertical");
-    } else {
+  public void flipImage(String imgName, String newImageName, Function<Pixel[][], Pixel[][]> func) {
+      log.append("flipImage imgName: " + imgName + ", newImageName:" + newImageName + ", ");
 
-      log.append("imgName: " + imgName + ", newImageName:" + newImageName + ", " +
-              "Direction: Horizontal");
-    }
   }
 
-  /**
-   * Brightens image by the provided constant and saves into new image.
-   *
-   * @param imgName    the name of the image to brighten
-   * @param newImgName the name of the newly generated image
-   * @param brightenBy the factor to brighten the image by
-   */
-  @Override
-  public void brighten(String imgName, String newImgName, int brightenBy) {
-    log.append("imgName: " + imgName + ", newImageName:" + newImgName + ", " +
-            "brightenBy: " + brightenBy);
-  }
+
 
 
   /**

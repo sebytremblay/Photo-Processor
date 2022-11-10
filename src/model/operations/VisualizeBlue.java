@@ -3,11 +3,12 @@ package model.operations;
 import java.util.function.Function;
 
 import model.pixel.Pixel;
+import model.pixel.RGBPixel;
 
 /**
  * A command to visualize the blue component.
  */
-public class VisualizeBlue implements Function<Pixel, Integer> {
+public class VisualizeBlue implements Function<Pixel, Pixel> {
 
   /**
    * Applies this function to the given argument.
@@ -16,8 +17,8 @@ public class VisualizeBlue implements Function<Pixel, Integer> {
    * @return the function result
    */
   @Override
-  public Integer apply(Pixel pixel) {
+  public Pixel apply(Pixel pixel) {
     int[] components = pixel.getComponents();
-    return components[2];
+    return new RGBPixel(components[2],components[2],components[2]);
   }
 }

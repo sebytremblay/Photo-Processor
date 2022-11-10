@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import model.pixel.Pixel;
+
 /**
  * Represents the ImageProcessor that holds the information and modifies the Images.
  */
@@ -25,7 +27,7 @@ public interface ImageProcessor {
    * @param newImageName the new modified name in the processor
    * @param f            function that is applied the image
    */
-  void visualize(String imgName, String newImageName, Function f);
+  void visualize(String imgName, String newImageName, Function<Pixel,Pixel> f);
 
 
   /**
@@ -40,16 +42,8 @@ public interface ImageProcessor {
    * @param newImageName the name of the newly flipped image
    * @param dir          the direction to flip
    */
-  void flipImage(String imgName, String newImageName, Direction dir);
+  void flipImage(String imgName, String newImageName, Function<Pixel[][],Pixel[][]> dir);
 
-  /**
-   * Brightens image by the provided constant and saves into new image.
-   *
-   * @param imgName    the name of the image to brighten
-   * @param newImgName the name of the newly generated image
-   * @param brightenBy the factor to brighten the image by
-   */
-  void brighten(String imgName, String newImgName, int brightenBy);
 
 
   /**

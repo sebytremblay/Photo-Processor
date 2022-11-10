@@ -3,12 +3,13 @@ package model.operations;
 import java.util.function.Function;
 
 import model.pixel.Pixel;
+import model.pixel.RGBPixel;
 
 /**
  * Finds the intensity of the pixel by averaging all the components. Will round down if the
  * result is non-integer.
  */
-public class VisualizeIntensity implements Function<Pixel, Integer> {
+public class VisualizeIntensity implements Function<Pixel,Pixel> {
 
   /**
    * Applies this function to the given argument.
@@ -17,12 +18,13 @@ public class VisualizeIntensity implements Function<Pixel, Integer> {
    * @return the function result
    */
   @Override
-  public Integer apply(Pixel pixel) {
+  public Pixel apply(Pixel pixel) {
     int[] components = pixel.getComponents();
     int sum = 0;
     for (int comp : components) {
       sum += comp;
     }
-    return sum / components.length;
+    int avg = sum / components.length;
+    return new RGBPixel(avg,avg,avg);
   }
 }

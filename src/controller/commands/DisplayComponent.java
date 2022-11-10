@@ -10,7 +10,7 @@ import model.pixel.Pixel;
 public class DisplayComponent extends AbstractCommand {
   private final String newImgName;
   private final String imgName;
-  private final Function<Pixel, Integer> func;
+  private final Function<Pixel, Pixel> func;
 
 
   /**
@@ -21,8 +21,7 @@ public class DisplayComponent extends AbstractCommand {
    * @param func new Image name of the visualized image
    * @param append place to informative information about success of command
    */
-  public DisplayComponent(String imgName, String newImgName,
-                          Function<Pixel, Integer> func, Appendable append) {
+  public DisplayComponent(Function<Pixel, Pixel> func,String imgName, String newImgName, Appendable append) {
     super(append);
     this.imgName = imgName;
     this.newImgName = newImgName;

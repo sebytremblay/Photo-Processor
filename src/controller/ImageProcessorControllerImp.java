@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import controller.commands.Brighten;
 import controller.commands.ColorTransformationCommand;
 import controller.commands.DisplayComponent;
 import controller.commands.Flip;
@@ -18,6 +17,8 @@ import controller.commands.ProcessCommand;
 import controller.commands.Save;
 import model.imageprocessor.ImageProcessor;
 import model.operations.VisualizeBlue;
+import model.operations.VisualizeBrighten;
+import model.operations.VisualizeFlip;
 import model.operations.VisualizeGreen;
 import model.operations.VisualizeIntensity;
 import model.operations.VisualizeLuma;
@@ -80,23 +81,21 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
 
     commands.put("load", s -> new Load(s.next(), s.next(), output));
     commands.put("save", s -> new Save(s.next(), s.next(), output));
-    commands.put("red-component", s -> new DisplayComponent(s.next(),
-            s.next(), pixel -> pixel.getComponents()[0], output));
-    commands.put("blue-component", s -> new DisplayComponent(s.next(),
-            s.next(), new VisualizeBlue(), output));
-    commands.put("green-component", s -> new DisplayComponent(s.next(),
-            s.next(), new VisualizeGreen(), output));
-    commands.put("value-component", s -> new DisplayComponent(s.next(),
-            s.next(), new VisualizeValue(), output));
-    commands.put("intensity-component", s -> new DisplayComponent(s.next(),
-            s.next(), new VisualizeIntensity(), output));
-    commands.put("luma-component", s -> new DisplayComponent(s.next(),
-            s.next(), new VisualizeLuma(), output));
-    commands.put("horizontal-flip", s -> new Flip(s.next(), s.next(),
-            ImageProcessor.Direction.Horizontal, output));
-    commands.put("vertical-flip", s -> new Flip(s.next(), s.next(),
-            ImageProcessor.Direction.Vertical, output));
-    commands.put("brighten", s -> new Brighten(s.next(), s.next(), s.next(), output));
+    commands.put("red-component", s -> new DisplayComponent(new VisualizeRed(),
+            s.next(), s.next(), output));
+    commands.put("blue-component", s -> new DisplayComponent(new VisualizeBlue(),s.next(),
+            s.next(), output));
+    commands.put("green-component", s -> new DisplayComponent(new VisualizeGreen(),s.next(),
+            s.next(), output));
+    commands.put("value-component", s -> new DisplayComponent(new VisualizeValue(),s.next(),
+            s.next(), output));
+    commands.put("intensity-component", s -> new DisplayComponent(new VisualizeIntensity(),s.next(),
+            s.next(), output));
+    commands.put("luma-component", s -> new DisplayComponent(new VisualizeLuma(),s.next(),
+            s.next(), output));
+    commands.put("horizontal-flip",s -> new Flip(new VisualizeFlip(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
+    commands.put("vertical-flip", s -> new Flip(new VisualizeFlip(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
+    commands.put("brighten", s -> new DisplayComponent(new VisualizeBrighten(s.nextInt()),s.next(), s.next(), output));
     commands.put("blur", s -> new KernelCommand(s.next(), s.next(),
             blurKernel, output));
     commands.put("sharpen", s -> new KernelCommand(s.next(), s.next(),
