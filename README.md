@@ -1,43 +1,3 @@
-## cs3500
-Repository for Dilan and I's cs3500 homeworks. 
-
-
-## Command Lists:
-
-Loads the image at the file path as the given name  
-    load file-path img-name  
-  
-Saves the image to the given file path  
-    save file-path img-name  
-  
-Visualizes the red component of the image and saves as new image name  
-    red-component img-name new-img-name  
-
-Visualizes the green component of the image and saves as new image name  
-    green-component img-name new-img-name   
-  
-Visualizes the blue component of the image and saves as new image name   
-    blue-component img-name new-img-name  
-  
-Visualizes the luma component of the image and saves as new image name  
-    luma-component img-name new-img-name  
-  
-Visualizes the intensity component of the image and saves as new image name  
-    intensity-component img-name new-img-name
-  
-Visualizes the value component of the image and saves as new image name  
-    value-component img-name new-img-name  
-  
-Horizontally flips the provided image and saves it's as the new one  
-    horizontal-flip img-name new-img-name  
-  
-Vertically flips the provided image and saves it's as the new one  
-    vertical-flip img-name new-img-name  
-    
-Brightens the image by the provided amount and saves it as new image  
-    brighten brighten-by img-name new-img-name  
-
-
 ##  Design Overview:
 
 - We have an image processor which acts as our model. It performs all the functionality on the images, as well as stores them. Each "image" is represented as an array of pixels and a max value.
@@ -64,4 +24,5 @@ Brightens the image by the provided amount and saves it as new image
 
 ## Design Changes
 
-- Decided to store maxValue attribute in each pixel class 
+- Instead of storing a maxValue map in the ImageProcessor and passing the value into each pixel method, we normalize all PPM images to 255.
+- Since a lot of the methods had duplicated functionality, we abstracted a lot of the methods into function objects
