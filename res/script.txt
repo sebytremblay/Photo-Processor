@@ -17,6 +17,8 @@ vertical-flip image ver
 save res/ExVerFlip.ppm ver
 intensity-component image in
 save res/ExIntensity.ppm in
+luma-component image img-luma
+save res/ExLuma img-luma 
 sepia image sepia
 save res/ExSepia.ppm sepia
 sharpen image sharp

@@ -1,7 +1,5 @@
 package model.pixel;
 
-import java.util.function.Function;
-
 /**
  * Represents a pixel of color.
  */
@@ -20,7 +18,7 @@ public interface Pixel {
    *
    * @return the hex representation of the pixel
    */
-  int PixelToHex();
+  int pixelToHex();
 
   /**
    * Applies a kernel to this pixel.

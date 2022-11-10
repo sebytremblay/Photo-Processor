@@ -1,4 +1,5 @@
 package model.imageprocessor;
+
 import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
@@ -25,13 +26,13 @@ public interface ImageProcessor {
    * @param newImageName the new modified name in the processor
    * @param f            function that is applied the image
    */
-  void visualize(String imgName, String newImageName, Function<Pixel,Pixel> f);
+  void visualize(String imgName, String newImageName, Function<Pixel, Pixel> f);
 
 
   /**
    * An enumeration of directions.
    */
-  enum Direction {Horizontal, Vertical}
+  enum Direction { Horizontal, Vertical }
 
   /**
    * Flips an image in the given direction.
@@ -40,8 +41,7 @@ public interface ImageProcessor {
    * @param newImageName the name of the newly flipped image
    * @param dir          the direction to flip
    */
-  void flipImage(String imgName, String newImageName, Function<Pixel[][],Pixel[][]> dir);
-
+  void flipImage(String imgName, String newImageName, Function<Pixel[][], Pixel[][]> dir);
 
 
   /**
@@ -54,7 +54,7 @@ public interface ImageProcessor {
 
 
   /**
-   * Creates a buffered image representation of the provided image
+   * Creates a buffered image representation of the provided image.
    *
    * @param imgName the image you want to create the buffered image of
    * @return the new buffered image

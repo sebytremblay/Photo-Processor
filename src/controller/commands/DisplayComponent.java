@@ -1,6 +1,7 @@
 package controller.commands;
 
 import java.util.function.Function;
+
 import model.imageprocessor.ImageProcessor;
 import model.pixel.Pixel;
 
@@ -16,12 +17,13 @@ public class DisplayComponent extends AbstractCommand {
   /**
    * Creates an instance of the commands.DisplayComponent command.
    *
-   * @param imgName what to name the image after its visualized.
+   * @param imgName    what to name the image after its visualized.
    * @param newImgName new Image name of the visualized image
-   * @param func new Image name of the visualized image
-   * @param append place to informative information about success of command
+   * @param func       new Image name of the visualized image
+   * @param append     place to informative information about success of command
    */
-  public DisplayComponent(Function<Pixel, Pixel> func,String imgName, String newImgName, Appendable append) {
+  public DisplayComponent(Function<Pixel, Pixel> func, String imgName,
+                          String newImgName, Appendable append) {
     super(append);
     this.imgName = imgName;
     this.newImgName = newImgName;
@@ -30,7 +32,7 @@ public class DisplayComponent extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-    model.visualize(this.imgName,this.newImgName, this.func);
+    model.visualize(this.imgName, this.newImgName, this.func);
     super.successMessage("Visualize");
   }
 

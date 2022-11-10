@@ -92,7 +92,7 @@ public class ControllerTests {
   @Test
   public void testSavIOImg() {
     assertControllerMock("load res/20by5.png img\n"
-            +"save res/20by5.png img",
+                    + "save res/20by5.png img",
             "loaded image: img\n" +
                     "Saved imgName: img");
   }
