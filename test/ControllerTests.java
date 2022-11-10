@@ -49,14 +49,14 @@ public class ControllerTests {
   public void testMockModelVertical() {
     assertControllerMock("load 4by4.ppm l\nvertical-flip l lk",
             "loaded image: l\n" +
-                    "imgName: l, newImageName:lk, Direction: Vertical");
+                    "flipImage imgName: l, newImageName:lk, ");
   }
 
   @Test
   public void testMockModelHorz() {
     assertControllerMock("load 4by4.ppm l\nhorizontal-flip l lk",
             "loaded image: l\n" +
-                    "imgName: l, newImageName:lk, Direction: Horizontal");
+                    "flipImage imgName: l, newImageName:lk, ");
   }
 
   @Test
@@ -67,25 +67,34 @@ public class ControllerTests {
   @Test
   public void testBrighten() {
     assertControllerMock("load 4by4.ppm l\n brighten 50 l lk", "loaded image: l\n" +
-            "imgName: l, newImageName:lk, brightenBy: 50");
+            "visualize imgName: l, newImageName:lk");
   }
 
   @Test
   public void testVisualizeIntensity() {
     assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "loaded image: l\n" +
-            "imgName: l, newImageName:lk");
+            "visualize imgName: l, newImageName:lk");
   }
 
   @Test
   public void testVisualizeBlue() {
     assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "loaded image: l\n" +
-            "imgName: l, newImageName:lk");
+            "visualize imgName: l, newImageName:lk");
   }
 
   @Test
-  public void testSave() {
-    assertControllerMock("load 4by4.ppm l\nsave l lk", "loaded image: l\n" +
-            "filePath: l, imgName:lk");
+  public void testSavPPM() {
+    assertControllerMock("load 4by4.ppm l\nsave l.ppm lk",
+            "loaded image: l\n" +
+                    "Saved imgName lk");
+  }
+
+  @Test
+  public void testSavIOImg() {
+    assertControllerMock("load res/20by5.png img\n"
+            +"save res/20by5.png img",
+            "loaded image: img\n" +
+                    "Saved imgName: img");
   }
 
   @Test

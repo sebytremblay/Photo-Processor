@@ -28,7 +28,13 @@ public class Save extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-    String fileType = imgPath.substring(imgPath.indexOf("."));
+    String fileType;
+    try {
+      fileType = imgPath.substring(imgPath.indexOf("."));
+    } catch (StringIndexOutOfBoundsException e) {
+      fileType = "";
+    }
+
     switch (fileType){
       case ".ppm":
         String result = model.getImageAsString(this.imgName);

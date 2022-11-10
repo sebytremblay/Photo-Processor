@@ -78,24 +78,27 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
             {0.272, 0.534, 0.131}};
 
 
-
     commands.put("load", s -> new Load(s.next(), s.next(), output));
     commands.put("save", s -> new Save(s.next(), s.next(), output));
     commands.put("red-component", s -> new DisplayComponent(new VisualizeRed(),
             s.next(), s.next(), output));
-    commands.put("blue-component", s -> new DisplayComponent(new VisualizeBlue(),s.next(),
+    commands.put("blue-component", s -> new DisplayComponent(new VisualizeBlue(), s.next(),
             s.next(), output));
-    commands.put("green-component", s -> new DisplayComponent(new VisualizeGreen(),s.next(),
+    commands.put("green-component", s -> new DisplayComponent(new VisualizeGreen(), s.next(),
             s.next(), output));
-    commands.put("value-component", s -> new DisplayComponent(new VisualizeValue(),s.next(),
+    commands.put("value-component", s -> new DisplayComponent(new VisualizeValue(), s.next(),
             s.next(), output));
-    commands.put("intensity-component", s -> new DisplayComponent(new VisualizeIntensity(),s.next(),
+    commands.put("intensity-component", s -> new DisplayComponent(
+            new VisualizeIntensity(), s.next(),
             s.next(), output));
-    commands.put("luma-component", s -> new DisplayComponent(new VisualizeLuma(),s.next(),
+    commands.put("luma-component", s -> new DisplayComponent(new VisualizeLuma(), s.next(),
             s.next(), output));
-    commands.put("horizontal-flip",s -> new Flip(new VisualizeFlip(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
-    commands.put("vertical-flip", s -> new Flip(new VisualizeFlip(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
-    commands.put("brighten", s -> new DisplayComponent(new VisualizeBrighten(s.nextInt()),s.next(), s.next(), output));
+    commands.put("horizontal-flip", s -> new Flip(
+            new VisualizeFlip(ImageProcessor.Direction.Horizontal), s.next(), s.next(), output));
+    commands.put("vertical-flip", s -> new Flip(
+            new VisualizeFlip(ImageProcessor.Direction.Vertical), s.next(), s.next(), output));
+    commands.put("brighten", s -> new DisplayComponent(
+            new VisualizeBrighten(s.nextInt()), s.next(), s.next(), output));
     commands.put("blur", s -> new KernelCommand(s.next(), s.next(),
             blurKernel, output));
     commands.put("sharpen", s -> new KernelCommand(s.next(), s.next(),

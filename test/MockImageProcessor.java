@@ -39,13 +39,13 @@ public class MockImageProcessor implements ImageProcessor {
 
   @Override
   public String getImageAsString(String imgName) {
-    log.append("imgName " + imgName);
+    log.append("Saved imgName " + imgName);
     return "";
   }
 
   @Override
   public BufferedImage getImageAsBufferedImage(String imgName) {
-    log.append("imgName: "+imgName);
+    log.append("Saved imgName: "+imgName);
     return null;
   }
 
