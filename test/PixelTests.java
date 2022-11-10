@@ -153,5 +153,4 @@ public class PixelTests {
     Pixel pixel2 = new RGBPixel(90, 101, 46);
     assertEquals("90\n101\n46\n", pixel2.toString());
   }
-
 }
