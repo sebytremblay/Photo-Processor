@@ -28,7 +28,6 @@ public class Save extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-
     String fileType = imgPath.substring(imgPath.indexOf("."));
     switch (fileType){
       case ".ppm":

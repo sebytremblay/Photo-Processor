@@ -87,4 +87,44 @@ public class ControllerTests {
     assertControllerMock("load 4by4.ppm l\nsave l lk", "loaded image: l\n" +
             "filePath: l, imgName:lk");
   }
+
+  @Test
+  public void testBlur() {
+    String commandString = "load 4by4.ppm img\n"
+            + "blur img img-blur";
+    String expectedOut = "loaded image: img\n" +
+            "Applied blur kernel to: img";
+
+    assertControllerMock(commandString, expectedOut);
+  }
+
+  @Test
+  public void testSharpen() {
+    String commandString = "load 4by4.ppm img\n"
+            + "sharpen img img-sharp";
+    String expectedOut = "loaded image: img\n" +
+            "Applied sharpen kernel to: img";
+
+    assertControllerMock(commandString, expectedOut);
+  }
+
+  @Test
+  public void testGreyscale() {
+    String commandString = "load 4by4.ppm img\n"
+            + "greyscale img img-grey";
+    String expectedOut = "loaded image: img\n" +
+            "Applied greyscale color transformation to: img";
+
+    assertControllerMock(commandString, expectedOut);
+  }
+
+  @Test
+  public void testSepia() {
+    String commandString = "load 4by4.ppm img\n"
+            + "sepia img img-sepia";
+    String expectedOut = "loaded image: img\n" +
+            "Applied sepia color transformation to: img";
+
+    assertControllerMock(commandString, expectedOut);
+  }
 }

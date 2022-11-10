@@ -12,6 +12,9 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
+import model.pixel.Pixel;
+import model.pixel.RGBPixel;
+
 /**
  * An Utilities class that exists for PPM images.
  */
@@ -23,17 +26,18 @@ public class ImageUtils {
    * @param filePath the filePath where the ppm is
    * @return the stored PPM image represented as a string.
    */
-  public static String readPPM(String filePath) {
+  public static Pixel[][] readPPM(String filePath) {
     StringBuilder builder = new StringBuilder();
     Scanner sc;
 
+    // Finds file
     try {
       sc = new Scanner(new FileInputStream(filePath));
     } catch (FileNotFoundException e) {
       throw new IllegalArgumentException("Invalid file path");
     }
 
-    //read the file line by line, and populate a string. This will throw away any comment lines
+    // Read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
       if (!s.equals("") && s.charAt(0) != '#') {
@@ -41,39 +45,37 @@ public class ImageUtils {
       }
     }
 
-    //now set up the scanner to read from the string we just built
+    // Det up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
 
     String token;
 
+    // Check PPM type
     token = sc.next();
     if (!token.equals("P3")) {
       throw new IllegalArgumentException("Invalid PPM file: plain RAW file should begin with P3");
     }
+
+    // Initialize pixel grid
     int width = sc.nextInt();
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
-    StringBuilder build = new StringBuilder();
-    build.append("P3" + "\n");
-    build.append(width + "\n");
-    build.append(height + "\n");
-    build.append(maxValue + "\n");
-    for (int row = 0; row < width; row++) {
-      for (int col = 0; col < height; col++) {
-        int r = sc.nextInt();
-        int g = sc.nextInt();
-        int b = sc.nextInt();
-        build.append(r + "\n");
-        build.append(g + "\n");
-        build.append(b + "\n");
+    Pixel[][] pixelGrid = new Pixel[height][width];
+    for (int row = 0; row < height; row++) {
+      for (int col = 0; col < width; col++) {
+        // reads and normalizes each of the pixel's components
+        int red = (sc.nextInt() * maxValue) / 255;
+        int green = (sc.nextInt() * maxValue) / 255;
+        int blue = (sc.nextInt() * maxValue) / 255;
 
+        pixelGrid[row][col] = new RGBPixel(red, green, blue);
       }
     }
-    return build.toString();
+
+    return pixelGrid;
   }
 
-  public static String readImageIO(String filePath) {
-    StringBuilder builder = new StringBuilder();
+  public static Pixel[][] readImageIO(String filePath) {
     BufferedImage file;
 
     try {
@@ -84,10 +86,7 @@ public class ImageUtils {
       throw new IllegalArgumentException("File cannot be read");
     }
 
-    // Add width, height, max value
-    builder.append("PNG \n");
-    builder.append(file.getWidth() + " " + file.getHeight() + "\n");
-    builder.append(255 + "\n");
+    Pixel[][] pixelGrid = new Pixel[file.getHeight()][file.getWidth()];
 
     for (int row = 0; row < file.getHeight(); row++) {
       for (int col = 0; col < file.getWidth(); col++) {
@@ -97,13 +96,11 @@ public class ImageUtils {
         int green = (binaryPixel & 0xff00) >> 8;
         int red = (binaryPixel & 0xff0000) >> 16;
 
-        builder.append(red + "\n");
-        builder.append(green + "\n");
-        builder.append(blue + "\n");
+        pixelGrid[row][col] = new RGBPixel(red, green, blue);
       }
     }
 
-    return builder.toString();
+    return pixelGrid;
   }
 
   /**
