@@ -18,7 +18,7 @@ import controller.commands.Save;
 import model.imageprocessor.ImageProcessor;
 import model.operations.VisualizeBlue;
 import model.operations.VisualizeBrighten;
-import model.operations.VisualizeFlip;
+import model.operations.FlipImage;
 import model.operations.VisualizeGreen;
 import model.operations.VisualizeIntensity;
 import model.operations.VisualizeLuma;
@@ -93,8 +93,8 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
             s.next(), output));
     commands.put("luma-component", s -> new DisplayComponent(new VisualizeLuma(),s.next(),
             s.next(), output));
-    commands.put("horizontal-flip",s -> new Flip(new VisualizeFlip(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
-    commands.put("vertical-flip", s -> new Flip(new VisualizeFlip(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
+    commands.put("horizontal-flip",s -> new Flip(new FlipImage(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
+    commands.put("vertical-flip", s -> new Flip(new FlipImage(ImageProcessor.Direction.Vertical), s.next(),s.next(),output));
     commands.put("brighten", s -> new DisplayComponent(new VisualizeBrighten(s.nextInt()),s.next(), s.next(), output));
     commands.put("blur", s -> new KernelCommand(s.next(), s.next(),
             blurKernel, output));
