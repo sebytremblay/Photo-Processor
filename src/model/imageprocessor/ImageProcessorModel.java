@@ -1,13 +1,10 @@
 package model.imageprocessor;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.function.Function;
 
-import model.operations.VisualizeFlip;
 import model.pixel.Pixel;
 import model.pixel.RGBPixel;
 
@@ -31,7 +28,7 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void visualize(String imgName, String newImgName, Function<Pixel,Pixel> f) {
+  public void visualize(String imgName, String newImgName, Function<Pixel, Pixel> f) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
@@ -54,7 +51,7 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void flipImage(String imgName, String newImgName,Function<Pixel[][],Pixel[][]> f) {
+  public void flipImage(String imgName, String newImgName, Function<Pixel[][], Pixel[][]> f) {
     isLoadedImgName(imgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     loadedImages.put(newImgName, f.apply(pixelGrid));
@@ -93,13 +90,7 @@ public class ImageProcessorModel implements ImageProcessor {
     return bufferedImage;
   }
 
-  /**
-   * Applies the kernel to the image
-   *
-   * @param imgName    the image that the kernel is being applied to
-   * @param newImgName the new image that will be the applied image
-   * @param kernel     is the operation on the image
-   */
+
   @Override
   public void applyKernel(String imgName, String newImgName, double[][] kernel) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
@@ -111,7 +102,6 @@ public class ImageProcessorModel implements ImageProcessor {
         newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel, kernelBackground);
       }
     }
-
     loadedImages.put(newImgName, newPixelGrid);
   }
 
@@ -124,7 +114,6 @@ public class ImageProcessorModel implements ImageProcessor {
         newPixelGrid[row][col] = pixelGrid[row][col].colorTransformation(transformation);
       }
     }
-
     loadedImages.put(newImgName, newPixelGrid);
   }
 
@@ -137,10 +126,9 @@ public class ImageProcessorModel implements ImageProcessor {
     for (int r = row - length / 2; r <= row + length / 2; r += 1) {
       int colCounter = 0;
       for (int c = col - length / 2; c <= col + length / 2; c += 1) {
-        if (r < 0 || c < 0 || r >= pixelGrid.length || c >= pixelGrid[0].length){
-          background[rowCounter][colCounter] = new RGBPixel(0,0,0);
-        }
-        else{
+        if (r < 0 || c < 0 || r >= pixelGrid.length || c >= pixelGrid[0].length) {
+          background[rowCounter][colCounter] = new RGBPixel(0, 0, 0);
+        } else {
           background[rowCounter][colCounter] = pixelGrid[r][c];
         }
         colCounter += 1;

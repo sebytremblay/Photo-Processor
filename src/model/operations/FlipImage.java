@@ -5,7 +5,7 @@ import java.util.function.Function;
 import model.imageprocessor.ImageProcessor;
 import model.pixel.Pixel;
 
-public class VisualizeFlip implements Function<Pixel[][],Pixel[][]> {
+public class FlipImage implements Function<Pixel[][],Pixel[][]> {
 
   /**
    * Applies this function to the given argument.
@@ -15,7 +15,7 @@ public class VisualizeFlip implements Function<Pixel[][],Pixel[][]> {
    */
   ImageProcessor.Direction dir;
 
-  public VisualizeFlip(ImageProcessor.Direction dir){
+  public FlipImage(ImageProcessor.Direction dir){
     this.dir = dir;
   }
   @Override

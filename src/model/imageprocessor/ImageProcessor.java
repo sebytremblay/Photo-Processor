@@ -1,7 +1,5 @@
 package model.imageprocessor;
-
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.function.Function;
 
 import model.pixel.Pixel;

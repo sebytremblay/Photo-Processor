@@ -25,9 +25,6 @@ public class RGBPixel implements Pixel {
     return new int[]{this.red, this.green, this.blue};
   }
 
-
-
-
   @Override
   public int PixelToHex() {
     int rgb = this.red;
