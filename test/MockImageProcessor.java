@@ -2,6 +2,7 @@ import java.awt.image.BufferedImage;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
+import model.pixel.Pixel;
 
 
 /**
@@ -15,7 +16,7 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   @Override
-  public void load(String image, String imgName) {
+  public void load(Pixel[][] pixGrid, String imgName) {
     log.append("loaded image: " + imgName + "\n");
   }
 

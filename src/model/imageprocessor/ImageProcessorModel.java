@@ -25,23 +25,7 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void load(String imgAsString, String imgName) {
-    Scanner scan = new Scanner(imgAsString);
-    scan.next();
-    int width = scan.nextInt();
-    int height = scan.nextInt();
-    int maxValue = scan.nextInt();
-    Pixel[][] pixelGrid = new Pixel[height][width];
-    for (int row = 0; row < height; row += 1) {
-      for (int col = 0; col < width; col += 1) {
-        // reads each of the pixel's components
-        int red = (scan.nextInt() * maxValue) / 255;
-        int green = (scan.nextInt() * maxValue) / 255;
-        int blue = (scan.nextInt() * maxValue) / 255;
-
-        pixelGrid[row][col] = new RGBPixel(red, green, blue);
-      }
-    }
+  public void load(Pixel[][] pixelGrid, String imgName) {
     loadedImages.put(imgName, pixelGrid);
   }
 

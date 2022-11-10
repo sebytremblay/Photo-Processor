@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import model.pixel.Pixel;
+
 /**
  * Represents the ImageProcessor that holds the information and modifies the Images.
  */
@@ -12,10 +14,10 @@ public interface ImageProcessor {
    * Loads an image from a string representation of a file. If imgName is already taken,
    * the new image will overwrite the old image.
    *
-   * @param imgAsString the image as a string
-   * @param imgName     the name of the generated image
+   * @param pixelGrid the pixels of the image
+   * @param imgName   the name of the generated image
    */
-  void load(String imgAsString, String imgName);
+  void load(Pixel[][] pixelGrid, String imgName);
 
 
   /**
