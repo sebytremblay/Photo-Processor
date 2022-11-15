@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/cs3500_jar</output-path>
     <root id="archive" name="cs3500.jar">
       <element id="module-output" name="cs3500" />
-      <element id="archive" name="program.jar" />
     </root>
   </artifact>
 </component>

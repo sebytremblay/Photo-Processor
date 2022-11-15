@@ -5,7 +5,10 @@ import java.util.function.Function;
 import model.imageprocessor.ImageProcessor;
 import model.pixel.Pixel;
 
-public class FlipImage implements Function<Pixel[][],Pixel[][]> {
+/**
+ * A class for a command that flips entire images in sonme direction.
+ */
+public class FlipImage implements Function<Pixel[][], Pixel[][]> {
 
   /**
    * Applies this function to the given argument.
@@ -13,11 +16,12 @@ public class FlipImage implements Function<Pixel[][],Pixel[][]> {
    * @param pixel the function argument
    * @return the function result
    */
-  ImageProcessor.Direction dir;
+  private final ImageProcessor.Direction dir;
 
-  public FlipImage(ImageProcessor.Direction dir){
+  public FlipImage(ImageProcessor.Direction dir) {
     this.dir = dir;
   }
+
   @Override
   public Pixel[][] apply(Pixel[][] pixelGrid) {
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];

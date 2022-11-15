@@ -1,7 +1,5 @@
 package model.pixel;
 
-import java.util.function.Function;
-
 /**
  * Represents an RGB pixel.
  */
@@ -11,13 +9,18 @@ public class RGBPixel implements Pixel {
   private final int blue;
 
 
+  /**
+   * Constructs a pixel with the specified RGB components.
+   *
+   * @param red   the red component
+   * @param green the green component
+   * @param blue  the blue component
+   */
   public RGBPixel(int red, int green, int blue) {
     this.red = imposeRange(red);
     this.green = imposeRange(green);
     this.blue = imposeRange(blue);
   }
-
-
 
 
   @Override
@@ -26,7 +29,7 @@ public class RGBPixel implements Pixel {
   }
 
   @Override
-  public int PixelToHex() {
+  public int pixelToHex() {
     int rgb = this.red;
     rgb = (rgb << 8) + this.green;
     rgb = (rgb << 8) + this.blue;

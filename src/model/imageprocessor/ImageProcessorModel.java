@@ -86,7 +86,7 @@ public class ImageProcessorModel implements ImageProcessor {
             pixelGrid.length, 1);
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
-        bufferedImage.setRGB(col, row, pixelGrid[row][col].PixelToHex());
+        bufferedImage.setRGB(col, row, pixelGrid[row][col].pixelToHex());
       }
     }
     return bufferedImage;
@@ -108,7 +108,8 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void applyColorTransformation(String imgName, String newImgName, double[][] transformation) {
+  public void applyColorTransformation(String imgName, String newImgName,
+                                       double[][] transformation) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {

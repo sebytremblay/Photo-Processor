@@ -33,7 +33,7 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public void flipImage(String imgName, String newImageName, Function<Pixel[][], Pixel[][]> func) {
-      log.append("flipImage imgName: " + imgName + ", newImageName:" + newImageName + ", ");
+    log.append("flipImage imgName: " + imgName + ", newImageName:" + newImageName + ", ");
 
   }
 
@@ -45,7 +45,7 @@ public class MockImageProcessor implements ImageProcessor {
 
   @Override
   public BufferedImage getImageAsBufferedImage(String imgName) {
-    log.append("Saved imgName: "+imgName);
+    log.append("Saved imgName: " + imgName);
     return null;
   }
 
@@ -63,7 +63,8 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   @Override
-  public void applyColorTransformation(String imgName, String newImgName, double[][] transformation) {
+  public void applyColorTransformation(String imgName, String newImgName,
+                                       double[][] transformation) {
     String transType = "unrecognized";
 
     if (transformation[0][0] == 0.2126) {

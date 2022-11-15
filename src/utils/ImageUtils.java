@@ -75,6 +75,12 @@ public class ImageUtils {
     return pixelGrid;
   }
 
+  /**
+   * Reads an IO Image and loads it into a pixel grid.
+   *
+   * @param filePath the path of the image to load
+   * @return
+   */
   public static Pixel[][] readImageIO(String filePath) {
     BufferedImage file;
 
@@ -132,6 +138,12 @@ public class ImageUtils {
     }
   }
 
+  /**
+   * Saves an IO Image to the specified path.
+   *
+   * @param filePath      the file path to save to
+   * @param bufferedImage the image to save
+   */
   public static void saveIOFile(String filePath, BufferedImage bufferedImage) {
     String fileType = filePath.substring(filePath.indexOf(".") + 1);
     try {
@@ -140,5 +152,4 @@ public class ImageUtils {
       throw new IllegalArgumentException("the filePath you are saving to is not valid");
     }
   }
-
 }

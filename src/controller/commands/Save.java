@@ -35,17 +35,17 @@ public class Save extends AbstractCommand {
       fileType = "";
     }
 
-    switch (fileType){
+    switch (fileType) {
       case ".ppm":
         String result = model.getImageAsString(this.imgName);
-        ImageUtils.savePPM(imgPath,result);
+        ImageUtils.savePPM(imgPath, result);
         break;
       case ".bmp":
       case ".png":
       case ".jpeg":
       case ".jpg":
         BufferedImage bufferedImage = model.getImageAsBufferedImage(this.imgName);
-        ImageUtils.saveIOFile(imgPath,bufferedImage);
+        ImageUtils.saveIOFile(imgPath, bufferedImage);
         break;
       default:
         throw new IllegalArgumentException("Invalid Image file type");
