@@ -1,5 +1,6 @@
 package model.imageprocessor;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.function.Function;
 
 import model.pixel.Pixel;
@@ -79,4 +80,20 @@ public interface ImageProcessor {
    * @param transformation the color transformation to apply
    */
   void applyColorTransformation(String imgName, String newImgName, double[][] transformation);
+
+
+  /**
+   * Represents all the possible ways of displaying a histogram
+   */
+  enum HistogramOptions { Red, Green, Blue, Intensity}
+
+  /**
+   * Generates a representation of a histogram of an image
+   * @param imgName name of Image you are making a histogram for
+   * @param histogramOptions the kind of histogram you are displaying
+   * @return
+   */
+  Map<Integer, Integer> generateHistogram(String imgName, HistogramOptions histogramOptions);
+
+
 }

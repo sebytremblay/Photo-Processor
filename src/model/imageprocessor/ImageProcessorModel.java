@@ -1,10 +1,12 @@
 package model.imageprocessor;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import model.operations.VisualizeIntensity;
 import model.pixel.Pixel;
 import model.pixel.RGBPixel;
 
@@ -115,6 +117,35 @@ public class ImageProcessorModel implements ImageProcessor {
       }
     }
     loadedImages.put(newImgName, newPixelGrid);
+  }
+
+  @Override
+  public Map<Integer, Integer> generateHistogram(String imgName, HistogramOptions histogramOptions) {
+    Pixel[][] pixelGrid = loadedImages.get(imgName);
+    Map<Integer, Integer> histogramMap = new HashMap<Integer, Integer>();
+    for (int row = 0; row < pixelGrid.length; row += 1) {
+      for (int col = 0; col < pixelGrid[0].length; col += 1) {
+        Pixel pix = pixelGrid[row][col];
+        switch (histogramOptions) {
+          case Red:
+            histogramMap.put(pix.getComponents()[0], histogramMap.getOrDefault(pix.getComponents()[0], 0) + 1);
+            break;
+          case Green:
+            histogramMap.put(pix.getComponents()[1], histogramMap.getOrDefault(pix.getComponents()[1], 0) + 1);
+            break;
+          case Blue:
+            histogramMap.put(pix.getComponents()[2], histogramMap.getOrDefault(pix.getComponents()[2], 0) + 1);
+            break;
+          case Intensity:
+            Pixel intensityPixel = new VisualizeIntensity().apply(pix);
+            histogramMap.put(intensityPixel.getComponents()[0], histogramMap.getOrDefault(intensityPixel.getComponents()[0], 0) + 1);
+            break;
+          default:
+            throw new IllegalStateException("Invalid State");
+        }
+      }
+    }
+    return histogramMap;
   }
 
   // Gets the values that will exist behind a particular kernel at a particular position. If a
