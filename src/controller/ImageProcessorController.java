@@ -12,4 +12,9 @@ public interface ImageProcessorController {
   void run() throws IllegalStateException;
 
 
+  /**
+   * Writes string to the controller's input.
+   * @param btnAction the string to write
+   */
+  void processCommand(String btnAction);
 }

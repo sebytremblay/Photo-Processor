@@ -1,3 +1,4 @@
+file
 load res/20by5.ppm image
 red-component image red
 save res/ExRed.ppm red

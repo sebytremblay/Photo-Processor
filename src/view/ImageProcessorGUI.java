@@ -1,5 +1,8 @@
 package view;
 
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
 import controller.Features;
 
 /**
@@ -10,8 +13,11 @@ public interface ImageProcessorGUI {
   /**
    * Refresh the screen. This is called when the something on the
    * screen is updated and therefore it must be redrawn.
+   *
+   * @param newImg the new image to display
+   * @param histogram the new histogram to display
    */
-  void refresh();
+  void refresh(BufferedImage newImg, Map<Integer, Integer> histogram);
   /**
    * Display a message in a suitable area of the GUI.
    *

@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;
@@ -74,5 +75,10 @@ public class MockImageProcessor implements ImageProcessor {
     }
 
     log.append("Applied " + transType + " color transformation to: " + imgName);
+  }
+
+  @Override
+  public Map<Integer, Integer> generateHistogram(String imgName, HistogramOptions histogramOptions) {
+    return null;
   }
 }
