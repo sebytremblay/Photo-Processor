@@ -1,6 +1,7 @@
 package model.imageprocessor;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -93,7 +94,7 @@ public interface ImageProcessor {
    * @param histogramOptions the kind of histogram you are displaying
    * @return
    */
-  Map<Integer, Integer> generateHistogram(String imgName, HistogramOptions histogramOptions);
+  int[] generateHistogram(String imgName, HistogramOptions histogramOptions);
 
 
 }

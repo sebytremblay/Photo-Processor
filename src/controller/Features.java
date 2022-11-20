@@ -6,5 +6,5 @@ public interface Features {
    *
    * @param btnAction the action to read
    */
-  void readButtonClick(String btnAction);
+  void readButtonClick(String btnAction, String imgName);
 }

@@ -17,13 +17,15 @@ import javax.swing.*;
 import controller.Features;
 import model.pixel.Pixel;
 
-public class SwingGUIView extends JFrame implements ActionListener, ItemListener, ImageProcessorGUI {
+public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   private final JPanel mainPanel;
   private final JScrollPane imagePane;
   private BufferedImage currImg;
   private Map<Integer, Integer> histogram;
+  private String currImgName;
   private String displayText;
+  private JButton[] radioButtons;
 
   public static void main(String[] args) {
     ImageProcessorGUI view = new SwingGUIView();
@@ -46,27 +48,21 @@ public class SwingGUIView extends JFrame implements ActionListener, ItemListener
 
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
-    JButton[] radioButtons = new JButton[11];
-
     //buttons groups are used to combine radio buttons. Only one radio
     // button in each group can be selected.
     ButtonGroup rGroup1 = new ButtonGroup();
     ButtonGroup rGroup2 = new ButtonGroup();
 
-    for (int i = 0; i < radioButtons.length; i++) {
-      radioButtons[i] = new JButton("Option " + (i + 1));
-      //radioButtons[i].setSelected(false);
+    String[] commands = {"load", "save",
+            "red-component", "green-component", "blue-component",
+            "value-component", "intensity-component", "luma-component",
+            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia"};
+    radioButtons = new JButton[commands.length];
 
-      radioButtons[i].setActionCommand("RB" + (i + 1));
-      radioButtons[i].addActionListener(this);
-      if (i < 2)
-        rGroup1.add(radioButtons[i]);
-      else
-        rGroup2.add(radioButtons[i]);
-      radioPanel.add(radioButtons[i]);
-
+    for (int i = 0; i < commands.length; i += 1) {
+      radioButtons[i] = new JButton(commands[i]);
+      radioButtons[i].setActionCommand(commands[i]);
     }
-    radioButtons[4].doClick();
     mainPanel.add(radioPanel);
 
     // display image with
@@ -99,19 +95,18 @@ public class SwingGUIView extends JFrame implements ActionListener, ItemListener
   }
 
   @Override
-  public void acceptsFeaturesObject(Features feature) {
+  public void acceptsFeaturesObject(Features features) {
+    for (JButton button : radioButtons) {
+      button.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          features.readButtonClick(e.getActionCommand(), currImgName);
+        }
+      });
+    }
+
 
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    String command = e.getActionCommand() + " curr-img curr-img";
 
-
-  }
-
-  @Override
-  public void itemStateChanged(ItemEvent e) {
-
-  }
 }
