@@ -6,12 +6,24 @@ package model.pixel;
 public interface Pixel {
 
   /**
-   * Gets the list of all the components of this pixel.
+   * Gets the red component of this pixel.
    *
    * @return the list of pixel components
    */
-  int[] getComponents();
+  int getRed();
 
+  /**
+   * Gets the green component of this pixel.
+   *
+   * @return the list of pixel components
+   */
+  int getGreen();
+  /**
+   * Gets the blue component of this pixel.
+   *
+   * @return the list of pixel components
+   */
+  int getBlue();
 
   /**
    * Converts a pixel to a hex representation.

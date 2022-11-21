@@ -23,9 +23,8 @@ public class VisualizeBrighten implements Function<Pixel, Pixel> {
 
   @Override
   public Pixel apply(Pixel pixel) {
-    int[] comp = pixel.getComponents();
-    return new RGBPixel(comp[0] + brightenBy,
-            comp[1] + brightenBy,
-            comp[2] + brightenBy);
+    return new RGBPixel(pixel.getRed() + brightenBy,
+            pixel.getGreen() + brightenBy,
+            pixel.getBlue() + brightenBy);
   }
 }

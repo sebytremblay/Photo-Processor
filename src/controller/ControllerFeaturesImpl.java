@@ -25,7 +25,6 @@ import model.operations.VisualizeIntensity;
 import model.operations.VisualizeLuma;
 import model.operations.VisualizeRed;
 import model.operations.VisualizeValue;
-import utils.ImageUtils;
 import view.ImageProcessorGUI;
 import view.SwingGUIView;
 
@@ -93,54 +92,19 @@ public class ControllerFeaturesImpl implements Features {
   }
 
   @Override
-  public void readButtonClick(String btnAction,String imgName) {
-    String inputString = btnAction + " "  + imgName + " " + imgName;
-
-    Scanner scan = new Scanner(inputString);
-    Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(scan.next(),
-            null);
-    try {
-      ProcessCommand c = cmd.apply(scan);
-      c.run(this.model);
-    } catch (NoSuchElementException e) {
-      error("Insufficient arguments");
-    } catch (IllegalArgumentException e) {
-      error("Invalid arguments.");
-    }
-
-    view.refresh(model.getImageAsBufferedImage(imgName),
-            model.generateHistogram(imgName, ImageProcessor.HistogramOptions.Blue));
+  public void readButtonClick(String btnAction, String imgName) {
+    readButtonClick(btnAction, imgName, imgName);
   }
 
   //TODO ADD AN IMAGE NAME PARAMETER
   @Override
-  public void readButtonActionWithFilePath(String btnAction, String filePath, String imgName) {
-    String inputString = btnAction + " "  + filePath + " " + imgName;
-    Scanner scan = new Scanner(inputString);
-    Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(scan.next(),
-            null);
-    try {
-      ProcessCommand c = cmd.apply(scan);
-      c.run(this.model);
-    } catch (NoSuchElementException e) {
-      error("Insufficient arguments");
-    } catch (IllegalArgumentException e) {
-      error("Invalid arguments.");
-    }
-
-    view.setCurrImgName(imgName);
-    view.refresh(model.getImageAsBufferedImage(imgName),
-            model.generateHistogram(imgName, ImageProcessor.HistogramOptions.Blue));
-
+  public void readButtonClick(String btnAction, String filePath, String imgName) {
+    String inputString = btnAction + " " + filePath + " " + imgName;
+    update(inputString, imgName);
 
   }
 
   }
 
 
-  public static void main(String[] args){
-    ImageProcessor model = new ImageProcessorModel();
-    ImageProcessorGUI view = new SwingGUIView();
-    ControllerFeaturesImpl controller = new ControllerFeaturesImpl(view,model);
-  }
 }

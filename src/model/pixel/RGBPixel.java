@@ -22,10 +22,20 @@ public class RGBPixel implements Pixel {
     this.blue = imposeRange(blue);
   }
 
-
   @Override
-  public int[] getComponents() {
-    return new int[]{this.red, this.green, this.blue};
+  public int getRed(){
+    return this.red;
+
+  }
+  @Override
+  public int getGreen(){
+    return this.green;
+
+  }
+  @Override
+  public int getBlue(){
+    return this.blue;
+
   }
 
   @Override
@@ -44,9 +54,9 @@ public class RGBPixel implements Pixel {
     double updatedValueBlue = 0;
     for (int row = 0; row < kernel.length; row += 1) {
       for (int col = 0; col < kernel[0].length; col += 1) {
-        updatedValueRed += kernel[row][col] * kernelBackground[row][col].getComponents()[0];
-        updatedValueGreen += kernel[row][col] * kernelBackground[row][col].getComponents()[1];
-        updatedValueBlue += kernel[row][col] * kernelBackground[row][col].getComponents()[2];
+        updatedValueRed += kernel[row][col] * kernelBackground[row][col].getRed();
+        updatedValueGreen += kernel[row][col] * kernelBackground[row][col].getGreen();
+        updatedValueBlue += kernel[row][col] * kernelBackground[row][col].getBlue();
       }
     }
     return new RGBPixel((int) updatedValueRed, (int) updatedValueGreen, (int) updatedValueBlue);
@@ -60,21 +70,15 @@ public class RGBPixel implements Pixel {
     }
     int[] newComponents = new int[3];
     for (int row = 0; row < transformation.length; row += 1) {
-      newComponents[row] = (int) dotProduct(transformation[row], this.getComponents());
+      double dot = 0;
+      dot += this.getRed();
+      dot += this.getGreen();
+      dot += this.getBlue();
+      newComponents[row] = (int)(dot);
     }
     return new RGBPixel(newComponents[0], newComponents[1], newComponents[2]);
   }
 
-  private double dotProduct(double[] v1, int[] v2) {
-    if (v1.length != v2.length) {
-      throw new IllegalArgumentException("Cannot dot vectors of different lengths");
-    }
-    double dot = 0;
-    for (int value = 0; value < v1.length; value += 1) {
-      dot += v1[value] * v2[value];
-    }
-    return dot;
-  }
 
   private int imposeRange(int colorComp) {
     if (colorComp > 255) {

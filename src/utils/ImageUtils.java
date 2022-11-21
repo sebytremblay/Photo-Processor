@@ -145,7 +145,7 @@ public class ImageUtils {
    * @param bufferedImage the image to save
    */
   public static void saveIOFile(String filePath, BufferedImage bufferedImage) {
-    String fileType = filePath.substring(filePath.indexOf(".") + 1);
+    String fileType = filePath.substring(filePath.lastIndexOf(".")+ 1);
     try {
       ImageIO.write(bufferedImage, fileType, new File(filePath));
     } catch (IOException e) {

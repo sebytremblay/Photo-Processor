@@ -30,7 +30,7 @@ public class Save extends AbstractCommand {
   public void run(ImageProcessor model) {
     String fileType;
     try {
-      fileType = imgPath.substring(imgPath.indexOf("."));
+      fileType = imgPath.substring(imgPath.lastIndexOf("."));
     } catch (StringIndexOutOfBoundsException e) {
       fileType = "";
     }

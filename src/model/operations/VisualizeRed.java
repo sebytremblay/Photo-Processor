@@ -18,7 +18,7 @@ public class VisualizeRed implements Function<Pixel, Pixel> {
    */
   @Override
   public Pixel apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    return new RGBPixel(components[0],components[0],components[0]);
+    int comp = pixel.getRed();
+    return new RGBPixel(comp,comp,comp);
   }
 }

@@ -29,21 +29,24 @@ public class PixelTests {
   public void testPixelValueAboveMax() {
     Pixel pixel1 = new RGBPixel(120, 503, 23);
     int[] expected = {120, 255, 23};
-    assertArrayEquals(expected, pixel1.getComponents());
+    int[] actual = {pixel1.getRed(), pixel1.getGreen(), pixel1.getBlue()};
+    assertArrayEquals(expected, actual);
   }
 
   @Test()
   public void negativePixel() {
     Pixel pixel1 = new RGBPixel(-1120, 120, 120);
     int[] expected = {0, 120, 120};
-    assertArrayEquals(expected, pixel1.getComponents());
+    int[] actual = {pixel1.getRed(), pixel1.getGreen(), pixel1.getBlue()};
+    assertArrayEquals(expected, actual);
   }
 
   @Test()
   public void validPixel() {
     Pixel pixel2 = new RGBPixel(120, 120, 120);
     int[] expected = {120, 120, 120};
-    assertArrayEquals(expected, pixel2.getComponents());
+    int[] actual = {pixel2.getRed(), pixel2.getGreen(), pixel2.getBlue()};
+    assertArrayEquals(expected, actual);
   }
 
   @Test()
@@ -137,13 +140,15 @@ public class PixelTests {
 
   @Test()
   public void testGetComp() {
-    int[] arr = {10, 10, 20};
     Pixel pixel1 = new RGBPixel(10, 10, 20);
-    assertArrayEquals(arr, pixel1.getComponents());
+    int[] expected = {10, 10, 20};
+    int[] actual = {pixel1.getRed(), pixel1.getGreen(), pixel1.getBlue()};
+    assertArrayEquals(expected, actual);
 
-    int[] arr2 = {51, 20, 206};
+    int[] expected2 = {51, 20, 206};
     Pixel pixel2 = new RGBPixel(51, 20, 206);
-    assertArrayEquals(arr2, pixel2.getComponents());
+    int[] actual2 = {pixel1.getRed(), pixel1.getGreen(), pixel1.getBlue()};
+    assertArrayEquals(expected2, actual2);
   }
 
   @Test()

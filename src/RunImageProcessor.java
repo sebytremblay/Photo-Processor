@@ -1,7 +1,10 @@
+import controller.ControllerFeaturesImpl;
 import controller.ImageProcessorController;
 import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessorModel;
 import model.imageprocessor.ImageProcessor;
+import view.ImageProcessorGUI;
+import view.SwingGUIView;
 
 import static utils.ImageUtils.loadInputFile;
 
@@ -15,18 +18,10 @@ public class RunImageProcessor {
    * @param args arguments for the main method.
    *
    */
-  public static void main(String[] args) {
+  public static void main(String[] args){
     ImageProcessor model = new ImageProcessorModel();
-    ImageProcessorController controller;
-
-    if (args.length > 1 && args[0].equals("file")) {
-      String scriptFilePath = args[1];
-      Readable input = loadInputFile(scriptFilePath);
-      controller = new ImageProcessorControllerImp(input, System.out, model);
-    } else {
-      controller = new ImageProcessorControllerImp(model);
-    }
-
-    controller.run();
+    ImageProcessorGUI view = new SwingGUIView();
+    ControllerFeaturesImpl controller = new ControllerFeaturesImpl(view,model);
   }
+
 }

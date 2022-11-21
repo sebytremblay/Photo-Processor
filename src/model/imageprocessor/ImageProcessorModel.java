@@ -121,29 +121,21 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public int[] generateHistogram(String imgName, HistogramOptions histogramOptions) {
+  public int[][] generateHistogram(String imgName) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    int[] histogramMap = new int[255];
+    int[] histogramRedMap = new int[256];
+    int[] histogramGreenMap = new int[256];
+    int[] histogramBlueMap = new int[256];
+    int[] histogramVisualMap = new int[256];
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
         Pixel pix = pixelGrid[row][col];
-        switch (histogramOptions) {
-          case Red:
-            histogramMap[pix.getComponents()[0]] = histogramMap[pix.getComponents()[0]]+=1;
-            break;
-          case Green:
-            histogramMap[pix.getComponents()[1]] = histogramMap[pix.getComponents()[1]]+=1;
-            break;
-          case Blue:
-            histogramMap[pix.getComponents()[2]] = histogramMap[pix.getComponents()[2]]+=1;
-            break;
-          case Intensity:
-            Pixel intensityPixel = new VisualizeIntensity().apply(pix);
-            histogramMap[pix.getComponents()[1]] = intensityPixel.getComponents()[1]+=1;
-            break;
-          default:
-            throw new IllegalStateException("Invalid State");
-        }
+        histogramRedMap[pix.getRed()] += 1;
+        histogramGreenMap[pix.getGreen()] += 1;
+        histogramBlueMap[pix.getBlue()] += 1;
+
+        Pixel intensityPixel = new VisualizeIntensity().apply(pix);
+        histogramVisualMap[intensityPixel.getRed()] = intensityPixel.getRed();
       }
     }
     return histogramMap;

@@ -94,7 +94,7 @@ public interface ImageProcessor {
    * @param histogramOptions the kind of histogram you are displaying
    * @return
    */
-  int[] generateHistogram(String imgName, HistogramOptions histogramOptions);
+  int[][] generateHistogram(String imgName);
 
 
 }

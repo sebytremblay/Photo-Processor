@@ -19,12 +19,10 @@ public class VisualizeIntensity implements Function<Pixel,Pixel> {
    */
   @Override
   public Pixel apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    int sum = 0;
-    for (int comp : components) {
-      sum += comp;
-    }
-    int avg = sum / components.length;
+    int red = pixel.getRed();
+    int green = pixel.getGreen();
+    int blue = pixel.getBlue();
+    int avg = (red + green + blue / 3);
     return new RGBPixel(avg,avg,avg);
   }
 }

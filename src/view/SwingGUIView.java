@@ -17,12 +17,12 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private final JPanel mainPanel;
   private final JScrollPane imagePane;
   private final JLabel image;
-  private BufferedImage currImg;
-  private int[] histogram;
-  private String currImgName;
+  private String currImgName = "curr-img";
   private String displayText;
+  private JLabel displayLabel;
   private final JButton[] radioButtons;
-  private String storedImagePath;
+  private final JTextField brightenByField;
+  private final Histogram histogramPanel;
 
   public static void main(String[] args) {
     ImageProcessorGUI view = new SwingGUIView();
@@ -59,13 +59,26 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
       radioButtons[i] = new JButton(commands[i]);
       radioButtons[i].setActionCommand(commands[i]);
 
-      if (i < 2)
-        rGroup1.add(radioButtons[i]);
-      else
-        rGroup2.add(radioButtons[i]);
       radioPanel.add(radioButtons[i]);
     }
+
+    brightenByField = new JTextField();
+    brightenByField.setPreferredSize(new Dimension(80, 30));
+    brightenByField.setMinimumSize(brightenByField.getPreferredSize());
+    brightenByField.setMaximumSize(brightenByField.getPreferredSize());
+    radioPanel.add(brightenByField);
+
+    displayLabel = new JLabel("MESSAGE");
+    radioPanel.add(displayLabel);
+
     mainPanel.add(radioPanel);
+
+    this.histogramPanel = new Histogram();
+    JLabel displayLabel2 = new JLabel("histogram");
+    histogramPanel.add(displayLabel2);
+    histogramPanel.setPreferredSize(new Dimension(500, 500));
+
+    mainPanel.add(histogramPanel);
 
     // display image with
     JPanel imagePanel = new JPanel();
@@ -82,23 +95,32 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     this.setVisible(true);
   }
   @Override
-  public void setCurrImgName(String currImgName){
-    this.currImgName = currImgName;
+  public void setCurrImgName(String currImgName) {
+    //this.currImgName = currImgName;
 
   }
+
   @Override
-  public void refresh(BufferedImage newImage, int[] histogram) {
-    this.currImg = newImage;
-    this.image.setIcon(new ImageIcon(currImg));
-    this.histogram = histogram;
+  public void setImage(BufferedImage img) {
+    this.image.setIcon(new ImageIcon(img));
+  }
+
+  @Override
+  public void setHistogram(int[][] histograms) {
+    this.histogramPanel.setHistograms(histograms);
+  }
+
+  @Override
+  public void refresh() {
     this.repaint();
   }
 
   @Override
   public void renderMessage(String message) {
-    this.displayText = message;
-    this.repaint();
+    this.displayLabel.setText(message);
+    this.refresh();
   }
+
 
   @Override
   public void acceptsFeaturesObject(Features features) {
@@ -110,34 +132,23 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
           JFileChooser fchooser = new JFileChooser(".");
           switch (actionPerformed) {
             case "load":
-              int loadRetValue = fchooser.showOpenDialog(SwingGUIView.this);
+            case "save":
+              int loadRetValue = actionPerformed.equals("load") ?
+                      fchooser.showOpenDialog(SwingGUIView.this) :
+                      fchooser.showSaveDialog(SwingGUIView.this);
               if (loadRetValue == JFileChooser.APPROVE_OPTION) {
                 String filePath = fchooser.getSelectedFile().getAbsolutePath();
-                storedImagePath = filePath.substring(0,
-                        filePath.lastIndexOf("/") + 1);
-                features.readButtonActionWithFilePath(actionPerformed,
+                features.readButtonClick(actionPerformed,
                         filePath,
-                        filePath.substring(filePath.lastIndexOf("/") + 1,
-                                filePath.lastIndexOf(".")));
-              }
-              break;
-            case "save":
-              int saveRetValue = fchooser.showSaveDialog(SwingGUIView.this);
-              if (saveRetValue == JFileChooser.APPROVE_OPTION) {
-                String newAddedPath = fchooser.getSelectedFile().getAbsolutePath();
-                newAddedPath = newAddedPath.substring(storedImagePath.length());
-                features.readButtonActionWithFilePath(actionPerformed,
-                        newAddedPath,
                         currImgName);
               }
               break;
             case "brighten":
-              System.out.println("test");
+              features.takesInTextField("brighten", brightenByField.getText(), currImgName);
               break;
             default:
               features.readButtonClick(actionPerformed, currImgName);
           }
-          //features.readButtonClick(e.getActionCommand(), currImgName);
         }
       });
     }

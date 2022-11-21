@@ -19,10 +19,9 @@ public class VisualizeLuma implements Function<Pixel, Pixel> {
    */
   @Override
   public Pixel apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    int luma = (int) (0.2126 * components[0]
-            + 0.7152 * components[1]
-            + 0.0722 * components[2]);
+    int luma = (int) (0.2126 * pixel.getRed()
+            + 0.7152 * pixel.getGreen()
+            + 0.0722 * pixel.getBlue());
     return new RGBPixel(luma,luma,luma);
   }
 

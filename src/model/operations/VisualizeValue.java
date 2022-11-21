@@ -18,11 +18,7 @@ public class VisualizeValue implements Function<Pixel, Pixel> {
    */
   @Override
   public Pixel apply(Pixel pixel) {
-    int[] components = pixel.getComponents();
-    int max = components[0];
-    for (int comp : components) {
-      max = Math.max(max, comp);
-    }
+    int max = Math.max(pixel.getBlue(),Math.max(pixel.getGreen(),pixel.getRed()));
     return new RGBPixel(max,max,max);
   }
 }
