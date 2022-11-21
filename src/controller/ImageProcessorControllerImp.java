@@ -32,7 +32,7 @@ public class ImageProcessorControllerImp implements ImageProcessorController {
   private final Readable input;
   private final Appendable output;
   private final ImageProcessor processor;
-  protected final Map<String, Function<Scanner, ProcessCommand>> commands;
+  private final Map<String, Function<Scanner, ProcessCommand>> commands;
 
   /**
    * Is a constructor for the controller. It takes in a model, and sets the readable and appendable

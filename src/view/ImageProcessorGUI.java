@@ -18,7 +18,7 @@ public interface ImageProcessorGUI {
    * @param newImg the new image to display
    * @param histogram the new histogram to display
    */
-  void refresh(BufferedImage newImg, Map<Integer, Integer> histogram);
+  void refresh(BufferedImage newImg, int[] histogram);
   /**
    * Display a message in a suitable area of the GUI.
    *
@@ -33,4 +33,5 @@ public interface ImageProcessorGUI {
    */
   void acceptsFeaturesObject(Features feature);
 
+  void setCurrImgName(String currImageName);
 }

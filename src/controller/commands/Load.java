@@ -25,7 +25,7 @@ public class Load extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-    String fileType = this.imgPath.substring(imgPath.indexOf("."));
+    String fileType = this.imgPath.substring(imgPath.lastIndexOf("."));
 
     switch (fileType) {
       case ".ppm":
