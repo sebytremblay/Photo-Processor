@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +15,6 @@ import controller.commands.Load;
 import controller.commands.ProcessCommand;
 import controller.commands.Save;
 import model.imageprocessor.ImageProcessor;
-import model.imageprocessor.ImageProcessorModel;
 import model.operations.FlipImage;
 import model.operations.VisualizeBlue;
 import model.operations.VisualizeBrighten;
@@ -26,13 +24,12 @@ import model.operations.VisualizeLuma;
 import model.operations.VisualizeRed;
 import model.operations.VisualizeValue;
 import view.ImageProcessorGUI;
-import view.SwingGUIView;
 
 public class ControllerFeaturesImpl implements Features {
   private final ImageProcessorGUI view;
   private final ImageProcessor model;
   private final Map<String, Function<Scanner, ProcessCommand>> commands;
-  private final Appendable output;
+  private Appendable output;
 
   public ControllerFeaturesImpl(ImageProcessorGUI view, ImageProcessor model) {
     this.view = view;
@@ -87,8 +84,6 @@ public class ControllerFeaturesImpl implements Features {
             sepiaTrans, output));
 
     view.acceptsFeaturesObject(this);
-
-
   }
 
   @Override
@@ -96,7 +91,6 @@ public class ControllerFeaturesImpl implements Features {
     readButtonClick(btnAction, imgName, imgName);
   }
 
-  //TODO ADD AN IMAGE NAME PARAMETER
   @Override
   public void readButtonClick(String btnAction, String filePath, String imgName) {
     String inputString = btnAction + " " + filePath + " " + imgName;
@@ -104,6 +98,46 @@ public class ControllerFeaturesImpl implements Features {
 
   }
 
+  private void update(String command, String imgName) {
+    Scanner scan = new Scanner(command);
+    Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(scan.next(),
+            null);
+    try {
+      ProcessCommand c = cmd.apply(scan);
+      c.run(this.model);
+    } catch (NoSuchElementException e) {
+      error("Insufficient arguments");
+    } catch (IllegalArgumentException e) {
+      error("Invalid arguments.");
+    }
+
+    view.setCurrImgName(imgName);
+    view.setImage(model.getImageAsBufferedImage(imgName));
+
+
+    view.setHistogram(model.generateHistogram(imgName));
+
+    view.renderMessage(output.toString());
+    output = new StringBuilder();
+    view.refresh();
+
+  }
+
+  @Override
+  public void takesInTextField(String btnAction, String value, String imgName) {
+    String input = btnAction + " " + value + " " + imgName + " " + imgName;
+    update(input, imgName);
+
+
+  }
+
+  // error logging
+  private void error(String message) {
+    try {
+      this.output.append(message + "\n");
+    } catch (IOException e) {
+      throw new IllegalStateException();
+    }
   }
 
 

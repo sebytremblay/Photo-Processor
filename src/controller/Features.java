@@ -8,7 +8,7 @@ public interface Features {
    */
   void readButtonClick(String btnAction, String imgName);
 
-  void readButtonActionWithFilePath(String btnAction, String filePath, String imgName);
+  void readButtonClick(String btnAction, String filePath, String imgName);
 
   void takesInTextField(String btnAction, String value, String imgName);
 

@@ -91,7 +91,6 @@ public interface ImageProcessor {
   /**
    * Generates a representation of a histogram of an image
    * @param imgName name of Image you are making a histogram for
-   * @param histogramOptions the kind of histogram you are displaying
    * @return
    */
   int[][] generateHistogram(String imgName);

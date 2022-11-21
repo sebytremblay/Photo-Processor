@@ -3,11 +3,8 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import controller.Features;
@@ -30,7 +27,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   public SwingGUIView() {
     super("Image Processor GUI");
-    this.setSize(500, 500);
+    this.setSize(1200, 800);
     this.mainPanel = new JPanel();
     //for elements to be arranged vertically within this panel
     mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
@@ -52,7 +49,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     String[] commands = {"load", "save",
             "red-component", "green-component", "blue-component",
             "value-component", "intensity-component", "luma-component",
-            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia"};
+            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia", "brighten"};
     radioButtons = new JButton[commands.length];
 
     for (int i = 0; i < commands.length; i += 1) {
@@ -94,6 +91,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
     this.setVisible(true);
   }
+
   @Override
   public void setCurrImgName(String currImgName) {
     //this.currImgName = currImgName;
@@ -147,7 +145,9 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
               features.takesInTextField("brighten", brightenByField.getText(), currImgName);
               break;
             default:
-              features.readButtonClick(actionPerformed, currImgName);
+              if (actionPerformed != null) {
+                features.readButtonClick(actionPerformed, currImgName);
+              }
           }
         }
       });

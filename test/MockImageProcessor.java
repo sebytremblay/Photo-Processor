@@ -78,7 +78,7 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   @Override
-  public int[] generateHistogram(String imgName, HistogramOptions histogramOptions) {
+  public int[][] generateHistogram(String imgName) {
     return null;
   }
 }

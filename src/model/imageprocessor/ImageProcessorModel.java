@@ -47,8 +47,7 @@ public class ImageProcessorModel implements ImageProcessor {
   // determines is an image is loaded, and throws an error if not
   private void isLoadedImgName(String imgName) {
     if (!loadedImages.containsKey(imgName)) {
-      throw new IllegalArgumentException("The image " + imgName
-              + " is not loaded in the processor");
+      throw new IllegalArgumentException("The image " + imgName + " is not loaded in the processor");
     }
   }
 
@@ -82,8 +81,7 @@ public class ImageProcessorModel implements ImageProcessor {
   @Override
   public BufferedImage getImageAsBufferedImage(String imgName) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    BufferedImage bufferedImage = new BufferedImage(pixelGrid[0].length,
-            pixelGrid.length, 1);
+    BufferedImage bufferedImage = new BufferedImage(pixelGrid[0].length, pixelGrid.length, 1);
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
         bufferedImage.setRGB(col, row, pixelGrid[row][col].pixelToHex());
@@ -99,8 +97,7 @@ public class ImageProcessorModel implements ImageProcessor {
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
-        Pixel[][] kernelBackground = getKernelBackground(row, col, kernel.length,
-                pixelGrid);
+        Pixel[][] kernelBackground = getKernelBackground(row, col, kernel.length, pixelGrid);
         newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel, kernelBackground);
       }
     }
@@ -108,8 +105,7 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void applyColorTransformation(String imgName, String newImgName,
-                                       double[][] transformation) {
+  public void applyColorTransformation(String imgName, String newImgName, double[][] transformation) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {
@@ -137,14 +133,14 @@ public class ImageProcessorModel implements ImageProcessor {
         Pixel intensityPixel = new VisualizeIntensity().apply(pix);
         histogramVisualMap[intensityPixel.getRed()] = intensityPixel.getRed();
       }
+
     }
-    return histogramMap;
+    return new int[][]{histogramRedMap, histogramGreenMap, histogramBlueMap, histogramVisualMap};
   }
 
   // Gets the values that will exist behind a particular kernel at a particular position. If a
   // particular surrounding pixel do not exist, the returned pixel will be zero
-  private Pixel[][] getKernelBackground(int row, int col, int length,
-                                        Pixel[][] pixelGrid) {
+  private Pixel[][] getKernelBackground(int row, int col, int length, Pixel[][] pixelGrid) {
     Pixel[][] background = new Pixel[length][length];
     int rowCounter = 0;
     for (int r = row - length / 2; r <= row + length / 2; r += 1) {
