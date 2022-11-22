@@ -33,6 +33,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private JButton[] radioButtons;
   private JTextField brightenByField;
   private Histogram histogramPanel;
+  private JPanel histogramHousingPanel;
   private JScrollPane imageScroll;
   private JPanel radioPanel;
 
@@ -73,9 +74,9 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
     // Defines all supported commands
     String[] commands = {"load", "save",
-        "red-component", "green-component", "blue-component",
-        "value-component", "intensity-component", "luma-component",
-        "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia", "brighten"};
+            "red-component", "green-component", "blue-component",
+            "value-component", "intensity-component", "luma-component",
+            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia", "brighten"};
     radioButtons = new JButton[commands.length];
 
     // Makes add feature buttons
@@ -100,10 +101,16 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   private void initHistogramDisplay() {
     int histogramPanelSize = 256;
+
+    this.histogramHousingPanel = new JPanel();
+    histogramHousingPanel.setSize(new Dimension(histogramPanelSize + 2,
+            histogramPanelSize + 2));
     this.histogramPanel = new Histogram();
     histogramPanel.setMinimumSize(new Dimension(histogramPanelSize, histogramPanelSize));
     histogramPanel.setPreferredSize(new Dimension(histogramPanelSize, histogramPanelSize));
-    histogramPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+    histogramHousingPanel.setBorder(BorderFactory.createTitledBorder("Histogram"));
+    histogramHousingPanel.add(histogramPanel);
   }
 
   private void initImageDisplay() {
@@ -128,14 +135,12 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     constraints.fill = GridBagConstraints.BOTH;
     constraints.gridx = 0;
     constraints.gridy = 1;
-    constraints.ipadx = 2;
-    mainPanel.add(histogramPanel, constraints);
+    mainPanel.add(histogramHousingPanel, constraints);
 
     // adds image to grid
     constraints.fill = GridBagConstraints.BOTH;
     constraints.gridx = 1;
     constraints.gridy = 0;
-    constraints.ipadx = 0;
     constraints.gridwidth = 2;
     constraints.gridheight = 2;
     mainPanel.add(imageScroll, constraints);

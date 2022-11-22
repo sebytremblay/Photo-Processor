@@ -20,7 +20,6 @@ public class Histogram extends JPanel {
   public Histogram() {
     super();
     histograms = new int[4][256];
-    this.setMinimumSize(new Dimension(500, 500));
   }
 
   public void setHistograms(int[][] histograms) {
