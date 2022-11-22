@@ -2,28 +2,14 @@ package controller;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import controller.commands.ColorTransformationCommand;
-import controller.commands.DisplayComponent;
-import controller.commands.Flip;
-import controller.commands.KernelCommand;
 import controller.commands.Load;
 import controller.commands.ProcessCommand;
 import controller.commands.Save;
 import model.imageprocessor.ImageProcessor;
-import model.operations.VisualizeBlue;
-import model.operations.VisualizeBrighten;
-import model.operations.FlipImage;
-import model.operations.VisualizeGreen;
-import model.operations.VisualizeIntensity;
-import model.operations.VisualizeLuma;
-import model.operations.VisualizeRed;
-import model.operations.VisualizeValue;
 
 /**
  * Is the controller of the ImageProcessor that takes in commands and executes them on the model.
@@ -55,6 +41,8 @@ public class ImageProcessorControllerImp extends AbstractController implements I
               + "all must not be" + "null");
     }
     this.input = input;
+    this.commands.put("load", s -> new Load(s.next(), s.next(), output));
+    this.commands.put("save", s -> new Save(s.next(), s.next(), output));
   }
 
   @Override
@@ -78,19 +66,5 @@ public class ImageProcessorControllerImp extends AbstractController implements I
     }
   }
 
-  @Override
-  public void processCommand(String btnAction) {
-    Scanner scan = new Scanner(btnAction);
-    Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(scan.next(),
-            null);
-    try {
-      ProcessCommand c = cmd.apply(scan);
-      c.run(this.model);
-    } catch (NoSuchElementException e) {
-      error("Insufficient arguments");
-    } catch (IllegalArgumentException e) {
-      error("Invalid arguments.");
-    }
-  }
 
 }

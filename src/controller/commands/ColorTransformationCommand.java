@@ -18,8 +18,8 @@ public class ColorTransformationCommand extends AbstractCommand {
    * @param transformation the transformation to apply
    * @param append         where to log your changes
    */
-  public ColorTransformationCommand(String imgName, String newImgName,
-                                    double[][] transformation, Appendable append) {
+  public ColorTransformationCommand(String imgName, String newImgName, double[][] transformation,
+                                    Appendable append) {
     super(append);
     this.imgName = imgName;
     this.newImgName = newImgName;

@@ -32,7 +32,7 @@ public class ImageUtils {
 
     // Finds file
     try {
-      sc = new Scanner(new FileInputStream(filePath));
+      sc = new Scanner(new FileInputStream(filePath.trim()));
     } catch (FileNotFoundException e) {
       throw new IllegalArgumentException("Invalid file path");
     }
@@ -141,7 +141,7 @@ public class ImageUtils {
   /**
    * Saves an IO Image to the specified path.
    *
-   * @param filePath      the file path to save to
+   * @param file the file path to save to
    * @param bufferedImage the image to save
    */
   public static void saveIOFile(String filePath, BufferedImage bufferedImage) {

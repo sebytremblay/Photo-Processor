@@ -17,6 +17,7 @@ public class Flip extends AbstractCommand {
   /**
    * Creates an instance of the flip command with a specified direction.
    *
+   * @param func       the flip function you are performing
    * @param imgName    the name of the image to flip
    * @param newImgName what to name the new image
    * @param append     place to informative information about success of command

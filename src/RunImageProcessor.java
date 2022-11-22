@@ -1,12 +1,9 @@
 import controller.ControllerFeaturesImpl;
-import controller.ImageProcessorController;
-import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessorModel;
 import model.imageprocessor.ImageProcessor;
 import view.ImageProcessorGUI;
 import view.SwingGUIView;
 
-import static utils.ImageUtils.loadInputFile;
 
 /**
  * This class is where the ImageProcessor's main method exists that runs the program.

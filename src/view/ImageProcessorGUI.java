@@ -34,5 +34,4 @@ public interface ImageProcessorGUI {
    */
   void acceptsFeaturesObject(Features feature);
 
-  void setCurrImgName(String currImageName);
 }

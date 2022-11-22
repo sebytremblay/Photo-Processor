@@ -25,6 +25,10 @@ import model.operations.VisualizeLuma;
 import model.operations.VisualizeRed;
 import model.operations.VisualizeValue;
 
+/**
+ * Represents the abstracted controller for the view based and script based controllers for
+ * the image processor.
+ */
 public class AbstractController {
   protected final Map<String, Function<Scanner, ProcessCommand>> commands;
   protected Appendable output;
@@ -49,8 +53,6 @@ public class AbstractController {
             {0.349, 0.686, 0.168},
             {0.272, 0.534, 0.131}};
 
-    commands.put("load", s -> new Load(s.next(), s.next(), output));
-    commands.put("save", s -> new Save(s.next(), s.next(), output));
     commands.put("red-component", s -> new DisplayComponent(new VisualizeRed(),
             s.next(), s.next(), output));
     commands.put("blue-component", s -> new DisplayComponent(new VisualizeBlue(), s.next(),
@@ -86,6 +88,24 @@ public class AbstractController {
       this.output.append(message + "\n");
     } catch (IOException e) {
       throw new IllegalStateException("The state is incorrect");
+    }
+  }
+
+  /**
+   * Writes string to the controller's input.
+   * @param command the string to write
+   */
+  protected void processCommand(String command){
+   Scanner scan = new Scanner(command);
+    Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(scan.next(),
+            null);
+    try {
+      ProcessCommand c = cmd.apply(scan);
+      c.run(this.model);
+    } catch (NoSuchElementException e) {
+      error("Insufficient arguments");
+    } catch (IllegalArgumentException e) {
+      error("Invalid arguments.");
     }
   }
 
