@@ -1,4 +1,5 @@
 import controller.ControllerFeaturesImpl;
+import controller.Features;
 import controller.ImageProcessorController;
 import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessorModel;
@@ -20,18 +21,20 @@ public class RunImageProcessor {
    * @param args arguments for the main method.
    */
   public static void main(String[] args) {
-    // main from last time, needs to be redone
     ImageProcessor model = new ImageProcessorModel();
-    ImageProcessorController controller;
 
-    if (args.length > 1 && args[0].equals("file")) {
+    if (args.length > 1 && args[0].equals("-file")) {
       String scriptFilePath = args[1];
       Readable input = loadInputFile(scriptFilePath);
-      controller = new ImageProcessorControllerImp(input, System.out, model);
+      ImageProcessorController fileController =
+              new ImageProcessorControllerImp(input, System.out, model);
+      fileController.run();
+    } else if (args.length >= 1 && args[0].equals("-text")) {
+      ImageProcessorController textController = new ImageProcessorControllerImp(model);
+      textController.run();
     } else {
-      controller = new ImageProcessorControllerImp(model);
+      ImageProcessorGUI view = new SwingGUIView();
+      Features guiController = new ControllerFeaturesImpl(view, model);
     }
-
-    controller.run();
   }
 }
