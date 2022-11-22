@@ -1,11 +1,13 @@
 package controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import controller.commands.ProcessCommand;
 import controller.commands.ColorTransformationCommand;
 import controller.commands.DisplayComponent;
 import controller.commands.Flip;
@@ -22,18 +24,16 @@ import model.operations.VisualizeIntensity;
 import model.operations.VisualizeLuma;
 import model.operations.VisualizeRed;
 import model.operations.VisualizeValue;
-import view.ImageProcessorGUI;
 
-public class ControllerFeaturesImpl extends AbstractController implements Features {
-  private final ImageProcessorGUI view;
-  private final Map<String, Function<Scanner, ProcessCommand>> commands;
+public class AbstractController {
+  protected final Map<String, Function<Scanner, ProcessCommand>> commands;
+  protected Appendable output;
+  protected ImageProcessor model;
 
-  public ControllerFeaturesImpl(ImageProcessorGUI view, ImageProcessor model) {
-    super(model);
-    this.view = view;
+  public AbstractController(ImageProcessor model) {
+    output = new StringBuilder();
     this.model = model;
     this.commands = new HashMap<String, Function<Scanner, ProcessCommand>>();
-
     double[][] blurKernel = {{1.0 / 16, 1.0 / 8, 1.0 / 16},
             {1.0 / 8, 1.0 / 4, 1.0 / 8},
             {1.0 / 16, 1.0 / 8, 1.0 / 16}};
@@ -48,7 +48,6 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
     double[][] sepiaTrans = {{0.393, 0.769, 0.189},
             {0.349, 0.686, 0.168},
             {0.272, 0.534, 0.131}};
-
 
     commands.put("load", s -> new Load(s.next(), s.next(), output));
     commands.put("save", s -> new Save(s.next(), s.next(), output));
@@ -79,52 +78,15 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
             greyscaleTrans, output));
     commands.put("sepia", s -> new ColorTransformationCommand(s.next(), s.next(),
             sepiaTrans, output));
-
-    view.acceptsFeaturesObject(this);
   }
 
-  @Override
-  public void readButtonClick(String btnAction, String imgName) {
-    readButtonClick(btnAction, imgName, imgName);
-  }
-
-  @Override
-  public void readButtonClick(String btnAction, String filePath, String imgName) {
-    String inputString = btnAction + " " + filePath + " " + imgName;
-    update(inputString, imgName);
-
-  }
-
-  private void update(String command, String imgName) {
-    Scanner scan = new Scanner(command);
-    Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(scan.next(),
-            null);
+  // error logging
+  protected void error(String message) {
     try {
-      ProcessCommand c = cmd.apply(scan);
-      c.run(this.model);
-    } catch (NoSuchElementException e) {
-      error("Insufficient arguments");
-    } catch (IllegalArgumentException e) {
-      error("Invalid arguments.");
+      this.output.append(message + "\n");
+    } catch (IOException e) {
+      throw new IllegalStateException("The state is incorrect");
     }
-
-
-    view.setCurrImgName(imgName);
-    view.setImage(model.getImageAsBufferedImage(imgName));
-    view.setHistogram(model.generateHistogram(imgName));
-    view.renderMessage(output.toString());
-    output = new StringBuilder();
-
-
-    view.refresh();
-
   }
-
-  @Override
-  public void takesInTextField(String btnAction, String value, String imgName) {
-    String input = btnAction + " " + value + " " + imgName + " " + imgName;
-    update(input, imgName);
-  }
-
 
 }
