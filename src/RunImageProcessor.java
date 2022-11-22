@@ -29,10 +29,10 @@ public class RunImageProcessor {
       ImageProcessorController fileController =
               new ImageProcessorControllerImp(input, System.out, model);
       fileController.run();
-    } else if (args.length >= 1 && args[0].equals("-text")) {
+    } else if (args.length == 1 && args[0].equals("-text")) {
       ImageProcessorController textController = new ImageProcessorControllerImp(model);
       textController.run();
-    } else {
+    } else if (args.length == 0) {
       ImageProcessorGUI view = new SwingGUIView();
       Features guiController = new ControllerFeaturesImpl(view, model);
     }
