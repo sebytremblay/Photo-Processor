@@ -1,8 +1,12 @@
 package view;
 
-import java.awt.*;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+
+import javax.swing.JPanel;
 
 /**
  * Represents a panel of a Histogram.
@@ -10,11 +14,13 @@ import javax.swing.*;
 public class Histogram extends JPanel {
   private int[][] histograms;
 
-
+  /**
+   * Constructs a histogram of four components: red, blue, green, and intensity.
+   */
   public Histogram() {
     super();
     histograms = new int[4][256];
-    this.setMinimumSize(new Dimension(500,500));
+    this.setMinimumSize(new Dimension(500, 500));
   }
 
   public void setHistograms(int[][] histograms) {
@@ -33,8 +39,10 @@ public class Histogram extends JPanel {
       g2d.setColor(colors[kind]);
       int maxValue = this.getMaxValue(histograms[kind]);
       for (int xComponent = 0; xComponent < histograms[0].length - 1; xComponent += 1) {
-        g2d.drawLine(xComponent, (int)((histograms[kind][xComponent] / (double) maxValue) * 200),
-                (xComponent + 1), (int)((this.histograms[kind][xComponent + 1] / (double)maxValue) * 200));
+        g2d.drawLine(xComponent,
+                (int) ((histograms[kind][xComponent] / (double) maxValue) * 200),
+                (xComponent + 1),
+                (int) ((this.histograms[kind][xComponent + 1] / (double) maxValue) * 200));
       }
     }
   }

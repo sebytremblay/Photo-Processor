@@ -12,9 +12,6 @@ import controller.commands.ColorTransformationCommand;
 import controller.commands.DisplayComponent;
 import controller.commands.Flip;
 import controller.commands.KernelCommand;
-import controller.commands.Load;
-import controller.commands.ProcessCommand;
-import controller.commands.Save;
 import model.imageprocessor.ImageProcessor;
 import model.operations.FlipImage;
 import model.operations.VisualizeBlue;
@@ -36,26 +33,27 @@ public class AbstractController {
 
   /**
    * Controller for the abstract command.
+   *
    * @param model model that exists as the source of truth for the image processor.
    */
-  public AbstractController(ImageProcessor model) {
-    output = new StringBuilder();
+  public AbstractController(ImageProcessor model, Appendable output) {
+    this.output = output;
     this.model = model;
     this.commands = new HashMap<String, Function<Scanner, ProcessCommand>>();
     double[][] blurKernel = {{1.0 / 16, 1.0 / 8, 1.0 / 16},
-            {1.0 / 8, 1.0 / 4, 1.0 / 8},
-            {1.0 / 16, 1.0 / 8, 1.0 / 16}};
+        {1.0 / 8, 1.0 / 4, 1.0 / 8},
+        {1.0 / 16, 1.0 / 8, 1.0 / 16}};
     double[][] sharpenKernel = {{-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
-            {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
-            {-1.0 / 8, 1.0 / 4, 1.0, 1.0 / 4, -1.0 / 8},
-            {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
-            {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8}};
+        {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
+        {-1.0 / 8, 1.0 / 4, 1.0, 1.0 / 4, -1.0 / 8},
+        {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
+        {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8}};
     double[][] greyscaleTrans = {{0.2126, 0.7152, 0.0722},
-            {0.2126, 0.7152, 0.0722},
-            {0.2126, 0.7152, 0.0722}};
+        {0.2126, 0.7152, 0.0722},
+        {0.2126, 0.7152, 0.0722}};
     double[][] sepiaTrans = {{0.393, 0.769, 0.189},
-            {0.349, 0.686, 0.168},
-            {0.272, 0.534, 0.131}};
+        {0.349, 0.686, 0.168},
+        {0.272, 0.534, 0.131}};
 
     commands.put("red-component", s -> new DisplayComponent(new VisualizeRed(),
             s.next(), s.next(), output));
@@ -97,10 +95,11 @@ public class AbstractController {
 
   /**
    * Applies a command on the model.
+   *
    * @param command the string to write
    */
-  protected void processCommand(String command){
-   Scanner scan = new Scanner(command);
+  protected void processCommand(String command) {
+    Scanner scan = new Scanner(command);
     Function<Scanner, ProcessCommand> cmd = this.commands.getOrDefault(scan.next(),
             null);
     try {

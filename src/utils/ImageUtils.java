@@ -141,11 +141,10 @@ public class ImageUtils {
   /**
    * Saves an IO Image to the specified path.
    *
-   * @param file the file path to save to
    * @param bufferedImage the image to save
    */
   public static void saveIOFile(String filePath, BufferedImage bufferedImage) {
-    String fileType = filePath.substring(filePath.lastIndexOf(".")+ 1);
+    String fileType = filePath.substring(filePath.lastIndexOf(".") + 1);
     try {
       ImageIO.write(bufferedImage, fileType, new File(filePath));
     } catch (IOException e) {

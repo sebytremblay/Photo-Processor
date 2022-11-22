@@ -2,7 +2,6 @@ package model.imageprocessor;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -47,7 +46,8 @@ public class ImageProcessorModel implements ImageProcessor {
   // determines is an image is loaded, and throws an error if not
   private void isLoadedImgName(String imgName) {
     if (!loadedImages.containsKey(imgName)) {
-      throw new IllegalArgumentException("The image " + imgName + " is not loaded in the processor");
+      throw new IllegalArgumentException("The image " + imgName
+              + " is not loaded in the processor");
     }
   }
 
@@ -81,7 +81,8 @@ public class ImageProcessorModel implements ImageProcessor {
   @Override
   public BufferedImage getImageAsBufferedImage(String imgName) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    BufferedImage bufferedImage = new BufferedImage(pixelGrid[0].length, pixelGrid.length, 1);
+    BufferedImage bufferedImage = new BufferedImage(pixelGrid[0].length,
+            pixelGrid.length, 1);
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
         bufferedImage.setRGB(col, row, pixelGrid[row][col].pixelToHex());
@@ -105,7 +106,8 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
-  public void applyColorTransformation(String imgName, String newImgName, double[][] transformation) {
+  public void applyColorTransformation(String imgName, String newImgName,
+                                       double[][] transformation) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {

@@ -1,8 +1,6 @@
 package model.imageprocessor;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import model.pixel.Pixel;
@@ -84,12 +82,13 @@ public interface ImageProcessor {
 
 
   /**
-   * Represents all the possible ways of displaying a histogram
+   * Represents all the possible ways of displaying a histogram.
    */
-  enum HistogramOptions { Red, Green, Blue, Intensity}
+  enum HistogramOptions { Red, Green, Blue, Intensity }
 
   /**
-   * Generates a representation of a histogram of an image
+   * Generates a representation of a histogram of an image.
+   *
    * @param imgName name of Image you are making a histogram for
    * @return
    */

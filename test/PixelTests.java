@@ -147,7 +147,7 @@ public class PixelTests {
 
     int[] expected2 = {51, 20, 206};
     Pixel pixel2 = new RGBPixel(51, 20, 206);
-    int[] actual2 = {pixel1.getRed(), pixel1.getGreen(), pixel1.getBlue()};
+    int[] actual2 = {pixel2.getRed(), pixel2.getGreen(), pixel2.getBlue()};
     assertArrayEquals(expected2, actual2);
   }
 

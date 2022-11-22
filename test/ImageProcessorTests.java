@@ -7,7 +7,6 @@ import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessorModel;
 import model.imageprocessor.ImageProcessor;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -1308,7 +1307,8 @@ public class ImageProcessorTests {
     controller.run();
     assertEquals("Command not recognized\n" +
             "Command not recognized\n" +
-            "Command not recognized\n", builder.toString());
+            "Command not recognized\n",
+            builder.toString());
   }
 
   @Test
@@ -4028,7 +4028,7 @@ public class ImageProcessorTests {
 
     // checks intensity values
     assertEquals(6, histogram[3][0]);
-    assertEquals(7, histogram[3][255]);
+    assertEquals(1, histogram[3][255]);
   }
 }
 

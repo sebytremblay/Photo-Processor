@@ -18,6 +18,7 @@ public interface Pixel {
    * @return the list of pixel components
    */
   int getGreen();
+
   /**
    * Gets the blue component of this pixel.
    *

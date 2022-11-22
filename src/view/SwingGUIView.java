@@ -1,15 +1,28 @@
 package view;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.ImageIcon;
 
 import controller.Features;
 
 /**
- * Represents the View for an ImageProcessor
+ * Represents the View for an ImageProcessor.
  */
 public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
@@ -21,11 +34,11 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private JTextField brightenByField;
   private Histogram histogramPanel;
   private JScrollPane imageScroll;
-  private JScrollPane mainScroll;
-  private JPanel imagePanel;
   private JPanel radioPanel;
 
-
+  /**
+   * Instantiates the GUI to view.
+   */
   public SwingGUIView() {
     // Layout stuff
     super("Image Processor GUI");
@@ -45,7 +58,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     // Adds all JFrame components to our window and organizes them
     organizeWindowLayout(constraints);
 
-    this.mainScroll = new JScrollPane(mainPanel);
+    JScrollPane mainScroll = new JScrollPane(mainPanel);
     this.add(mainScroll);
     this.pack();
     this.setVisible(true);
@@ -60,9 +73,9 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
     // Defines all supported commands
     String[] commands = {"load", "save",
-            "red-component", "green-component", "blue-component",
-            "value-component", "intensity-component", "luma-component",
-            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia", "brighten"};
+        "red-component", "green-component", "blue-component",
+        "value-component", "intensity-component", "luma-component",
+        "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia", "brighten"};
     radioButtons = new JButton[commands.length];
 
     // Makes add feature buttons
@@ -95,7 +108,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   private void initImageDisplay() {
     int imagePanelSize = 756;
-    this.imagePanel = new JPanel();
+    JPanel imagePanel = new JPanel();
     this.image = new JLabel();
     imagePanel.add(this.image);
     imagePanel.setBorder(BorderFactory.createTitledBorder("The Working Image"));

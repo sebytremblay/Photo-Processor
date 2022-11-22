@@ -17,7 +17,7 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
    * @param model the model that the information will retrieve from.
    */
   public ControllerFeaturesImpl(ImageProcessorGUI view, ImageProcessor model) {
-    super(model);
+    super(model, new StringBuilder());
     this.view = view;
     this.model = model;
     this.commands.put("load", s -> new Load(s.nextLine(), s.next(), output));

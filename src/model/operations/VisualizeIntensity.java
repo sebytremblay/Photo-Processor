@@ -22,7 +22,7 @@ public class VisualizeIntensity implements Function<Pixel,Pixel> {
     int red = pixel.getRed();
     int green = pixel.getGreen();
     int blue = pixel.getBlue();
-    int avg = (red + green + blue / 3);
+    int avg = (red + green + blue) / 3;
     return new RGBPixel(avg,avg,avg);
   }
 }

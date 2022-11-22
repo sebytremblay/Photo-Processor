@@ -23,17 +23,19 @@ public class RGBPixel implements Pixel {
   }
 
   @Override
-  public int getRed(){
+  public int getRed() {
     return this.red;
 
   }
+
   @Override
-  public int getGreen(){
+  public int getGreen() {
     return this.green;
 
   }
+
   @Override
-  public int getBlue(){
+  public int getBlue() {
     return this.blue;
 
   }
@@ -73,11 +75,11 @@ public class RGBPixel implements Pixel {
       int count = 0;
       double dot = 0;
       dot += (this.getRed() * transformation[row][count]);
-      count+=1;
+      count += 1;
       dot += (this.getGreen() * transformation[row][count]);
-      count+=1;
+      count += 1;
       dot += (this.getBlue() * transformation[row][count]);
-      newComponents[row] = (int)(dot);
+      newComponents[row] = (int) (dot);
     }
     return new RGBPixel(newComponents[0], newComponents[1], newComponents[2]);
   }

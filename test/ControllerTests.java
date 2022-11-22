@@ -9,7 +9,6 @@ import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessor;
 import model.imageprocessor.ImageProcessorModel;
 import view.ImageProcessorGUI;
-import view.SwingGUIView;
 
 import static org.junit.Assert.assertEquals;
 

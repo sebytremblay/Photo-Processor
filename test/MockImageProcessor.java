@@ -1,5 +1,4 @@
 import java.awt.image.BufferedImage;
-import java.util.Map;
 import java.util.function.Function;
 
 import model.imageprocessor.ImageProcessor;

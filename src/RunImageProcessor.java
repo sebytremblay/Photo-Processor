@@ -12,13 +12,12 @@ public class RunImageProcessor {
 
   /**
    * Main method for the ImageProcessor.
-   * @param args arguments for the main method.
    *
+   * @param args arguments for the main method.
    */
-  public static void main(String[] args){
+  public static void main(String[] args) {
     ImageProcessor model = new ImageProcessorModel();
     ImageProcessorGUI view = new SwingGUIView();
-    ControllerFeaturesImpl controller = new ControllerFeaturesImpl(view,model);
+    ControllerFeaturesImpl controller = new ControllerFeaturesImpl(view, model);
   }
-
 }
