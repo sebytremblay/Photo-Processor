@@ -131,7 +131,7 @@ public class ImageProcessorModel implements ImageProcessor {
         histogramBlueMap[pix.getBlue()] += 1;
 
         Pixel intensityPixel = new VisualizeIntensity().apply(pix);
-        histogramVisualMap[intensityPixel.getRed()] = intensityPixel.getRed();
+        histogramVisualMap[intensityPixel.getRed()] += 1;
       }
 
     }

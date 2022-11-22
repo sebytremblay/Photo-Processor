@@ -11,47 +11,59 @@ import controller.Features;
 
 public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
-  private final JPanel mainPanel;
-  private final JScrollPane imagePane;
-  private final JLabel image;
+  private JPanel mainPanel;
+  private JLabel image;
   private String currImgName = "curr-img";
-  private String displayText;
   private JLabel displayLabel;
-  private final JButton[] radioButtons;
-  private final JTextField brightenByField;
-  private final Histogram histogramPanel;
+  private JButton[] radioButtons;
+  private JTextField brightenByField;
+  private Histogram histogramPanel;
+  private JScrollPane imageScroll;
+  private JScrollPane mainScroll;
+  private JPanel imagePanel;
+  private JPanel radioPanel;
 
-  public static void main(String[] args) {
-    ImageProcessorGUI view = new SwingGUIView();
-  }
 
   public SwingGUIView() {
+    // Layout stuff
     super("Image Processor GUI");
-    this.setSize(1200, 800);
     this.mainPanel = new JPanel();
-    //for elements to be arranged vertically within this panel
-    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-    //scroll bars around this main panel
-    this.imagePane = new JScrollPane(mainPanel);
-    add(imagePane);
+    mainPanel.setLayout(new GridBagLayout());
+    GridBagConstraints constraints = new GridBagConstraints();
 
-    // buttons
-    JPanel radioPanel = new JPanel();
+    // Defines and sets up all feature buttons
+    initFeatureButtons();
+
+    // Sets up display for the histogram
+    initHistogramDisplay();
+
+    // Sets up the display for the loaded image
+    initImageDisplay();
+
+    // Adds all JFrame components to our window and organizes them
+    organizeWindowLayout(constraints);
+
+    this.mainScroll = new JScrollPane(mainPanel);
+    this.add(mainScroll);
+    this.pack();
+    this.setVisible(true);
+  }
+
+  private void initFeatureButtons() {
+    // Initializes panel defaults
+    this.radioPanel = new JPanel();
+    radioPanel.setSize(275, 512);
     radioPanel.setBorder(BorderFactory.createTitledBorder("Image Transformations"));
-
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
-    //buttons groups are used to combine radio buttons. Only one radio
-    // button in each group can be selected.
-    ButtonGroup rGroup1 = new ButtonGroup();
-    ButtonGroup rGroup2 = new ButtonGroup();
-
+    // Defines all supported commands
     String[] commands = {"load", "save",
             "red-component", "green-component", "blue-component",
             "value-component", "intensity-component", "luma-component",
             "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia", "brighten"};
     radioButtons = new JButton[commands.length];
 
+    // Makes add feature buttons
     for (int i = 0; i < commands.length; i += 1) {
       radioButtons[i] = new JButton(commands[i]);
       radioButtons[i].setActionCommand(commands[i]);
@@ -59,43 +71,64 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
       radioPanel.add(radioButtons[i]);
     }
 
-    brightenByField = new JTextField();
+    // Text input to enter brightness amount
+    brightenByField = new JTextField("");
     brightenByField.setPreferredSize(new Dimension(80, 30));
     brightenByField.setMinimumSize(brightenByField.getPreferredSize());
     brightenByField.setMaximumSize(brightenByField.getPreferredSize());
     radioPanel.add(brightenByField);
 
-    displayLabel = new JLabel("MESSAGE");
+    // Text label for error logging
+    displayLabel = new JLabel("");
     radioPanel.add(displayLabel);
+  }
 
-    mainPanel.add(radioPanel);
-
+  private void initHistogramDisplay() {
+    int histogramPanelSize = 256;
     this.histogramPanel = new Histogram();
-    JLabel displayLabel2 = new JLabel("histogram");
-    histogramPanel.add(displayLabel2);
-    histogramPanel.setPreferredSize(new Dimension(500, 500));
+    histogramPanel.setMinimumSize(new Dimension(histogramPanelSize, histogramPanelSize));
+    histogramPanel.setPreferredSize(new Dimension(histogramPanelSize, histogramPanelSize));
+    histogramPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+  }
 
-    mainPanel.add(histogramPanel);
-
-    // display image with
-    JPanel imagePanel = new JPanel();
-    //a border around the panel with a caption
-    imagePanel.setBorder(BorderFactory.createTitledBorder("The Working Image"));
-    //imagePanel.setMaximumSize(null);
-    mainPanel.add(imagePanel);
-
-
+  private void initImageDisplay() {
+    int imagePanelSize = 756;
+    this.imagePanel = new JPanel();
     this.image = new JLabel();
-    //image.setIcon(new ImageIcon(currImg));
     imagePanel.add(this.image);
+    imagePanel.setBorder(BorderFactory.createTitledBorder("The Working Image"));
+    this.imageScroll = new JScrollPane(imagePanel);
+    this.imageScroll.setMinimumSize(new Dimension(imagePanelSize, imagePanelSize));
+    this.imageScroll.setPreferredSize(new Dimension(imagePanelSize, imagePanelSize));
+  }
 
-    this.setVisible(true);
+  private void organizeWindowLayout(GridBagConstraints constraints) {
+    // adds feature buttons to grid
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 0;
+    constraints.gridy = 0;
+    mainPanel.add(radioPanel, constraints);
+
+    // adds histogram to grid
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 0;
+    constraints.gridy = 1;
+    constraints.ipadx = 2;
+    mainPanel.add(histogramPanel, constraints);
+
+    // adds image to grid
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 1;
+    constraints.gridy = 0;
+    constraints.ipadx = 0;
+    constraints.gridwidth = 2;
+    constraints.gridheight = 2;
+    mainPanel.add(imageScroll, constraints);
   }
 
   @Override
   public void setCurrImgName(String currImgName) {
-    //this.currImgName = currImgName;
-
+    this.currImgName = currImgName;
   }
 
   @Override
@@ -152,9 +185,5 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
         }
       });
     }
-
-
   }
-
-
 }
