@@ -113,10 +113,7 @@ public class ControllerFeaturesImpl implements Features {
 
     view.setCurrImgName(imgName);
     view.setImage(model.getImageAsBufferedImage(imgName));
-
-
     view.setHistogram(model.generateHistogram(imgName));
-
     view.renderMessage(output.toString());
     output = new StringBuilder();
     view.refresh();

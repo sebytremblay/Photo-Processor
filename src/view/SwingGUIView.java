@@ -12,7 +12,6 @@ import controller.Features;
 public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   private final JPanel mainPanel;
-  private final JScrollPane imagePane;
   private final JLabel image;
   private String currImgName = "curr-img";
   private String displayText;
@@ -20,6 +19,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private final JButton[] radioButtons;
   private final JTextField brightenByField;
   private final Histogram histogramPanel;
+  private final JPanel imagePanel;
 
   public static void main(String[] args) {
     ImageProcessorGUI view = new SwingGUIView();
@@ -27,24 +27,17 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   public SwingGUIView() {
     super("Image Processor GUI");
-    this.setSize(1200, 800);
     this.mainPanel = new JPanel();
-    //for elements to be arranged vertically within this panel
-    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
-    //scroll bars around this main panel
-    this.imagePane = new JScrollPane(mainPanel);
-    add(imagePane);
+    mainPanel.setLayout(new GridBagLayout());
+
+    GridBagConstraints constraints = new GridBagConstraints();
 
     // buttons
     JPanel radioPanel = new JPanel();
+    radioPanel.setSize(200, 512);
     radioPanel.setBorder(BorderFactory.createTitledBorder("Image Transformations"));
 
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
-
-    //buttons groups are used to combine radio buttons. Only one radio
-    // button in each group can be selected.
-    ButtonGroup rGroup1 = new ButtonGroup();
-    ButtonGroup rGroup2 = new ButtonGroup();
 
     String[] commands = {"load", "save",
             "red-component", "green-component", "blue-component",
@@ -65,37 +58,53 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     brightenByField.setMaximumSize(brightenByField.getPreferredSize());
     radioPanel.add(brightenByField);
 
-    displayLabel = new JLabel("MESSAGE");
+    displayLabel = new JLabel("");
     radioPanel.add(displayLabel);
 
-    mainPanel.add(radioPanel);
-
+    int histogramPanelSize = 256;
     this.histogramPanel = new Histogram();
-    JLabel displayLabel2 = new JLabel("histogram");
-    histogramPanel.add(displayLabel2);
-    histogramPanel.setPreferredSize(new Dimension(500, 500));
-
-    mainPanel.add(histogramPanel);
+    histogramPanel.setMinimumSize(new Dimension(histogramPanelSize, histogramPanelSize));
+    histogramPanel.setPreferredSize(new Dimension(histogramPanelSize, histogramPanelSize));
+    histogramPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
     // display image with
-    JPanel imagePanel = new JPanel();
-    //a border around the panel with a caption
-    imagePanel.setBorder(BorderFactory.createTitledBorder("The Working Image"));
-    //imagePanel.setMaximumSize(null);
-    mainPanel.add(imagePanel);
-
-
+    int imagePanelSize = 712;
+    this.imagePanel = new JPanel();
     this.image = new JLabel();
-    //image.setIcon(new ImageIcon(currImg));
     imagePanel.add(this.image);
+    imagePanel.setBorder(BorderFactory.createTitledBorder("The Working Image"));
+    JScrollPane imageScroll = new JScrollPane(imagePanel);
+    imageScroll.setMinimumSize(new Dimension(imagePanelSize, imagePanelSize));
+    imageScroll.setSize(new Dimension(imagePanelSize, imagePanelSize));
+    imageScroll.setPreferredSize(new Dimension(imagePanelSize, imagePanelSize));
 
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 0;
+    constraints.gridy = 0;
+    mainPanel.add(radioPanel, constraints);
+
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 0;
+    constraints.gridy = 1;
+    constraints.ipadx = 5;
+    mainPanel.add(histogramPanel, constraints);
+
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.gridx = 1;
+    constraints.gridy = 0;
+    constraints.gridwidth = 2;
+    constraints.gridheight = 2;
+    mainPanel.add(imageScroll, constraints);
+
+    JScrollPane mainScroll = new JScrollPane(mainPanel);
+    this.add(mainScroll);
+    this.pack();
     this.setVisible(true);
   }
 
   @Override
   public void setCurrImgName(String currImgName) {
-    //this.currImgName = currImgName;
-
+    this.currImgName = currImgName;
   }
 
   @Override
@@ -152,9 +161,5 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
         }
       });
     }
-
-
   }
-
-
 }
