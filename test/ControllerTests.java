@@ -2,6 +2,7 @@ import org.junit.Test;
 
 import java.io.StringReader;
 
+import controller.Features;
 import controller.ImageProcessorController;
 import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessor;
@@ -23,7 +24,6 @@ public class ControllerTests {
     controller.run();
     assertEquals(output, build.toString());
   }
-
 
   @Test(expected = IllegalArgumentException.class)
   public void testNull() {
@@ -136,4 +136,6 @@ public class ControllerTests {
 
     assertControllerMock(commandString, expectedOut);
   }
+
+
 }

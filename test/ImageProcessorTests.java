@@ -7,6 +7,7 @@ import controller.ImageProcessorControllerImp;
 import model.imageprocessor.ImageProcessorModel;
 import model.imageprocessor.ImageProcessor;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -4001,6 +4002,33 @@ public class ImageProcessorTests {
     controller.run();
     assertEquals(model.getImageAsString("sepia-acc"),
             model.getImageAsString("sepia"));
+  }
+
+  @Test
+  public void testHistogram() {
+    StringReader reader = new StringReader("load 4by4.ppm img");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+
+    int[][] histogram = model.generateHistogram("img");
+
+    // checks red values
+    assertEquals(6, histogram[0][0]);
+    assertEquals(1, histogram[0][10]);
+
+    // checks green values
+    assertEquals(6, histogram[1][0]);
+    assertEquals(1, histogram[1][45]);
+
+    // checks blue values
+    assertEquals(6, histogram[2][0]);
+    assertEquals(5, histogram[2][34]);
+
+    // checks intensity values
+    assertEquals(6, histogram[3][0]);
+    assertEquals(7, histogram[3][255]);
   }
 }
 
