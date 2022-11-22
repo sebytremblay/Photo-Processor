@@ -10,6 +10,4 @@ public interface ImageProcessorController {
    * @throws IllegalStateException if the processor fails
    */
   void run() throws IllegalStateException;
-
-
 }

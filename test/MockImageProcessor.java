@@ -18,12 +18,12 @@ public class MockImageProcessor implements ImageProcessor {
 
   @Override
   public void load(Pixel[][] pixGrid, String imgName) {
-    log.append("loaded image: " + imgName + "\n");
+    write("loaded image: " + imgName);
   }
 
   @Override
   public void visualize(String imgName, String newImageName, Function f) {
-    log.append("visualize imgName: " + imgName + ", newImageName:" + newImageName + "");
+    write("visualize imgName: " + imgName + ", newImageName:" + newImageName + "");
   }
 
   /**
@@ -34,19 +34,19 @@ public class MockImageProcessor implements ImageProcessor {
    */
   @Override
   public void flipImage(String imgName, String newImageName, Function<Pixel[][], Pixel[][]> func) {
-    log.append("flipImage imgName: " + imgName + ", newImageName:" + newImageName + ", ");
+    write("flipImage imgName: " + imgName + ", newImageName:" + newImageName + ", ");
 
   }
 
   @Override
   public String getImageAsString(String imgName) {
-    log.append("Saved imgName " + imgName);
+    write("Saved imgName " + imgName);
     return "";
   }
 
   @Override
   public BufferedImage getImageAsBufferedImage(String imgName) {
-    log.append("Saved imgName: " + imgName);
+    write("Saved imgName: " + imgName);
     return null;
   }
 
@@ -60,7 +60,7 @@ public class MockImageProcessor implements ImageProcessor {
       kernelType = "sharpen";
     }
 
-    log.append("Applied " + kernelType + " kernel to: " + imgName);
+    write("Applied " + kernelType + " kernel to: " + imgName);
   }
 
   @Override
@@ -74,12 +74,16 @@ public class MockImageProcessor implements ImageProcessor {
       transType = "sepia";
     }
 
-    log.append("Applied " + transType + " color transformation to: " + imgName);
+    write("Applied " + transType + " color transformation to: " + imgName );
   }
 
   @Override
   public int[][] generateHistogram(String imgName) {
-    log.append("Generated histogram.");
+    write("Generated histogram.");
     return null;
+  }
+
+  private void write(String msg) {
+    this.log.append(msg + "\n");
   }
 }
