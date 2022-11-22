@@ -4,6 +4,9 @@ import java.awt.*;
 
 import javax.swing.*;
 
+/**
+ * Represents a panel of a Histogram.
+ */
 public class Histogram extends JPanel {
   private int[][] histograms;
 

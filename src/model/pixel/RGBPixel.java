@@ -70,10 +70,13 @@ public class RGBPixel implements Pixel {
     }
     int[] newComponents = new int[3];
     for (int row = 0; row < transformation.length; row += 1) {
+      int count = 0;
       double dot = 0;
-      dot += this.getRed();
-      dot += this.getGreen();
-      dot += this.getBlue();
+      dot += (this.getRed() * transformation[row][count]);
+      count+=1;
+      dot += (this.getGreen() * transformation[row][count]);
+      count+=1;
+      dot += (this.getBlue() * transformation[row][count]);
       newComponents[row] = (int)(dot);
     }
     return new RGBPixel(newComponents[0], newComponents[1], newComponents[2]);

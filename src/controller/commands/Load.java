@@ -25,17 +25,18 @@ public class Load extends AbstractCommand {
 
   @Override
   public void run(ImageProcessor model) {
-    String fileType = this.imgPath.substring(imgPath.lastIndexOf(".")).trim();
+    String imgPathTrimmed = this.imgPath.trim();
+    String fileType = imgPathTrimmed.substring(imgPathTrimmed.lastIndexOf(".")).trim();
 
     switch (fileType) {
       case ".ppm":
-        model.load(ImageUtils.readPPM(imgPath), imgName);
+        model.load(ImageUtils.readPPM(imgPathTrimmed), imgName);
         break;
       case ".png":
       case ".jpeg":
       case ".jpg":
       case ".bmp":
-        model.load(ImageUtils.readImageIO(imgPath), imgName);
+        model.load(ImageUtils.readImageIO(imgPathTrimmed), imgName);
         break;
       default:
         throw new IllegalArgumentException("Illegal file type");

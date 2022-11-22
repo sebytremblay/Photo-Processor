@@ -1,35 +1,21 @@
 package controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-import java.util.function.Function;
-
-import controller.commands.ColorTransformationCommand;
-import controller.commands.DisplayComponent;
-import controller.commands.Flip;
-import controller.commands.KernelCommand;
 import controller.commands.Load;
-import controller.commands.ProcessCommand;
 import controller.commands.Save;
 import model.imageprocessor.ImageProcessor;
-import model.operations.FlipImage;
-import model.operations.VisualizeBlue;
-import model.operations.VisualizeBrighten;
-import model.operations.VisualizeGreen;
-import model.operations.VisualizeIntensity;
-import model.operations.VisualizeLuma;
-import model.operations.VisualizeRed;
-import model.operations.VisualizeValue;
-import utils.ImageUtils;
 import view.ImageProcessorGUI;
 
+/**
+ * Represents the Controller that has an implementation of features.
+ */
 public class ControllerFeaturesImpl extends AbstractController implements Features {
   private final ImageProcessorGUI view;
 
+  /**
+   * Constructor for the feature's controller.
+   * @param view the view that the information will be displayed at
+   * @param model the model that the information will retrieve from.
+   */
   public ControllerFeaturesImpl(ImageProcessorGUI view, ImageProcessor model) {
     super(model);
     this.view = view;

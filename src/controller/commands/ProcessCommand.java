@@ -3,7 +3,7 @@ package controller.commands;
 import model.imageprocessor.ImageProcessor;
 
 /**
- * Interface for a command our image processor handles.
+ * Represents the interface for a command that the controller of the image processor will apply.
  */
 public interface ProcessCommand {
   /**
