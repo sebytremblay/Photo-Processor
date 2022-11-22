@@ -4,12 +4,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-
 import javax.swing.*;
 
 import controller.Features;
 
+/**
+ * Represents the View for an ImageProcessor
+ */
 public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   private JPanel mainPanel;

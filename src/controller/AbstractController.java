@@ -34,6 +34,10 @@ public class AbstractController {
   protected Appendable output;
   protected ImageProcessor model;
 
+  /**
+   * Controller for the abstract command.
+   * @param model model that exists as the source of truth for the image processor.
+   */
   public AbstractController(ImageProcessor model) {
     output = new StringBuilder();
     this.model = model;
@@ -92,7 +96,7 @@ public class AbstractController {
   }
 
   /**
-   * Writes string to the controller's input.
+   * Applies a command on the model.
    * @param command the string to write
    */
   protected void processCommand(String command){
