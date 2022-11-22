@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.*;
 
@@ -126,10 +127,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     mainPanel.add(imageScroll, constraints);
   }
 
-  @Override
-  public void setCurrImgName(String currImgName) {
-    this.currImgName = currImgName;
-  }
 
   @Override
   public void setImage(BufferedImage img) {

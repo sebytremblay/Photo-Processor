@@ -1,5 +1,8 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
+
 public interface Features {
   /**
    * Reads the command of a string.
