@@ -1,8 +1,15 @@
 ##  Design Overview:
 
-- We have an image processor which acts as our model. It performs all the functionality on the images, as well as stores them. Each "image" is represented as an array of pixels and a max value.
-- We have a pixel class to represent a single pixel. Our particular implementation is an RGB pixel that stores each of the three color components. This inherits the Pixel interface so we can use different types of pixels later on.
-- We have the ImageProcessorControllerImp to handle user inputs. This takes in a user command and maps it to the corresponding Function object to perform the intended functionality.
+- We have an image processor which acts as our model. It performs all the functionality on the 
+images, as well as stores them. Each "image" is represented as an array of pixels and a max value.
+- We have a pixel class to represent a single pixel. Our particular implementation is an RGB pixel 
+that stores each of the three color components. This inherits the Pixel interface so we can use 
+different types of pixels later on.
+- We have the ImageProcessorController handle user inputs. This takes in a user command and 
+maps it to the corresponding Function object to perform the intended functionality. We have a 
+ControllerFeatures that gets data from a Features interface.
+- We have a ImageProcessorView that displays the view images visually and a histogram showing the
+distribution of colors.
 - We have RunImageProcessor as our Main method to run the image processor.
 
 
