@@ -1,12 +1,7 @@
 package view;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Dimension;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.awt.GridBagConstraints;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +14,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.ImageIcon;
 
+import java.awt.Component;
+import java.awt.Dimension;
+
 import controller.Features;
 
 /**
@@ -26,9 +24,9 @@ import controller.Features;
  */
 public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
-  private JPanel mainPanel;
+  private final JPanel mainPanel;
   private JLabel image;
-  private String currImgName = "curr-img";
+  private final String currImgName = "curr-img";
   private JLabel displayLabel;
   private JButton[] radioButtons;
   private JTextField brightenByField;
@@ -36,6 +34,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private JPanel histogramHousingPanel;
   private JScrollPane imageScroll;
   private JPanel radioPanel;
+  private JButton brightenButton;
 
   /**
    * Instantiates the GUI to view.
@@ -44,7 +43,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     // Layout stuff
     super("Image Processor GUI");
     this.mainPanel = new JPanel();
-    mainPanel.setLayout(new GridBagLayout());
     GridBagConstraints constraints = new GridBagConstraints();
 
     // Defines and sets up all feature buttons
@@ -72,11 +70,11 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     radioPanel.setBorder(BorderFactory.createTitledBorder("Image Transformations"));
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
+
     // Defines all supported commands
-    String[] commands = {"load", "save",
-            "red-component", "green-component", "blue-component",
-            "value-component", "intensity-component", "luma-component",
-            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia", "brighten"};
+    String[] commands = {"load", "save", "red-component", "green-component", "blue-component",
+        "value-component", "intensity-component", "luma-component",
+        "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia"};
     radioButtons = new JButton[commands.length];
 
     // Makes add feature buttons
@@ -85,14 +83,27 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
       radioButtons[i].setActionCommand(commands[i]);
 
       radioPanel.add(radioButtons[i]);
+      radioButtons[i].setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
-    // Text input to enter brightness amount
+    JPanel brightenPanel = new JPanel();
+
     brightenByField = new JTextField("");
     brightenByField.setPreferredSize(new Dimension(80, 30));
     brightenByField.setMinimumSize(brightenByField.getPreferredSize());
     brightenByField.setMaximumSize(brightenByField.getPreferredSize());
-    radioPanel.add(brightenByField);
+
+    brightenButton = new JButton("brighten");
+    brightenPanel.add(brightenButton);
+    brightenPanel.add(brightenByField);
+    brightenPanel.setLayout(new BoxLayout(brightenPanel, BoxLayout.X_AXIS));
+
+    radioPanel.add(brightenPanel);
+    brightenByField.setAlignmentX(Component.LEFT_ALIGNMENT);
+    brightenPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    radioPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    // Text input to enter brightness amount
+
 
     // Text label for error logging
     displayLabel = new JLabel("");
@@ -172,34 +183,31 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   @Override
   public void acceptsFeaturesObject(Features features) {
     for (JButton button : radioButtons) {
-      button.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          String actionPerformed = e.getActionCommand();
-          JFileChooser fchooser = new JFileChooser(".");
-          switch (actionPerformed) {
-            case "load":
-            case "save":
-              int loadRetValue = actionPerformed.equals("load") ?
-                      fchooser.showOpenDialog(SwingGUIView.this) :
-                      fchooser.showSaveDialog(SwingGUIView.this);
-              if (loadRetValue == JFileChooser.APPROVE_OPTION) {
-                String filePath = fchooser.getSelectedFile().getAbsolutePath();
-                features.readButtonClick(actionPerformed,
-                        filePath,
-                        currImgName);
-              }
-              break;
-            case "brighten":
-              features.takesInTextField("brighten", brightenByField.getText(), currImgName);
-              break;
-            default:
-              if (actionPerformed != null) {
-                features.readButtonClick(actionPerformed, currImgName);
-              }
-          }
+      button.addActionListener(e -> {
+        String actionPerformed = e.getActionCommand();
+        JFileChooser fchooser = new JFileChooser(".");
+        switch (actionPerformed) {
+          case "load":
+          case "save":
+            int loadRetValue = actionPerformed.equals("load") ?
+                    fchooser.showOpenDialog(SwingGUIView.this) :
+                    fchooser.showSaveDialog(SwingGUIView.this);
+            if (loadRetValue == JFileChooser.APPROVE_OPTION) {
+              String filePath = fchooser.getSelectedFile().getAbsolutePath();
+              features.readButtonClick(actionPerformed,
+                      filePath,
+                      currImgName);
+            }
+            break;
+          default:
+            if (actionPerformed != null) {
+              features.readButtonClick(actionPerformed, currImgName);
+            }
         }
+
       });
     }
+    brightenButton.addActionListener(e -> features.takesInTextField("brighten",
+            brightenByField.getText(), currImgName));
   }
 }

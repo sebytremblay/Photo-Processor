@@ -13,7 +13,8 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
 
   /**
    * Constructor for the feature's controller.
-   * @param view the view that the information will be displayed at
+   *
+   * @param view  the view that the information will be displayed at
    * @param model the model that the information will retrieve from.
    */
   public ControllerFeaturesImpl(ImageProcessorGUI view, ImageProcessor model) {

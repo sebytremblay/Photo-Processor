@@ -19,6 +19,6 @@ public class VisualizeGreen implements Function<Pixel, Pixel> {
   @Override
   public Pixel apply(Pixel pixel) {
     int comp = pixel.getGreen();
-    return new RGBPixel(comp,comp,comp);
+    return new RGBPixel(comp, comp, comp);
   }
 }

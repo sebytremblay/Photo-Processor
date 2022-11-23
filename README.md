@@ -21,8 +21,11 @@
 - Can brighten and darken an image
 - Can horizontally and vertically flip an image
 - Can accept a script file as a command-line argument
+- Can display an Image on a view
+- Can display a histogram of each color component and their average(intensity)
 
-## Design Changes
+
+## Design Changes for Assignment 5
 
 - Instead of storing a maxValue map in the ImageProcessor and passing the value into each pixel method, we normalize all PPM images to 255.
 - Since a lot of the methods had duplicated functionality, we abstracted a lot of the methods into function objects
@@ -30,5 +33,3 @@
 
 
 
-NULL CHECK THE STRINGS IN THE MODEL
-MOCK FINISH UP CHANGED IMP

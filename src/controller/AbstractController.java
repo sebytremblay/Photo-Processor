@@ -40,18 +40,22 @@ public class AbstractController {
     this.output = output;
     this.model = model;
     this.commands = new HashMap<String, Function<Scanner, ProcessCommand>>();
-    double[][] blurKernel = {{1.0 / 16, 1.0 / 8, 1.0 / 16},
+    double[][] blurKernel =
+        {{1.0 / 16, 1.0 / 8, 1.0 / 16},
         {1.0 / 8, 1.0 / 4, 1.0 / 8},
         {1.0 / 16, 1.0 / 8, 1.0 / 16}};
-    double[][] sharpenKernel = {{-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
+    double[][] sharpenKernel =
+        {{-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
         {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
         {-1.0 / 8, 1.0 / 4, 1.0, 1.0 / 4, -1.0 / 8},
         {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
         {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8}};
-    double[][] greyscaleTrans = {{0.2126, 0.7152, 0.0722},
+    double[][] greyscaleTrans =
+        {{0.2126, 0.7152, 0.0722},
         {0.2126, 0.7152, 0.0722},
         {0.2126, 0.7152, 0.0722}};
-    double[][] sepiaTrans = {{0.393, 0.769, 0.189},
+    double[][] sepiaTrans =
+        {{0.393, 0.769, 0.189},
         {0.349, 0.686, 0.168},
         {0.272, 0.534, 0.131}};
 

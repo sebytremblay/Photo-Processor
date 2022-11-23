@@ -81,10 +81,6 @@ public interface ImageProcessor {
   void applyColorTransformation(String imgName, String newImgName, double[][] transformation);
 
 
-  /**
-   * Represents all the possible ways of displaying a histogram.
-   */
-  enum HistogramOptions { Red, Green, Blue, Intensity }
 
   /**
    * Generates a representation of a histogram of an image.

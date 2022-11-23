@@ -9,7 +9,7 @@ import model.pixel.RGBPixel;
  * Finds the intensity of the pixel by averaging all the components. Will round down if the
  * result is non-integer.
  */
-public class VisualizeIntensity implements Function<Pixel,Pixel> {
+public class VisualizeIntensity implements Function<Pixel, Pixel> {
 
   /**
    * Applies this function to the given argument.
@@ -23,6 +23,6 @@ public class VisualizeIntensity implements Function<Pixel,Pixel> {
     int green = pixel.getGreen();
     int blue = pixel.getBlue();
     int avg = (red + green + blue) / 3;
-    return new RGBPixel(avg,avg,avg);
+    return new RGBPixel(avg, avg, avg);
   }
 }

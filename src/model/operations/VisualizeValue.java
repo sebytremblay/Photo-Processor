@@ -18,7 +18,7 @@ public class VisualizeValue implements Function<Pixel, Pixel> {
    */
   @Override
   public Pixel apply(Pixel pixel) {
-    int max = Math.max(pixel.getBlue(),Math.max(pixel.getGreen(),pixel.getRed()));
-    return new RGBPixel(max,max,max);
+    int max = Math.max(pixel.getBlue(), Math.max(pixel.getGreen(), pixel.getRed()));
+    return new RGBPixel(max, max, max);
   }
 }

@@ -14,13 +14,13 @@ public class KernelCommand extends AbstractCommand {
   /**
    * Creates a command to apply a given kernel.
    *
-   * @param imgName the image to apply the kernel to
+   * @param imgName    the image to apply the kernel to
    * @param newImgName what to name the new image
-   * @param kernel the kernel to apply
-   * @param append the output stream
+   * @param kernel     the kernel to apply
+   * @param append     the output stream
    */
   public KernelCommand(String imgName, String newImgName,
-                          double[][] kernel, Appendable append) {
+                       double[][] kernel, Appendable append) {
     super(append);
     this.imgName = imgName;
     this.newImgName = newImgName;

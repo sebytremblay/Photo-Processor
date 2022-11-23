@@ -22,7 +22,7 @@ public class VisualizeLuma implements Function<Pixel, Pixel> {
     int luma = (int) (0.2126 * pixel.getRed()
             + 0.7152 * pixel.getGreen()
             + 0.0722 * pixel.getBlue());
-    return new RGBPixel(luma,luma,luma);
+    return new RGBPixel(luma, luma, luma);
   }
 
 }
