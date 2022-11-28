@@ -46,7 +46,7 @@ public interface Pixel {
    * Applies a given color transformation to the pixel.
    *
    * @param transformation the color transformation
-   * @return
+   * @return the pixel that is transformed
    */
   Pixel colorTransformation(double[][] transformation);
 

@@ -89,20 +89,14 @@ public class RGBPixel implements Pixel {
     if (colorComp > 255) {
       return 255;
     }
-    if (colorComp < 0) {
-      return 0;
-    }
-    return colorComp;
+    return Math.max(colorComp, 0);
   }
 
   @Override
   public String toString() {
-    StringBuilder build = new StringBuilder();
-    build.append(red + "\n");
-    build.append(green + "\n");
-    build.append(blue + "\n");
-
-    return build.toString();
+    return red + "\n" +
+            green + "\n" +
+            blue + "\n";
   }
 
 }

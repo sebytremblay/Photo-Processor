@@ -1,0 +1,10 @@
+load res/sample.ppm img
+# loaded our sample image
+
+luma-component img luma-img
+brighten luma-img luma-dim-img -30
+horizontal-flip luma-dim-img luma-dim-horz-img
+
+save luma-img res/sample-script-output-1.ppm
+save luma-dim-img res/sample-script-output-2.ppm
+save luma-dim-horz-img res/sample-script-output-3.ppm

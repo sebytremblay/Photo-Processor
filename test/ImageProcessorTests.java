@@ -104,7 +104,6 @@ public class ImageProcessorTests {
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
 
     controller.run();
-    System.out.println(builder);
     String expectedOutput = "P3\n" +
             "4 4\n" +
             "255\n" +

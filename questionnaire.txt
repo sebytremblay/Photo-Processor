@@ -1,0 +1,61 @@
+Code status questionnaire:
+
+Please complete this questionnaire by selecting the appropriate answer for each question. Then include this file in the code that you send to your customers.
+
+Import/export features:
+
+Load a PPM file implementation: Yes
+Script command to load a PPM file: Yes
+Load PPM file from GUI: Yes
+
+Load a PNG/JPG file implementation: Yes
+Script command to load a PNG/JPG file: Yes
+Load PNG/JPG file from GUI: Yes
+
+Save a PPM file implementation: Yes
+Script command to save a PPM file: Yes
+Save PPM file from GUI: Yes
+
+Save a PNG/JPG file implementation: Yes
+Script command to save a PNG/JPG file: Yes
+Save PNG/JPG file from GUI: Yes
+
+
+Image manipulations:
+
+Visualize various image components implementation: Yes 
+Script commands to load various image components: Yes
+Visualize various image components from GUI: Yes
+
+Flip an image horizontally implementation: Yes
+Script command to flip an image horizontally: Yes
+Flip an image horizontally from GUI: Yes
+
+Flip an image vertically implementation: Yes
+Script command to flip an image vertically: Yes
+Flip an image vertically from GUI: Yes
+
+Brighten/darken image implementation: Yes
+Script command to bright/darken image: Yes
+Brighten/darken image from GUI: Yes
+
+Blur an image implementation: Yes
+Script command to blur an image: Yes
+Blur an image from GUI: Yes
+
+Sharpen an image implementation: Yes
+Script command to sharpen an image: Yes
+Sharpen an image from GUI: Yes
+
+Sepia implementation: Yes
+Script command for sepia: Yes
+Sepia from GUI: Yes
+
+Histogram visualization from GUI: Yes
+
+Program:
+
+Program runs by running main? Yes
+Program runs correctly using -file option? Yes
+Program runs correctly using -text option? Yes
+Program runs correctly (opens GUI) with no command-line options? Yes
