@@ -26,7 +26,7 @@ public class ChooseSeedsRandomly implements Function<ImageModel,
     List<PixelCoordinate> seeds = new ArrayList<PixelCoordinate>();
 
     // Imposes range on number of seeds
-    numSeeds = Math.min(numSeeds, imageModel.getHeight()) * imageModel.getWidth();
+    numSeeds = Math.min(numSeeds, imageModel.getHeight() * imageModel.getWidth());
 
     for (int seedNum = 0; seedNum < numSeeds; seedNum += 1) {
       int seedRow = r.nextInt(imageModel.getHeight());

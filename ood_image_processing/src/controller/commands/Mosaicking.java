@@ -10,7 +10,6 @@ import model.color.Color;
 import model.image.ImageModel;
 import model.image.SimpleImage;
 import util.Util;
-
 /**
  * Function object command for adding a mosaicking pattern to the image
  */

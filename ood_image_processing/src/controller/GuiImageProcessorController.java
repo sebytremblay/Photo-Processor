@@ -26,6 +26,7 @@ public class GuiImageProcessorController implements ImageProcessorController {
     this.controls = new GuiControllerFeatures(Util.requireNonNullArg(processor), view);
   }
 
+
   /**
    * Create a new image processor controller that runs based on user input through a GUI
    * in order to process images.

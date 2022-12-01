@@ -1,3 +1,4 @@
+
 package controller;
 
 import java.util.Scanner;
@@ -10,7 +11,7 @@ import view.ImageProcessorView;
  * An extension of the controller features class that also manages a view so that the view can be
  * updated every time an image is changed.
  */
-public class GuiControllerFeatures extends ControllerFeatures {
+public class ControllerFeaturesMosaick implements ControllerFeatureSet{
 
   private final ImageProcessorView view;
 
@@ -21,12 +22,13 @@ public class GuiControllerFeatures extends ControllerFeatures {
    * @param view the view to send images to
    * @throws IllegalArgumentException if any arguments are null
    */
-  public GuiControllerFeatures(ImageProcessor processor, ImageProcessorView view)
+  public ControllerFeaturesMosaic(ImageProcessor processor, ImageProcessorView view)
           throws IllegalArgumentException {
     super(processor);
     this.view = Util.requireNonNullArg(view);
 
   }
+
 
   @Override
   public void loadFile(String path, String saveName) {
@@ -39,5 +41,4 @@ public class GuiControllerFeatures extends ControllerFeatures {
     super.runProcessingCommand(cmd, name, saveName, sc);
     this.view.displayImage(this.processor.getImageState(saveName));
   }
-
 }
