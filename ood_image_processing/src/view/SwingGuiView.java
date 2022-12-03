@@ -215,6 +215,11 @@ public class SwingGuiView extends JFrame implements ImageProcessorView {
           this.actionObject.runProcessingCommand(action, IMG_NAME, IMG_NAME,
                                                  new Scanner(increment));
           break;
+        case "mosaick":
+          String mosaickIncrement = Integer.toString((Integer) this.mosaickIncrement.getValue());
+          this.actionObject.runProcessingCommand(action, IMG_NAME, IMG_NAME,
+                  new Scanner(mosaickIncrement));
+          break;
         default:
           this.actionObject.runProcessingCommand(action, IMG_NAME, IMG_NAME, null);
       }

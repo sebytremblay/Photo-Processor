@@ -3,6 +3,8 @@ package controller;
 
 import java.util.Scanner;
 
+import controller.commands.BrightenChannels;
+import controller.commands.Mosaicking;
 import model.processor.ImageProcessor;
 import util.Util;
 import view.ImageProcessorView;
@@ -11,9 +13,8 @@ import view.ImageProcessorView;
  * An extension of the controller features class that also manages a view so that the view can be
  * updated every time an image is changed.
  */
-public class ControllerFeaturesMosaick implements ControllerFeatureSet{
+public class ControllerFeaturesMosaick extends ControllerFeatures{
 
-  private final ImageProcessorView view;
 
   /**
    * Create a new instance of gui controller features with a processor to handle image processing,
@@ -22,23 +23,17 @@ public class ControllerFeaturesMosaick implements ControllerFeatureSet{
    * @param view the view to send images to
    * @throws IllegalArgumentException if any arguments are null
    */
-  public ControllerFeaturesMosaic(ImageProcessor processor, ImageProcessorView view)
-          throws IllegalArgumentException {
+
+
+  /**
+   * Create a new instance of controller features with a processor delegate to load images to,
+   * save images from, and run commands via.
+   *
+   * @param processor the processor delegate
+   * @throws IllegalArgumentException if the processor is null
+   */
+  public ControllerFeaturesMosaick(ImageProcessor processor) throws IllegalArgumentException {
     super(processor);
-    this.view = Util.requireNonNullArg(view);
-
-  }
-
-
-  @Override
-  public void loadFile(String path, String saveName) {
-    super.loadFile(path, saveName);
-    this.view.displayImage(this.processor.getImageState(saveName));
-  }
-
-  @Override
-  public void runProcessingCommand(String cmd, String name, String saveName, Scanner sc) {
-    super.runProcessingCommand(cmd, name, saveName, sc);
-    this.view.displayImage(this.processor.getImageState(saveName));
+    this.knownCommands.put("mosaick", (Scanner sc) -> new Mosaicking(Util.requireNonNullArg(sc).nextInt()));
   }
 }
