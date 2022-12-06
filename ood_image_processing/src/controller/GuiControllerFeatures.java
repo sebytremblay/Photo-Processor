@@ -39,5 +39,4 @@ public class GuiControllerFeatures extends ControllerFeatures {
     super.runProcessingCommand(cmd, name, saveName, sc);
     this.view.displayImage(this.processor.getImageState(saveName));
   }
-
 }

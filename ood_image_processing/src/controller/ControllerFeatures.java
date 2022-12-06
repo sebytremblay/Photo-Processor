@@ -94,6 +94,4 @@ public class ControllerFeatures implements ControllerFeatureSet {
     processingCommand = cmdGenerator.apply(sc);
     this.processor.processImage(name, saveName, processingCommand);
   }
-
-
 }

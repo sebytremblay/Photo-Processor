@@ -10,17 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.JScrollPane;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.BorderFactory;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -34,9 +24,9 @@ import util.Util;
  * Swing.
  */
 public class SwingGuiView extends JFrame implements ImageProcessorView {
-
-  private final static String IMG_NAME = "current-image";
-  private ControllerFeatureSet actionObject;
+  // TODO we made these both protected
+  protected final static String IMG_NAME = "current-image";
+  protected ControllerFeatureSet actionObject;
 
   // An image label to display the currently selected image.
   private final JLabel imageLabel;
@@ -44,15 +34,19 @@ public class SwingGuiView extends JFrame implements ImageProcessorView {
   private HistogramPanel greenHistogramPanel;
   private HistogramPanel blueHistogramPanel;
   private HistogramPanel intensityHistogramPanel;
+
   private final JLabel loadFileDisplay;
   private final JLabel saveFileDisplay;
   private final JSpinner brightenIncrement;
+  private final JSpinner mosaickIncrement;
+
+  // TODO delete
+  protected final JPanel processingActions;
 
   /**
    * Create a new GUI view for the given state of a marble solitaire game.
    */
   public SwingGuiView() {
-
     super("Image Processing Program");
 
     this.setLayout(new BorderLayout());
@@ -93,9 +87,9 @@ public class SwingGuiView extends JFrame implements ImageProcessorView {
     histograms.add(intensityHistogramScrollable);
 
     // Create a section for all the GUI program commands on the right side.
-    JPanel processingActions = new JPanel();
+    processingActions = new JPanel();
     processingActions.setBorder(BorderFactory.createTitledBorder("Commands"));
-    processingActions.setLayout(new GridLayout(14, 0));
+    processingActions.setLayout(new GridLayout(15, 0));
     this.add(processingActions, BorderLayout.EAST);
 
     // Add the file loading button.
@@ -150,6 +144,19 @@ public class SwingGuiView extends JFrame implements ImageProcessorView {
     brightenSection.add(this.brightenIncrement);
     processingActions.add(brightenSection);
 
+    // Add the button for mosaic, which gets special treatment because it needs a text input for
+    // number of seeds
+    JButton mosaickBtn = new JButton("Mosaick");
+    JLabel mosaickLabel = new JLabel("Mosaick Increment:");
+    this.mosaickIncrement = new JSpinner(new SpinnerNumberModel());
+    mosaickBtn.addActionListener(actionEvent -> requestAction("mosaick"));
+    JPanel mosaickSection = new JPanel();
+    mosaickSection.setLayout(new FlowLayout());
+    mosaickSection.add(mosaickBtn);
+    mosaickSection.add(mosaickLabel);
+    mosaickSection.add(this.mosaickIncrement);
+    processingActions.add(mosaickSection);
+
     pack();
     this.repaint();
   }
@@ -166,7 +173,7 @@ public class SwingGuiView extends JFrame implements ImageProcessorView {
     this.blueHistogramPanel.setHistogram(
             ImageUtil.imageToHistogram(img, model.color.Color::blue));
     this.intensityHistogramPanel.setHistogram(ImageUtil.imageToHistogram(img,
-        (model.color.Color c) -> (c.red() + c.green() + c.blue()) / 3));
+            (model.color.Color c) -> (c.red() + c.green() + c.blue()) / 3));
     this.repaint();
   }
 
@@ -181,6 +188,7 @@ public class SwingGuiView extends JFrame implements ImageProcessorView {
    * string.
    * Separates controller and view responsibility by passing the GUI action to the controller
    * for respective handling in its command pattern.
+   *
    * @param action load, save, brighten, or any generic image processing command
    */
   private void requestAction(String action) {
@@ -211,9 +219,9 @@ public class SwingGuiView extends JFrame implements ImageProcessorView {
           }
           break;
         case "brighten":
-          String increment = Integer.toString((Integer) this.brightenIncrement.getValue());
+          String brightenIncrement = Integer.toString((Integer) this.brightenIncrement.getValue());
           this.actionObject.runProcessingCommand(action, IMG_NAME, IMG_NAME,
-                                                 new Scanner(increment));
+                  new Scanner(brightenIncrement));
           break;
         case "mosaick":
           String mosaickIncrement = Integer.toString((Integer) this.mosaickIncrement.getValue());

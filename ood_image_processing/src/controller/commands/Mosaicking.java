@@ -17,9 +17,9 @@ public class Mosaicking implements ImageProcessingCommand {
   private final int numSeeds;
   private final Function<ImageModel, List<PixelCoordinate>> func;
 
-  public Mosaicking(int numSeeds, Function<ImageModel, List<PixelCoordinate>> func) {
+  public Mosaicking(int numSeeds) {
     this.numSeeds = numSeeds;
-    this.func = func;
+    this.func = new ChooseSeedsRandomly(numSeeds);
   }
 
   @Override
@@ -96,6 +96,11 @@ public class Mosaicking implements ImageProcessingCommand {
   // Finds the closest pixel in the list to myPix
   private PixelCoordinate findClosestPix(PixelCoordinate myPix,
                                          List<PixelCoordinate> nearbyPix) {
+    // if no nearby pix, return self
+    if (nearbyPix.size() == 0) {
+      return myPix;
+    }
+
     double min = Double.MAX_VALUE;
     PixelCoordinate cloestPix = nearbyPix.get(0);
 
