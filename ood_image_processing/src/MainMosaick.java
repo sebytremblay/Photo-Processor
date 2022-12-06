@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
-import controller.GuiImageProcessorControllerMosaick;
+import controller.GuiImageProcessorController;
 import controller.ImageProcessorController;
 import controller.InteractiveImageProcessorController;
 import controller.ScriptedImageProcessorController;

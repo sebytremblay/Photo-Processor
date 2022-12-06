@@ -15,6 +15,7 @@ import controller.commands.CommandImpls;
 import controller.commands.FlipHorizontally;
 import controller.commands.FlipVertically;
 import controller.commands.ImageProcessingCommand;
+import controller.commands.Mosaicking;
 import model.color.Color;
 import model.image.ImageModel;
 import model.image.SimpleImage;
@@ -57,6 +58,8 @@ public class ControllerFeatures implements ControllerFeatureSet {
     this.knownCommands.put("gaussian-blur", (Scanner sc) -> CommandImpls.GAUSSIAN_BLUR);
     this.knownCommands.put("sharpen", (Scanner sc) -> CommandImpls.SHARPEN);
     this.knownCommands.put("sepia-tone", (Scanner sc) -> CommandImpls.SEPIA_TONE);
+    this.knownCommands.put("mosaick",
+        (Scanner sc) -> new Mosaicking(Util.requireNonNullArg(sc).nextInt()));
   }
 
   @Override
