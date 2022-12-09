@@ -71,3 +71,6 @@ greyscale img-name new-img-name
 
 Visualizes the image in sepia and save it as a new image
 sepia img-name new-img-name
+
+Resizes the image and saves it as a new image (must be same size or smaller than original image dimensions)
+resize width height img-name new-img-name

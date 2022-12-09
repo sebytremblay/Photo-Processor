@@ -30,7 +30,7 @@ distribution of colors.
 - Can accept a script file as a command-line argument
 - Can display an Image on a view
 - Can display a histogram of each color component and their average(intensity)
-
+- Can resize an image
 
 ## Design Changes for Assignment 5
 
