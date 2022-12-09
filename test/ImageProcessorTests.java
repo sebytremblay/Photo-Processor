@@ -3511,6 +3511,7 @@ public class ImageProcessorTests {
             model.getImageAsString("ppm"));
   }
 
+
   @Test
   public void loadPPMSaveAsPNG() {
     StringReader reader = new StringReader("load res/20by5.ppm ppm \n"
@@ -4002,6 +4003,19 @@ public class ImageProcessorTests {
     assertEquals(model.getImageAsString("sepia-acc"),
             model.getImageAsString("sepia"));
   }
+  @Test
+  public void testResize() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \n"
+            + "resize 3 10 img resize\n"
+            + "load res/ExResize.ppm resize-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("resize-acc"),
+            model.getImageAsString("resize"));
+  }
+
 
   @Test
   public void testHistogram() {

@@ -77,6 +77,12 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   @Override
+  public void applyResize(String imgName, String newImgName, int height, int width) {
+    write("Applied Resize of size " +  width + "x" + height + " to image: " + imgName);
+
+  }
+
+  @Override
   public int[][] generateHistogram(String imgName) {
     write("Generated histogram.");
     return null;

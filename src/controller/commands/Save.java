@@ -22,7 +22,7 @@ public class Save extends AbstractCommand {
    */
   public Save(String imgPath, String imgName, Appendable append) {
     super(append);
-    this.imgPath = imgPath;
+    this.imgPath = imgPath.trim();
     this.imgName = imgName;
   }
 
@@ -30,7 +30,7 @@ public class Save extends AbstractCommand {
   public void run(ImageProcessor model) {
     String fileType;
     try {
-      fileType = imgPath.substring(imgPath.lastIndexOf("."));
+      fileType = imgPath.substring(imgPath.lastIndexOf(".")).trim();
     } catch (StringIndexOutOfBoundsException e) {
       fileType = "";
     }

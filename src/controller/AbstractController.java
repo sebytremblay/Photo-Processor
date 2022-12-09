@@ -12,6 +12,7 @@ import controller.commands.ColorTransformationCommand;
 import controller.commands.DisplayComponent;
 import controller.commands.Flip;
 import controller.commands.KernelCommand;
+import controller.commands.Resize;
 import model.imageprocessor.ImageProcessor;
 import model.operations.FlipImage;
 import model.operations.VisualizeBlue;
@@ -86,6 +87,7 @@ public class AbstractController {
             greyscaleTrans, output));
     commands.put("sepia", s -> new ColorTransformationCommand(s.next(), s.next(),
             sepiaTrans, output));
+    commands.put("resize", s -> new Resize(s.nextInt(), s.nextInt(), s.next(), s.next(),output));
   }
 
   // error logging

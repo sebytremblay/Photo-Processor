@@ -34,7 +34,7 @@ import view.SwingGuiView;
       // If no args are provided, just run in GUI mode
       if (args.length == 0) {
         ImageProcessorView view = new SwingGuiView();
-        controller = new GuiImageProcessorControllerMosaick(processor, view);
+        controller = new GuiImageProcessorController(processor, view);
       } else {
         // Switch on the command line arg to dictate the args based on what mode to run in
         // or let the user know how the program should be run.

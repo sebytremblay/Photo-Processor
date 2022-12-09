@@ -40,3 +40,14 @@ distribution of colors.
 
 
 
+## Additions for Assignment 8 - resizing commands
+
+- added a new method in the imageProcessor - applyResize
+- implemented that method in ImageProcessorModel
+- created a new command for the controller for resize
+- added a new button on the GUI
+- Added Controller tests for resize
+- Added model tests for resize
+
+IMAGE OF CAR:
+https://all-free-download.com/free-photos/500-x-500-pixel.html

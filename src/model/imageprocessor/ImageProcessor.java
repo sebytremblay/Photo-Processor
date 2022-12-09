@@ -80,7 +80,14 @@ public interface ImageProcessor {
    */
   void applyColorTransformation(String imgName, String newImgName, double[][] transformation);
 
-
+  /**
+   * Resizes the image into the bounds that are specified
+   * @param imgName the image to resize
+   * @param newImgName the new image that will be resized
+   * @param height the height of the new image
+   * @param width the width of the new image
+   */
+  void applyResize(String imgName, String newImgName, int height, int width);
 
   /**
    * Generates a representation of a histogram of an image.

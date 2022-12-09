@@ -43,6 +43,7 @@ public class ImageProcessorModel implements ImageProcessor {
     loadedImages.put(newImgName, newPixelGrid);
   }
 
+
   // determines is an image is loaded, and throws an error if not
   private void isLoadedImgName(String imgName) {
     if (!loadedImages.containsKey(imgName)) {
@@ -119,6 +120,51 @@ public class ImageProcessorModel implements ImageProcessor {
   }
 
   @Override
+  public void applyResize(String imgName, String newImgName, int height, int width) {
+    Pixel[][] pixelGrid = loadedImages.get(imgName);
+    Pixel[][] newPixelGrid = new Pixel[height][width];
+    for (int row = 0; row < height; row+=1){
+      for (int col = 0; col < width; col+=1){
+         double cordOnOrgRow= (double)row / height * pixelGrid.length;
+         double cordOnOrgCol = (double)col / width * pixelGrid[0].length;
+         if (cordOnOrgRow % 1  == 0 || cordOnOrgCol % 1 == 0){
+           Pixel pix = pixelGrid[(int)cordOnOrgRow][(int)cordOnOrgCol];
+           newPixelGrid[row][col] = new RGBPixel((int)pix.getRed(),(int)pix.getGreen(),(int)pix.getBlue());
+           continue;
+         }
+
+         Pixel a = pixelGrid[(int)Math.floor(cordOnOrgRow)][(int)Math.floor(cordOnOrgCol)];
+         Pixel b = pixelGrid[(int)Math.ceil(cordOnOrgRow)][(int)Math.floor(cordOnOrgCol)];
+         Pixel c = pixelGrid[(int)Math.floor(cordOnOrgRow)][(int)Math.ceil(cordOnOrgCol)];
+         Pixel d = pixelGrid[(int)Math.ceil(cordOnOrgRow)][(int)Math.ceil(cordOnOrgCol)];
+
+         double mRed = (b.getRed() * (cordOnOrgCol - Math.floor(cordOnOrgCol))) +
+                 (a.getRed() * (Math.ceil(cordOnOrgCol) - cordOnOrgCol));
+         double nRed = (d.getRed() * (cordOnOrgCol - Math.floor(cordOnOrgCol))) +
+                 (c.getRed() * (Math.ceil(cordOnOrgCol) - cordOnOrgCol));
+         double cRed = (mRed * (cordOnOrgRow - Math.floor(cordOnOrgRow))) + (nRed
+                 * (Math.ceil(cordOnOrgRow)-cordOnOrgRow));
+
+        double mGreen= (b.getGreen() * (cordOnOrgCol - Math.floor(cordOnOrgCol))) +
+                (a.getGreen() * (Math.ceil(cordOnOrgCol) - cordOnOrgCol));
+        double nGreen = (d.getGreen() * (cordOnOrgCol - Math.floor(cordOnOrgCol))) +
+                (c.getGreen() * (Math.ceil(cordOnOrgCol) - cordOnOrgCol));
+        double cGreen = (mGreen * (cordOnOrgRow - Math.floor(cordOnOrgRow))) + (nGreen
+                * (Math.ceil(cordOnOrgRow)-cordOnOrgRow));
+
+        double mBlue = (b.getBlue() * (cordOnOrgCol - Math.floor(cordOnOrgCol))) +
+                (a.getBlue() * (Math.ceil(cordOnOrgCol) - cordOnOrgCol));
+        double nBlue = (d.getBlue() * (cordOnOrgCol - Math.floor(cordOnOrgCol))) +
+                (c.getBlue() * (Math.ceil(cordOnOrgCol) - cordOnOrgCol));
+        double cBlue = (nBlue * (cordOnOrgRow - Math.floor(cordOnOrgRow))) + (mBlue
+                * (Math.ceil(cordOnOrgRow)-cordOnOrgRow));
+        newPixelGrid[row][col] = new RGBPixel((int)cRed,(int)cGreen,(int)cBlue);
+      }
+    }
+    loadedImages.put(newImgName, newPixelGrid);
+  }
+
+  @Override
   public int[][] generateHistogram(String imgName) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     int[] histogramRedMap = new int[256];
@@ -159,6 +205,7 @@ public class ImageProcessorModel implements ImageProcessor {
     }
     return background;
   }
+
 
 
   // Writes a given message in a given builder and adds a new line

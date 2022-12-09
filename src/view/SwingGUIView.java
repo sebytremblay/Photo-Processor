@@ -3,16 +3,7 @@ package view;
 import java.awt.image.BufferedImage;
 import java.awt.GridBagConstraints;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JScrollPane;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JFileChooser;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -35,6 +26,8 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private JScrollPane imageScroll;
   private JPanel radioPanel;
   private JButton brightenButton;
+
+  private JButton resizeButton;
 
   /**
    * Instantiates the GUI to view.
@@ -81,19 +74,19 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     for (int i = 0; i < commands.length; i += 1) {
       radioButtons[i] = new JButton(commands[i]);
       radioButtons[i].setActionCommand(commands[i]);
+      radioButtons[i].setSize(40,30);
 
       radioPanel.add(radioButtons[i]);
       radioButtons[i].setAlignmentX(Component.LEFT_ALIGNMENT);
+
     }
-
+    //BRIGHTEN BUTTON
     JPanel brightenPanel = new JPanel();
-
     brightenByField = new JTextField("");
-    brightenByField.setPreferredSize(new Dimension(80, 30));
+    brightenByField.setPreferredSize(new Dimension(60, 30));
     brightenByField.setMinimumSize(brightenByField.getPreferredSize());
-    brightenByField.setMaximumSize(brightenByField.getPreferredSize());
-
     brightenButton = new JButton("brighten");
+
     brightenPanel.add(brightenButton);
     brightenPanel.add(brightenByField);
     brightenPanel.setLayout(new BoxLayout(brightenPanel, BoxLayout.X_AXIS));
@@ -102,7 +95,10 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     brightenByField.setAlignmentX(Component.LEFT_ALIGNMENT);
     brightenPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
     radioPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-    // Text input to enter brightness amount
+
+    //RESIZE BUTTON
+    resizeButton = new JButton("resize");
+    radioPanel.add(resizeButton);
 
 
     // Text label for error logging
@@ -209,5 +205,8 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     }
     brightenButton.addActionListener(e -> features.takesInTextField("brighten",
             brightenByField.getText(), currImgName));
+    resizeButton.addActionListener(e -> features.takesInTextField("resize",
+            JOptionPane.showInputDialog("Please enter the width and height in this format '100 100' <width height>)"),
+            currImgName));
   }
 }

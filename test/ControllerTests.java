@@ -50,45 +50,38 @@ public class ControllerTests {
   @Test
   public void testMockModelVertical() {
     assertControllerMock("load 4by4.ppm l\nvertical-flip l lk",
-            "loaded image: l\n" +
+
                     "flipImage imgName: l, newImageName:lk, \n");
   }
 
   @Test
   public void testMockModelHorz() {
     assertControllerMock("load 4by4.ppm l\nhorizontal-flip l lk",
-            "loaded image: l\n" +
                     "flipImage imgName: l, newImageName:lk, \n");
   }
 
-  @Test
-  public void testMockLoad() {
-    assertControllerMock("load 4by4.ppm l",
-            "loaded image: l\n");
-  }
 
   @Test
   public void testBrighten() {
-    assertControllerMock("load 4by4.ppm l\n brighten 50 l lk", "loaded image: l\n" +
+    assertControllerMock("load 4by4.ppm l\n brighten 50 l lk",
             "visualize imgName: l, newImageName:lk\n");
   }
 
   @Test
   public void testVisualizeIntensity() {
-    assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "loaded image: l\n" +
+    assertControllerMock("load 4by4.ppm l\nintensity-component l lk",
             "visualize imgName: l, newImageName:lk\n");
   }
 
   @Test
   public void testVisualizeBlue() {
-    assertControllerMock("load 4by4.ppm l\nintensity-component l lk", "loaded image: l\n" +
+    assertControllerMock("load 4by4.ppm l\nintensity-component l lk",
             "visualize imgName: l, newImageName:lk\n");
   }
 
   @Test
   public void testSavPPM() {
     assertControllerMock("load 4by4.ppm l\nsave l.ppm lk",
-            "loaded image: l\n" +
                     "Saved imgName lk\n");
   }
 
@@ -104,7 +97,7 @@ public class ControllerTests {
   public void testBlur() {
     String commandString = "load 4by4.ppm img\n"
             + "blur img img-blur";
-    String expectedOut = "loaded image: img\n" +
+    String expectedOut =
             "Applied blur kernel to: img\n";
 
     assertControllerMock(commandString, expectedOut);
@@ -114,7 +107,7 @@ public class ControllerTests {
   public void testSharpen() {
     String commandString = "load 4by4.ppm img\n"
             + "sharpen img img-sharp";
-    String expectedOut = "loaded image: img\n" +
+    String expectedOut =
             "Applied sharpen kernel to: img\n";
 
     assertControllerMock(commandString, expectedOut);
@@ -124,7 +117,7 @@ public class ControllerTests {
   public void testGreyscale() {
     String commandString = "load 4by4.ppm img\n"
             + "greyscale img img-grey";
-    String expectedOut = "loaded image: img\n" +
+    String expectedOut =
             "Applied greyscale color transformation to: img\n";
 
     assertControllerMock(commandString, expectedOut);
@@ -134,8 +127,18 @@ public class ControllerTests {
   public void testSepia() {
     String commandString = "load 4by4.ppm img\n"
             + "sepia img img-sepia";
-    String expectedOut = "loaded image: img\n" +
+    String expectedOut =
             "Applied sepia color transformation to: img\n";
+
+    assertControllerMock(commandString, expectedOut);
+  }
+  @Test
+  public void testResize() {
+    String commandString = "load 4by4.ppm img\n"
+            + "resize 2 2 img img-resize";
+    String expectedOut =
+            "Applied Resize of size 2x2 to image: img\n";
+
 
     assertControllerMock(commandString, expectedOut);
   }
