@@ -10,7 +10,6 @@ public class Resize extends AbstractCommand implements ProcessCommand{
   private final Appendable out;
 
   public Resize(int width, int height,String imgName, String newImgName, Appendable out){
-
     super(out);
     this.imgName = imgName;
     this.newImgName = newImgName;

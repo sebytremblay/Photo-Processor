@@ -64,19 +64,19 @@ public class ControllerTests {
   @Test
   public void testBrighten() {
     assertControllerMock("load 4by4.ppm l\n brighten 50 l lk",
-            "visualize imgName: l, newImageName:lk\n");
+            "visualize imgName: l, mockImgName: null, newImageName:lk\n");
   }
 
   @Test
   public void testVisualizeIntensity() {
     assertControllerMock("load 4by4.ppm l\nintensity-component l lk",
-            "visualize imgName: l, newImageName:lk\n");
+            "visualize imgName: l, mockImgName: null, newImageName:lk\n");
   }
 
   @Test
   public void testVisualizeBlue() {
     assertControllerMock("load 4by4.ppm l\nintensity-component l lk",
-            "visualize imgName: l, newImageName:lk\n");
+            "visualize imgName: l, mockImgName: null, newImageName:lk\n");
   }
 
   @Test
@@ -98,7 +98,7 @@ public class ControllerTests {
     String commandString = "load 4by4.ppm img\n"
             + "blur img img-blur";
     String expectedOut =
-            "Applied blur kernel to: img\n";
+            "Applied blur mockImgName: null kernel to: img\n";
 
     assertControllerMock(commandString, expectedOut);
   }
@@ -108,7 +108,7 @@ public class ControllerTests {
     String commandString = "load 4by4.ppm img\n"
             + "sharpen img img-sharp";
     String expectedOut =
-            "Applied sharpen kernel to: img\n";
+            "Applied sharpen mockImgName: null kernel to: img\n";
 
     assertControllerMock(commandString, expectedOut);
   }
@@ -118,7 +118,7 @@ public class ControllerTests {
     String commandString = "load 4by4.ppm img\n"
             + "greyscale img img-grey";
     String expectedOut =
-            "Applied greyscale color transformation to: img\n";
+            "Applied greyscale mockImgName: null color transformation to: img\n";
 
     assertControllerMock(commandString, expectedOut);
   }
@@ -128,7 +128,7 @@ public class ControllerTests {
     String commandString = "load 4by4.ppm img\n"
             + "sepia img img-sepia";
     String expectedOut =
-            "Applied sepia color transformation to: img\n";
+            "Applied sepia mockImgName: null color transformation to: img\n";
 
     assertControllerMock(commandString, expectedOut);
   }
@@ -151,7 +151,7 @@ public class ControllerTests {
     Features controller = new ControllerFeaturesImpl(gui, model);
     controller.readButtonClick("sepia", "img");
 
-    String output = "Applied sepia color transformation to: img\n" +
+    String output = "Applied sepia mockImgName: null color transformation to: img\n" +
             "Saved imgName: img\n" +
             "Generated histogram.\n";
     assertEquals(output, build.toString());
@@ -179,9 +179,66 @@ public class ControllerTests {
     Features controller = new ControllerFeaturesImpl(gui, model);
     controller.takesInTextField("brighten", "50", "img");
 
-    String output = "visualize imgName: img, newImageName:img\n" +
+    String output = "visualize imgName: img, mockImgName: null, newImageName:img\n" +
             "Saved imgName: img\n" +
             "Generated histogram.\n";
     assertEquals(output, build.toString());
+  }
+  @Test
+  public void testBrightenMask() {
+    assertControllerMock("load 4by4.ppm l\n load 4by4.ppm g\nbrighten 50 l g lk",
+            "visualize imgName: l, mockImgName: g, newImageName:lk\n");
+  }
+
+  @Test
+  public void testVisualizeIntensityMask() {
+    assertControllerMock("load 4by4.ppm l\nload 4by4.ppm k\nintensity-component l k lk",
+            "visualize imgName: l, mockImgName: k, newImageName:lk\n");
+  }
+
+  @Test
+  public void testVisualizeBlueMask() {
+    assertControllerMock("load 4by4.ppm l\nload 4by4.ppm k\nintensity-component l k lk",
+            "visualize imgName: l, mockImgName: k, newImageName:lk\n");
+  }
+  @Test
+  public void testBlurMask() {
+    String commandString = "load 4by4.ppm img\nload 4by4.ppm l\n"
+            + "blur img l img-blur";
+    String expectedOut =
+            "Applied blur mockImgName: l kernel to: img\n";
+
+    assertControllerMock(commandString, expectedOut);
+  }
+
+  @Test
+  public void testSharpenMask() {
+    String commandString = "load 4by4.ppm img\nload 4by4.ppm l\n"
+            + "sharpen img l img-sharp";
+    String expectedOut =
+            "Applied sharpen mockImgName: l kernel to: img\n";
+
+
+    assertControllerMock(commandString, expectedOut);
+  }
+
+  @Test
+  public void testGreyscaleMask() {
+    String commandString = "load 4by4.ppm img\nload 4by4.ppm i\n"
+            + "greyscale img i img-grey";
+    String expectedOut =
+            "Applied greyscale mockImgName: i color transformation to: img\n";
+
+    assertControllerMock(commandString, expectedOut);
+  }
+
+  @Test
+  public void testSepiaMask() {
+    String commandString = "load 4by4.ppm img\nload 4by4.ppm m\n"
+            + "sepia img m img-sepia";
+    String expectedOut =
+            "Applied sepia mockImgName: m color transformation to: img\n";
+
+    assertControllerMock(commandString, expectedOut);
   }
 }

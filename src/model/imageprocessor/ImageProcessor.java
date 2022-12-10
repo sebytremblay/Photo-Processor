@@ -26,7 +26,7 @@ public interface ImageProcessor {
    * @param newImageName the new modified name in the processor
    * @param f            function that is applied the image
    */
-  void visualize(String imgName, String newImageName, Function<Pixel, Pixel> f);
+  void visualize(String imgName, String maskImage, String newImageName, Function<Pixel, Pixel> f);
 
 
   /**
@@ -69,7 +69,7 @@ public interface ImageProcessor {
    * @param newImgName the new image that will be the applied image
    * @param kernel     is the operation on the image
    */
-  void applyKernel(String imgName, String newImgName, double[][] kernel);
+  void applyKernel(String imgName, String imgMaskName, String newImgName, double[][] kernel);
 
   /**
    * Applies a color transformation to an image.
@@ -78,7 +78,8 @@ public interface ImageProcessor {
    * @param newImgName     what to call the resulting image
    * @param transformation the color transformation to apply
    */
-  void applyColorTransformation(String imgName, String newImgName, double[][] transformation);
+  void applyColorTransformation(String imgName, String imgMaskName,
+                                String newImgName, double[][] transformation);
 
   /**
    * Resizes the image into the bounds that are specified

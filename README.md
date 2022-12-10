@@ -40,7 +40,8 @@ distribution of colors.
 
 
 
-## Additions for Assignment 8 - resizing commands
+## Additions for Assignment 8
+### resizing commands - part one
 
 - added a new method in the imageProcessor - applyResize
 - implemented that method in ImageProcessorModel
@@ -51,3 +52,15 @@ distribution of colors.
 
 IMAGE OF CAR:
 https://all-free-download.com/free-photos/500-x-500-pixel.html
+
+### mask - part two
+
+- in the commands, now the commands take a nextline(), this is so you know if you are taking in the mask or not
+- in the constructors I added a new field called imgMaskName and for a lot of the methods I added a new parameter
+called imgMaskName. 
+- Then I loaded the mask if they specified for one or just returned null if they didn't. 
+- Then when performing operations on a pixel I make sure the mask is not null and that all the components 
+of a pixel equal 0.
+- If so, I just set the current pixel to the original pixel and leave it untouched.
+- Added Controller test for these new variables
+- Added model test for these new operation commands 

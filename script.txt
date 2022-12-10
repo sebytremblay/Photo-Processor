@@ -29,3 +29,31 @@ resize 3 10 image value
 save res/ExResize.ppm value
 resize 5 8 image value
 save res/ExResize2.ppm value
+
+load res/20by5Mask.ppm mask
+red-component image mask red
+save res/ExRedMask.ppm red
+green-component image mask green
+save res/ExGreenMask.ppm green
+blue-component image mask blue
+save res/ExBlueMask.ppm blue
+blur image mask blur
+save res/ExBlurMask.ppm blur
+brighten 50 image mask bright
+save res/ExBrightMask.ppm bright
+greyscale image mask grey
+save res/ExGreyscaleMask.ppm grey
+intensity-component image mask in
+save res/ExIntensityMask.ppm in
+luma-component image mask img-luma
+save res/ExLumaMask.ppm img-luma 
+sepia image mask sepia
+save res/ExSepiaMask.ppm sepia
+sharpen image mask sharp
+save res/ExSharpenMask.ppm sharp
+value-component image mask value
+save res/ExValueMask.ppm value
+save res/newmask.ppm mask
+
+
+

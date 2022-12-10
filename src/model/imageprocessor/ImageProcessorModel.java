@@ -28,17 +28,35 @@ public class ImageProcessorModel implements ImageProcessor {
     loadedImages.put(imgName, pixelGrid);
   }
 
+  private Pixel[][] getMask(String maskImgName){
+    Pixel[][] mask;
+    if (maskImgName == null){
+      mask = null;
+    }else{
+      isLoadedImgName(maskImgName);
+      mask = loadedImages.get(maskImgName);
+    }
+
+    return mask;
+  }
   @Override
-  public void visualize(String imgName, String newImgName, Function<Pixel, Pixel> f) {
+  public void visualize(String imgName, String maskImgName, String newImgName, Function<Pixel, Pixel> f) {
     isLoadedImgName(imgName);
+    Pixel[][] mask = getMask(maskImgName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < newPixelGrid.length; row += 1) {
       for (int col = 0; col < newPixelGrid[0].length; col += 1) {
-        Pixel pixel = pixelGrid[row][col];
-        Pixel newPixel = f.apply(pixel);
-        newPixelGrid[row][col] = newPixel;
+        if (mask == null || mask[row][col].getRed() == 0 &&
+        mask[row][col].getBlue() == 0 && mask[row][col].getGreen() == 0){
+          Pixel pixel = pixelGrid[row][col];
+          Pixel newPixel = f.apply(pixel);
+          newPixelGrid[row][col] = newPixel;
+          continue;
+        }
+        newPixelGrid[row][col] = pixelGrid[row][col];
       }
+
     }
     loadedImages.put(newImgName, newPixelGrid);
   }
@@ -94,26 +112,38 @@ public class ImageProcessorModel implements ImageProcessor {
 
 
   @Override
-  public void applyKernel(String imgName, String newImgName, double[][] kernel) {
+  public void applyKernel(String imgName, String imgMaskName,String newImgName, double[][] kernel) {
+    Pixel[][] mask = getMask(imgMaskName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
-        Pixel[][] kernelBackground = getKernelBackground(row, col, kernel.length, pixelGrid);
-        newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel, kernelBackground);
+        if (mask == null || mask[row][col].getRed() == 0 &&
+                mask[row][col].getBlue() == 0 && mask[row][col].getGreen() == 0) {
+          Pixel[][] kernelBackground = getKernelBackground(row, col, kernel.length, pixelGrid);
+          newPixelGrid[row][col] = pixelGrid[row][col].kernelEval(kernel, kernelBackground);
+          continue;
+        }
+        newPixelGrid[row][col] = pixelGrid[row][col];
       }
     }
     loadedImages.put(newImgName, newPixelGrid);
   }
 
   @Override
-  public void applyColorTransformation(String imgName, String newImgName,
+  public void applyColorTransformation(String imgName,String imgMaskName, String newImgName,
                                        double[][] transformation) {
+    Pixel[][] mask = getMask(imgMaskName);
     Pixel[][] pixelGrid = loadedImages.get(imgName);
     Pixel[][] newPixelGrid = new Pixel[pixelGrid.length][pixelGrid[0].length];
     for (int row = 0; row < pixelGrid.length; row += 1) {
       for (int col = 0; col < pixelGrid[0].length; col += 1) {
-        newPixelGrid[row][col] = pixelGrid[row][col].colorTransformation(transformation);
+        if (mask == null || mask[row][col].getRed() == 0 &&
+                mask[row][col].getBlue() == 0 && mask[row][col].getGreen() == 0) {
+          newPixelGrid[row][col] = pixelGrid[row][col].colorTransformation(transformation);
+          continue;
+        }
+        newPixelGrid[row][col] = pixelGrid[row][col];
       }
     }
     loadedImages.put(newImgName, newPixelGrid);

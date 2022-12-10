@@ -18,7 +18,7 @@ public class ImageProcessorTests {
   public void testDarkenBy50() {
     StringReader reader = new StringReader("load 4by4.ppm four\n" +
             "brighten -50 four four-dark\n" +
-            "save four-dark.ppm four");
+            "save four-dark.ppm four\n");
     StringBuilder builder = new StringBuilder();
     ImageProcessor model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
@@ -3968,8 +3968,8 @@ public class ImageProcessorTests {
   @Test
   public void testSharpen() {
     StringReader reader = new StringReader("load res/20by5.ppm img \n"
-            + "sharpen img sharpen \n"
-            + "load res/ExSharp.ppm sharpen-acc");
+            + "sharpen img sharpen\n"
+            + "load res/ExSharpen.ppm sharpen-acc");
     StringBuilder builder = new StringBuilder();
     ImageProcessorModel model = new ImageProcessorModel();
     ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
@@ -4042,6 +4042,143 @@ public class ImageProcessorTests {
     // checks intensity values
     assertEquals(6, histogram[3][0]);
     assertEquals(1, histogram[3][255]);
+  }
+
+  //MASK TESTS
+  @Test
+  public void testBlurMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img\nload res/20by5Mask.ppm mask\n"
+            + "blur img mask bl\n"
+            + "load res/ExBlurMask.ppm blur-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("blur-acc"),
+            model.getImageAsString("bl"));
+  }
+
+  @Test
+  public void testSharpenMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img\nload res/20by5Mask.ppm mask\n"
+            + "sharpen img mask sharpen\n"
+            + "load res/ExSharpenMask.ppm sharpen-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("sharpen-acc"),
+            model.getImageAsString("sharpen"));
+  }
+
+  @Test
+  public void testGreyscaleMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask \n"+
+            "greyscale img mask greyscale \n"
+            + "load res/ExGreyscaleMask.ppm greyscale-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("greyscale-acc"),
+            model.getImageAsString("greyscale"));
+  }
+
+  @Test
+  public void testSepiaMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "sepia img mask sepia \n"
+            + "load res/ExSepiaMask.ppm sepia-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("sepia-acc"),
+            model.getImageAsString("sepia"));
+  }
+  @Test
+  public void testVisualizeBlueMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "blue-component img mask blue\n"
+            + "load res/ExBlueMask.ppm blue-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("blue-acc"),
+            model.getImageAsString("blue"));
+  }
+  @Test
+  public void testVisualizeRedMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "red-component img mask red\n"
+            + "load res/ExredMask.ppm red-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("red-acc"),
+            model.getImageAsString("red"));
+  }
+  @Test
+  public void testVisualizeGreenMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "green-component img mask green\n"
+            + "load res/ExgreenMask.ppm green-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("green-acc"),
+            model.getImageAsString("green"));
+  }
+  @Test
+  public void testVisualizeBrightenMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "brighten 50 img mask brighten\n"
+            + "load res/ExBrightMask.ppm brighten-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("brighten-acc"),
+            model.getImageAsString("brighten"));
+  }
+  @Test
+  public void testVisualizeLumaMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "luma-component img mask luma\n"
+            + "load res/ExLumaMask.ppm luma-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("luma-acc"),
+            model.getImageAsString("luma"));
+  }
+  @Test
+  public void testVisualizeValueMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "value-component img mask value\n"
+            + "load res/ExValueMask.ppm value-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("value-acc"),
+            model.getImageAsString("value"));
+  }
+  @Test
+  public void testVisualizeIntensityMask() {
+    StringReader reader = new StringReader("load res/20by5.ppm img \nload res/20by5Mask.ppm mask\n"
+            + "intensity-component img mask intensity\n"
+            + "load res/ExIntensityMask.ppm intensity-acc");
+    StringBuilder builder = new StringBuilder();
+    ImageProcessorModel model = new ImageProcessorModel();
+    ImageProcessorController controller = new ImageProcessorControllerImp(reader, builder, model);
+    controller.run();
+    assertEquals(model.getImageAsString("intensity-acc"),
+            model.getImageAsString("intensity"));
   }
 }
 

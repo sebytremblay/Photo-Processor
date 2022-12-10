@@ -21,8 +21,8 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   @Override
-  public void visualize(String imgName, String newImageName, Function f) {
-    write("visualize imgName: " + imgName + ", newImageName:" + newImageName + "");
+  public void visualize(String imgName, String mockImgName,String newImageName,Function f) {
+    write("visualize imgName: " + imgName + ", mockImgName: " + mockImgName + ", newImageName:" + newImageName + "" );
   }
 
   /**
@@ -50,7 +50,7 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   @Override
-  public void applyKernel(String imgName, String newImgName, double[][] kernel) {
+  public void applyKernel(String imgName, String imgMock,String newImgName, double[][] kernel) {
     String kernelType = "unrecognized";
 
     if (kernel[0][0] == 1.0 / 16) {
@@ -59,11 +59,11 @@ public class MockImageProcessor implements ImageProcessor {
       kernelType = "sharpen";
     }
 
-    write("Applied " + kernelType + " kernel to: " + imgName);
+    write("Applied " + kernelType + " mockImgName: " +imgMock + " kernel to: " + imgName);
   }
 
   @Override
-  public void applyColorTransformation(String imgName, String newImgName,
+  public void applyColorTransformation(String imgName,String imgMock,String newImgName,
                                        double[][] transformation) {
     String transType = "unrecognized";
 
@@ -73,7 +73,7 @@ public class MockImageProcessor implements ImageProcessor {
       transType = "sepia";
     }
 
-    write("Applied " + transType + " color transformation to: " + imgName );
+    write("Applied " + transType + " mockImgName: " + imgMock + " color transformation to: " + imgName );
   }
 
   @Override
