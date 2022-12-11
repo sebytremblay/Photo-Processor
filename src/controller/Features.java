@@ -10,7 +10,9 @@ public interface Features {
    * @param btnAction the action to read
    * @param imgName   the image name that will be saved for this current image
    */
-  void readButtonClick(String btnAction, String imgName);
+  void readButtonClick(String btnAction, String maskName, String imgName);
+
+  void readButtonClickSaveName(String btnAction, String maskName, String imgName, String newImgName);
 
   /**
    * Reads a button click that uses a file path.
@@ -19,7 +21,7 @@ public interface Features {
    * @param filePath  the file path for the action
    * @param imgName   the image to alter
    */
-  void readButtonClick(String btnAction, String filePath, String imgName);
+  void readButtonClickFile(String btnAction, String filePath, String imgName);
 
   /**
    * Reads a button click that uses an input value.
@@ -29,5 +31,13 @@ public interface Features {
    * @param imgName   the image to alter
    */
   void takesInTextField(String btnAction, String value, String imgName);
+
+  /**
+   * creates a mask to exist in the ImageProcessor
+   * @param currImgName the currentImage name that this will applied to
+   * @param topLeftRow top left row of where the mask starts
+   * @param topLeftCol top left col of where the mask start
+   */
+  void createMask(String currImgName, String maskName,int topLeftRow, int topLeftCol);
 
 }

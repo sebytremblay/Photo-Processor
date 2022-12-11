@@ -30,7 +30,7 @@ public class ImageProcessorModel implements ImageProcessor {
 
   private Pixel[][] getMask(String maskImgName){
     Pixel[][] mask;
-    if (maskImgName == null){
+    if (maskImgName == null || maskImgName.equals("")){
       mask = null;
     }else{
       isLoadedImgName(maskImgName);
@@ -59,6 +59,27 @@ public class ImageProcessorModel implements ImageProcessor {
 
     }
     loadedImages.put(newImgName, newPixelGrid);
+  }
+
+  @Override
+  public void createMask(String currImgName,String maskName, int topLeftRow, int topLeftCol) {
+    isLoadedImgName(currImgName);
+    Pixel[][] pixelGrid = loadedImages.get(currImgName);
+    Pixel[][] newPixelGridMask = new RGBPixel[pixelGrid.length][pixelGrid[0].length];
+    for (int row = 0; row<pixelGrid.length; row+=1){
+      for (int col = 0; col<pixelGrid[0].length; col+=1){
+        if (row >= topLeftRow && row <= topLeftRow + 200
+                && col >= topLeftCol && col <= topLeftCol + 200){
+          newPixelGridMask[row][col] = new RGBPixel(0,0,0);
+          continue;
+
+        }
+        newPixelGridMask[row][col] = new RGBPixel(255,255,255);
+
+      }
+    }
+    loadedImages.put(maskName,newPixelGridMask);
+
   }
 
 

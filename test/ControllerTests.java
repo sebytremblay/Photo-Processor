@@ -149,7 +149,7 @@ public class ControllerTests {
     ImageProcessor model = new MockImageProcessor(build);
     ImageProcessorGUI gui = new MockGUI();
     Features controller = new ControllerFeaturesImpl(gui, model);
-    controller.readButtonClick("sepia", "img");
+    controller.readButtonClick("sepia", "", "img");
 
     String output = "Applied sepia mockImgName: null color transformation to: img\n" +
             "Saved imgName: img\n" +

@@ -1,19 +1,21 @@
 package view;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.GridBagConstraints;
+import java.util.Arrays;
 
 import javax.swing.*;
-
-import java.awt.Component;
-import java.awt.Dimension;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import controller.Features;
 
 /**
  * Represents the View for an ImageProcessor.
  */
-public class SwingGUIView extends JFrame implements ImageProcessorGUI {
+public class SwingGUIView extends JFrame implements ImageProcessorGUI{
 
   private final JPanel mainPanel;
   private JLabel image;
@@ -28,6 +30,22 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private JButton brightenButton;
 
   private JButton resizeButton;
+
+  private JButton popupButton;
+
+  private JPanel popup;
+  private JLabel imagePreview;
+  private JScrollPane pane;
+  private String lastCommand;
+
+  private BufferedImage currImg;
+  private Features features;
+
+  private boolean changedInLastSecond;
+  private long timeOfLastChange;
+  private javax.swing.Timer t;
+
+
 
   /**
    * Instantiates the GUI to view.
@@ -50,8 +68,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     // Adds all JFrame components to our window and organizes them
     organizeWindowLayout(constraints);
 
-    JScrollPane mainScroll = new JScrollPane(mainPanel);
-    this.add(mainScroll);
+    this.add(mainPanel);
     this.pack();
     this.setVisible(true);
   }
@@ -59,7 +76,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private void initFeatureButtons() {
     // Initializes panel defaults
     this.radioPanel = new JPanel();
-    radioPanel.setSize(275, 512);
     radioPanel.setBorder(BorderFactory.createTitledBorder("Image Transformations"));
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
@@ -74,7 +90,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     for (int i = 0; i < commands.length; i += 1) {
       radioButtons[i] = new JButton(commands[i]);
       radioButtons[i].setActionCommand(commands[i]);
-      radioButtons[i].setSize(40,30);
 
       radioPanel.add(radioButtons[i]);
       radioButtons[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -104,6 +119,21 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     // Text label for error logging
     displayLabel = new JLabel("");
     radioPanel.add(displayLabel);
+
+    //Button for popup window
+    popupButton = new JButton("Open Preview");
+    radioPanel.add(popupButton);
+    popup = new JPanel();
+    popup.setBorder(BorderFactory.createTitledBorder("The Working Image"));
+    popup.setPreferredSize(new Dimension(200,200));
+    imagePreview = new JLabel();
+
+    pane = new JScrollPane(imagePreview);
+    pane.setPreferredSize(new Dimension(200,200));
+    pane.setSize(200,200);
+
+    changedInLastSecond = false;
+
   }
 
   private void initHistogramDisplay() {
@@ -121,7 +151,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   }
 
   private void initImageDisplay() {
-    int imagePanelSize = 756;
+    int imagePanelSize = 710;
     JPanel imagePanel = new JPanel();
     this.image = new JLabel();
     imagePanel.add(this.image);
@@ -129,34 +159,58 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     this.imageScroll = new JScrollPane(imagePanel);
     this.imageScroll.setMinimumSize(new Dimension(imagePanelSize, imagePanelSize));
     this.imageScroll.setPreferredSize(new Dimension(imagePanelSize, imagePanelSize));
+
   }
 
   private void organizeWindowLayout(GridBagConstraints constraints) {
     // adds feature buttons to grid
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.gridx = 0;
-    constraints.gridy = 0;
-    mainPanel.add(radioPanel, constraints);
-
-    // adds histogram to grid
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.gridx = 0;
-    constraints.gridy = 1;
-    mainPanel.add(histogramHousingPanel, constraints);
-
-    // adds image to grid
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.gridx = 1;
-    constraints.gridy = 0;
-    constraints.gridwidth = 2;
-    constraints.gridheight = 2;
-    mainPanel.add(imageScroll, constraints);
+//    constraints.fill = GridBagConstraints.BOTH;
+//    constraints.gridx = 0;
+//    constraints.gridy = 0;
+      mainPanel.add(radioPanel);
+//
+//    // adds histogram to grid
+//    constraints.fill = GridBagConstraints.BOTH;
+//    constraints.gridx = 0;
+//    constraints.gridy = 1;
+      mainPanel.add(histogramHousingPanel, constraints);
+//
+//    // adds image to grid
+//    constraints.fill = GridBagConstraints.BOTH;
+//    constraints.gridx = 0;
+//    constraints.gridy = 2;
+//    //constraints.gridwidth = 2;
+//    //constraints.gridheight = 2;
+      mainPanel.add(imageScroll, constraints);
+//
+//    constraints.fill = GridBagConstraints.BOTH;
+//    constraints.gridx = 0;
+//    constraints.gridy = 3;
+    //constraints.gridwidth = 2;
+    //constraints.gridheight = 2;
+    mainPanel.add(pane);
+    pane.setVisible(false);
   }
 
 
   @Override
-  public void setImage(BufferedImage img) {
-    this.image.setIcon(new ImageIcon(img));
+  public void setImage(BufferedImage source) {
+    if (pane.isVisible() && (!lastCommand.equals("save") && !lastCommand.equals("load"))){
+      BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+      Graphics g = b.createGraphics();
+      g.drawImage(source, 0, 0, null);
+      g.dispose();
+      this.imagePreview.setIcon(new ImageIcon(b));
+      return;
+    }
+    System.out.println("here");
+    BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+    Graphics g = b.createGraphics();
+    g.drawImage(source, 0, 0, null);
+    g.dispose();
+    this.imagePreview.setIcon(new ImageIcon(b));
+    this.image.setIcon(new ImageIcon(b));
+    currImg = source;
   }
 
   @Override
@@ -178,11 +232,14 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   @Override
   public void acceptsFeaturesObject(Features features) {
+    this.features = features;
     for (JButton button : radioButtons) {
       button.addActionListener(e -> {
         String actionPerformed = e.getActionCommand();
         JFileChooser fchooser = new JFileChooser(".");
+        lastCommand = actionPerformed;
         switch (actionPerformed) {
+
           case "load":
           case "save":
             int loadRetValue = actionPerformed.equals("load") ?
@@ -190,14 +247,23 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
                     fchooser.showSaveDialog(SwingGUIView.this);
             if (loadRetValue == JFileChooser.APPROVE_OPTION) {
               String filePath = fchooser.getSelectedFile().getAbsolutePath();
-              features.readButtonClick(actionPerformed,
+              features.readButtonClickFile(actionPerformed,
                       filePath,
                       currImgName);
             }
             break;
           default:
             if (actionPerformed != null) {
-              features.readButtonClick(actionPerformed, currImgName);
+              String mask = "";
+              if (pane.isVisible()) {
+                mask = "mask";
+                features.createMask(currImgName, mask, pane.getVerticalScrollBar().getValue(), pane.getHorizontalScrollBar().getValue());
+                this.imagePreview.setIcon(new ImageIcon(currImg));
+                features.readButtonClickSaveName(actionPerformed, mask, currImgName, "prev");
+                return;
+              }
+                features.readButtonClick(actionPerformed, mask, currImgName);
+
             }
         }
 
@@ -208,5 +274,43 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     resizeButton.addActionListener(e -> features.takesInTextField("resize",
             JOptionPane.showInputDialog("Please enter the width and height in this format '100 100' <width height>)"),
             currImgName));
+
+    popupButton.addActionListener(e -> popupButtonAction());
+    pane.getViewport().addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        timeOfLastChange = System.currentTimeMillis();
+        if (!changedInLastSecond){
+          changedInLastSecond = true;
+          refreshPreviewPanel();
+        }
+      }
+    });
+
+
+  }
+  private void refreshPreviewPanel(){
+    t = new javax.swing.Timer(250, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        System.out.println(timeOfLastChange);
+        String[] inv = {"load","save","flip-horizontal","flip-vertical","resize"};
+        if (System.currentTimeMillis() -timeOfLastChange > 250 && SwingGUIView.this.pane.isVisible() && !Arrays.asList(inv).contains(lastCommand)) {
+
+          features.createMask(currImgName, "mask", pane.getVerticalScrollBar().getValue(), pane.getHorizontalScrollBar().getValue());
+          SwingGUIView.this.imagePreview.setIcon(new ImageIcon(currImg));
+          features.readButtonClickSaveName(lastCommand, "mask", currImgName, "prev");
+          changedInLastSecond = false;
+          t.stop();
+        }
+    }});
+    t.start();
+
+  }
+  private void popupButtonAction(){
+    if (currImg != null) {
+      pane.setVisible(!pane.isVisible());
+      this.imagePreview.setIcon(new ImageIcon(currImg));
+    }
   }
 }

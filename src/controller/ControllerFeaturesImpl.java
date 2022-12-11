@@ -27,13 +27,21 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
   }
 
   @Override
-  public void readButtonClick(String btnAction, String imgName) {
-    String inputString = btnAction + " " + imgName + " " + imgName;
+  public void readButtonClick(String btnAction, String mask, String imgName) {
+    String inputString = btnAction + " " + imgName + " " + mask + " " + imgName;
     update(inputString, imgName);
   }
 
   @Override
-  public void readButtonClick(String btnAction, String filePath, String imgName) {
+  public void readButtonClickSaveName(String btnAction, String maskName, String imgName,
+                                      String newImageName) {
+
+    String inputString = btnAction + " " + imgName + " " + maskName + " " + newImageName;
+    update(inputString, newImageName);
+
+  }
+
+  public void readButtonClickFile(String btnAction, String filePath, String imgName) {
     String inputString = btnAction + " " + filePath + " \n " + imgName;
     update(inputString, imgName);
   }
@@ -52,6 +60,11 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
   public void takesInTextField(String btnAction, String value, String imgName) {
     String input = btnAction + " " + value + " " + imgName + " " + imgName;
     update(input, imgName);
+  }
+
+  @Override
+  public void createMask(String currImgName,String maskName,int topLeftRow, int topLeftCol) {
+      model.createMask(currImgName,maskName,topLeftRow,topLeftCol);
   }
 
 

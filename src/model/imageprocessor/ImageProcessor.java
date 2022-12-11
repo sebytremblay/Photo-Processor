@@ -30,6 +30,16 @@ public interface ImageProcessor {
 
 
   /**
+   * creates a mask to exist in the ImageProcessor
+   * @param currImgName the current image name that the effect will be applied on
+   * @param maskName to save the maskName as
+   * @param topLeftRow top left row of where the mask starts
+   * @param topLeftCol top left col of where the mask start
+   */
+  void createMask(String currImgName, String maskName,int topLeftRow, int topLeftCol);
+
+
+  /**
    * An enumeration of directions.
    */
   enum Direction { Horizontal, Vertical }

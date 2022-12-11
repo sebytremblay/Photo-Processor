@@ -7,7 +7,7 @@ import controller.Features;
 /**
  * GUI For the Image Processor.
  */
-public interface ImageProcessorGUI {
+public interface ImageProcessorGUI extends FeaturesGUI {
   /**
    * Sets an image to display in the GUI.
    *
@@ -36,10 +36,4 @@ public interface ImageProcessorGUI {
    */
   void renderMessage(String message);
 
-  /**
-   * Accepts a feature for the GUI.
-   *
-   * @param feature is the feature that is being accepted
-   */
-  void acceptsFeaturesObject(Features feature);
 }

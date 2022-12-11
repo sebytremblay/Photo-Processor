@@ -21,6 +21,11 @@ public class MockImageProcessor implements ImageProcessor {
   }
 
   @Override
+  public void createMask(String currImgName, String maskName, int topLeftRow, int topLeftCol) {
+
+  }
+
+  @Override
   public void visualize(String imgName, String mockImgName,String newImageName,Function f) {
     write("visualize imgName: " + imgName + ", mockImgName: " + mockImgName + ", newImageName:" + newImageName + "" );
   }
