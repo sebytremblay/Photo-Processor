@@ -195,6 +195,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI{
 
   @Override
   public void setImage(BufferedImage source) {
+    System.out.println("in set image");
     if (pane.isVisible() && (!lastCommand.equals("save") && !lastCommand.equals("load"))){
       BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
       Graphics g = b.createGraphics();
@@ -308,7 +309,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI{
 
   }
   private void popupButtonAction(){
-    if (currImg != null) {
+    if (currImg != null && currImg.getHeight() >= 200 && currImg.getWidth() >= 200) {
       pane.setVisible(!pane.isVisible());
       this.imagePreview.setIcon(new ImageIcon(currImg));
     }

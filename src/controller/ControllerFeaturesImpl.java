@@ -29,7 +29,9 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
   @Override
   public void readButtonClick(String btnAction, String mask, String imgName) {
     String inputString = btnAction + " " + imgName + " " + mask + " " + imgName;
+    view.setHistogram(model.generateHistogram(imgName));
     update(inputString, imgName);
+    view.refresh();
   }
 
   @Override
@@ -49,7 +51,6 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
   private void update(String command, String imgName) {
     processCommand(command);
     view.setImage(model.getImageAsBufferedImage(imgName));
-    view.setHistogram(model.generateHistogram(imgName));
     view.renderMessage(output.toString());
     output = new StringBuilder();
     view.refresh();
