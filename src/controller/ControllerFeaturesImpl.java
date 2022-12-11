@@ -40,12 +40,14 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
 
     String inputString = btnAction + " " + imgName + " " + maskName + " " + newImageName;
     update(inputString, newImageName);
-
+    view.refresh();
   }
 
   public void readButtonClickFile(String btnAction, String filePath, String imgName) {
     String inputString = btnAction + " " + filePath + " \n " + imgName;
     update(inputString, imgName);
+    view.setHistogram(model.generateHistogram(imgName));
+    view.refresh();
   }
 
   private void update(String command, String imgName) {
@@ -53,14 +55,13 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
     view.setImage(model.getImageAsBufferedImage(imgName));
     view.renderMessage(output.toString());
     output = new StringBuilder();
-    view.refresh();
-
   }
 
   @Override
   public void takesInTextField(String btnAction, String value, String imgName) {
     String input = btnAction + " " + value + " " + imgName + " " + imgName;
     update(input, imgName);
+    view.refresh();
   }
 
   @Override

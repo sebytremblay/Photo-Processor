@@ -254,7 +254,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI{
             }
             break;
           default:
-            if (actionPerformed != null) {
+            if (currImg != null) {
               String mask = "";
               if (pane.isVisible()) {
                 mask = "mask";
@@ -263,8 +263,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI{
                 features.readButtonClickSaveName(actionPerformed, mask, currImgName, "prev");
                 return;
               }
-                features.readButtonClick(actionPerformed, mask, currImgName);
-
+              features.readButtonClick(actionPerformed, mask, currImgName);
             }
         }
 
@@ -297,7 +296,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI{
         System.out.println(timeOfLastChange);
         String[] inv = {"load","save","flip-horizontal","flip-vertical","resize"};
         if (System.currentTimeMillis() -timeOfLastChange > 250 && SwingGUIView.this.pane.isVisible() && !Arrays.asList(inv).contains(lastCommand)) {
-
           features.createMask(currImgName, "mask", pane.getVerticalScrollBar().getValue(), pane.getHorizontalScrollBar().getValue());
           SwingGUIView.this.imagePreview.setIcon(new ImageIcon(currImg));
           features.readButtonClickSaveName(lastCommand, "mask", currImgName, "prev");
