@@ -64,3 +64,12 @@ of a pixel equal 0.
 - If so, I just set the current pixel to the original pixel and leave it untouched.
 - Added Controller test for these new variables
 - Added model test for these new operation commands 
+
+
+### Preview - part three
+
+- in the features object I added a new command that actionPerformed, mask, currImgName, and saveName.
+This is important because we want to save the preview as a new image as the real source of truth image is the one on the main page.
+- Added a new panel to the view for the preview. 
+- Added the ability to scroll in the view and added a onChange Handler that watched when the
+user stopped scrolling.
