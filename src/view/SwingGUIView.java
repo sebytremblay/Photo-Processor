@@ -270,8 +270,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
           default:
             if (currImg != null) {
               String mask = "";
-              if (pane.isVisible() && !actionPerformed.equals("flip-horizontal") &&
-                      !actionPerformed.equals("flip-vertical") && !actionPerformed.equals("resize")) {
+              if (pane.isVisible()) {
                 mask = "mask";
                 features.createMask(currImgName, mask,
                         pane.getVerticalScrollBar().getValue(),
@@ -334,7 +333,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
                   pane.getHorizontalScrollBar().getValue());
           SwingGUIView.this.imagePreview.setIcon(new ImageIcon(currImg));
           if (lastCommand.equals("brighten")) {
-            System.out.println("in the boys");
             features.takesInTextField(lastCommand, lastField, "mask", currImgName, "prev");
 
           } else {
