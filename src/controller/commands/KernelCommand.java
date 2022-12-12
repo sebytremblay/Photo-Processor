@@ -25,9 +25,6 @@ public class KernelCommand extends AbstractCommand {
 
     this.kernel = kernel;
     String[] commands = param.split(" ");
-    for (String com: commands){
-      System.out.println(com);
-    }
     if (commands.length == 4){
       this.imgName = commands[1];
       this.imgMaskName = commands[2];

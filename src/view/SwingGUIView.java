@@ -208,7 +208,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
   @Override
   public void setImage(BufferedImage source) {
-    System.out.println("in set image");
     if (pane.isVisible() && (!lastCommand.equals("save") && !lastCommand.equals("load"))) {
       BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
       Graphics g = b.createGraphics();
@@ -217,7 +216,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
       this.imagePreview.setIcon(new ImageIcon(b));
       return;
     }
-    System.out.println("here");
     BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
     Graphics g = b.createGraphics();
     g.drawImage(source, 0, 0, null);
@@ -323,7 +321,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     t = new javax.swing.Timer(250, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        System.out.println(timeOfLastChange);
         String[] inv = {"load", "save", "flip-horizontal", "flip-vertical", "resize"};
         if (System.currentTimeMillis() - timeOfLastChange > 250
                 && SwingGUIView.this.pane.isVisible()
@@ -351,7 +348,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     if (currImg != null && currImg.getHeight() >= 200 && currImg.getWidth() >= 200) {
       pane.setVisible(!pane.isVisible());
       popupButton.setText(pane.isVisible() ? "Close Preview" : "Open Preview");
-      System.out.println(pane.isVisible());
       this.imagePreview.setIcon(new ImageIcon(currImg));
     }
     this.refresh();
