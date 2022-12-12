@@ -29,8 +29,10 @@ public interface Features {
    * @param btnAction the button click
    * @param value     the input value
    * @param imgName   the image to alter
+   * @param newImgName the new image name you are saving
    */
-  void takesInTextField(String btnAction, String value, String imgName);
+  void takesInTextField(String btnAction, String value, String mask, String imgName,String newImgName);
+
 
   /**
    * creates a mask to exist in the ImageProcessor

@@ -177,7 +177,7 @@ public class ControllerTests {
     ImageProcessor model = new MockImageProcessor(build);
     ImageProcessorGUI gui = new MockGUI();
     Features controller = new ControllerFeaturesImpl(gui, model);
-    controller.takesInTextField("brighten", "50", "img");
+    controller.takesInTextField("brighten", "50","", "img","img");
 
     String output = "visualize imgName: img, mockImgName: null, newImageName:img\n" +
             "Saved imgName: img\n" +

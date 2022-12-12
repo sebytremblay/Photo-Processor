@@ -58,9 +58,9 @@ public class ControllerFeaturesImpl extends AbstractController implements Featur
   }
 
   @Override
-  public void takesInTextField(String btnAction, String value, String imgName) {
-    String input = btnAction + " " + value + " " + imgName + " " + imgName;
-    update(input, imgName);
+  public void takesInTextField(String btnAction, String value, String mask,String imgName, String newImgName) {
+    String input = btnAction + " " + value + " " + imgName + " " +  mask + " " + newImgName;
+    update(input, newImgName);
     view.refresh();
   }
 

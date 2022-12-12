@@ -38,6 +38,8 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private JScrollPane pane;
   private String lastCommand;
 
+  private String lastField;
+
   private BufferedImage currImg;
   private Features features;
 
@@ -55,7 +57,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     this.mainPanel = new JPanel();
     GridBagConstraints constraints = new GridBagConstraints();
     mainPanel.setLayout(new GridBagLayout());
-    this.setSize(1200, 800);
+    //this.setSize(1200, 1200);
 
     // Defines and sets up all feature buttons
     initFeatureButtons();
@@ -153,7 +155,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   }
 
   private void initImageDisplay() {
-    int imagePanelSize = 710;
+    int imagePanelSize = 800;
     JPanel imagePanel = new JPanel();
     this.image = new JLabel();
     imagePanel.add(this.image);
@@ -187,13 +189,20 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     constraints.gridheight = 2;
     mainPanel.add(imageScroll, constraints);
 
-    constraints.fill = GridBagConstraints.BOTH;
+    constraints.fill = GridBagConstraints.NONE;
     constraints.gridx = 0;
     constraints.gridy = 1;
     constraints.gridwidth = 1;
     constraints.gridheight = 1;
-    pane.setVisible(false);
-    mainPanel.add(pane, constraints);
+
+    Panel contain = new Panel();
+    //pane.setVisible(false);
+    contain.setPreferredSize(new Dimension(200, 200));
+    contain.setSize(200, 200);
+    contain.setMaximumSize(new Dimension(200, 200));
+    contain.setBackground(Color.BLUE);
+    mainPanel.add(contain.add(pane), constraints);
+    //pane.setVisible(false);
   }
 
 
@@ -246,11 +255,12 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
         switch (actionPerformed) {
 
           case "load":
+            pane.setVisible(false);
           case "save":
-            int loadRetValue = actionPerformed.equals("load") ?
+            int loadRetValueSave = actionPerformed.equals("load") ?
                     fchooser.showOpenDialog(SwingGUIView.this) :
                     fchooser.showSaveDialog(SwingGUIView.this);
-            if (loadRetValue == JFileChooser.APPROVE_OPTION) {
+            if (loadRetValueSave == JFileChooser.APPROVE_OPTION) {
               String filePath = fchooser.getSelectedFile().getAbsolutePath();
               features.readButtonClickFile(actionPerformed,
                       filePath,
@@ -260,7 +270,8 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
           default:
             if (currImg != null) {
               String mask = "";
-              if (pane.isVisible()) {
+              if (pane.isVisible() && !actionPerformed.equals("flip-horizontal") &&
+                      !actionPerformed.equals("flip-vertical") && !actionPerformed.equals("resize")) {
                 mask = "mask";
                 features.createMask(currImgName, mask,
                         pane.getVerticalScrollBar().getValue(),
@@ -276,12 +287,11 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
 
       });
     }
-    brightenButton.addActionListener(e -> features.takesInTextField("brighten",
-            brightenByField.getText(), currImgName));
+    brightenButton.addActionListener(e -> fieldActions());
     resizeButton.addActionListener(e -> features.takesInTextField("resize",
             JOptionPane.showInputDialog("Please enter the width and height in this format" +
-                    " '100 100' <width height>)"),
-            currImgName));
+                    " '100 100' <width height>)"), "",
+            currImgName, currImgName));
 
     popupButton.addActionListener(e -> popupButtonAction());
     pane.getViewport().addChangeListener(new ChangeListener() {
@@ -294,6 +304,20 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
         }
       }
     });
+  }
+
+  private void fieldActions() {
+    lastCommand = "brighten";
+    lastField = brightenByField.getText();
+    if (currImg != null) {
+      features.createMask(currImgName, "mask",
+              pane.getVerticalScrollBar().getValue(),
+              pane.getHorizontalScrollBar().getValue());
+      this.imagePreview.setIcon(new ImageIcon(currImg));
+      features.takesInTextField("brighten",
+              brightenByField.getText(), pane.isVisible() ? "mask" : "", currImgName, pane.isVisible() ? "prev" : currImgName);
+    }
+
   }
 
   private void refreshPreviewPanel() {
@@ -309,7 +333,13 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
                   pane.getVerticalScrollBar().getValue(),
                   pane.getHorizontalScrollBar().getValue());
           SwingGUIView.this.imagePreview.setIcon(new ImageIcon(currImg));
-          features.readButtonClickSaveName(lastCommand, "mask", currImgName, "prev");
+          if (lastCommand.equals("brighten")) {
+            System.out.println("in the boys");
+            features.takesInTextField(lastCommand, lastField, "mask", currImgName, "prev");
+
+          } else {
+            features.readButtonClickSaveName(lastCommand, "mask", currImgName, "prev");
+          }
           changedInLastSecond = false;
           t.stop();
         }
@@ -322,6 +352,8 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   private void popupButtonAction() {
     if (currImg != null && currImg.getHeight() >= 200 && currImg.getWidth() >= 200) {
       pane.setVisible(!pane.isVisible());
+      popupButton.setText(pane.isVisible() ? "Close Preview" : "Open Preview");
+      System.out.println(pane.isVisible());
       this.imagePreview.setIcon(new ImageIcon(currImg));
     }
     this.refresh();
