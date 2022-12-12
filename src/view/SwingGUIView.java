@@ -137,6 +137,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     pane.setSize(200, 200);
 
     changedInLastSecond = false;
+    lastField = "0";
 
   }
 
@@ -268,7 +269,9 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
           default:
             if (currImg != null) {
               String mask = "";
-              if (pane.isVisible()) {
+              String[] inv = {"horizontal-flip", "vertical-flip", "resize"};
+              if (pane.isVisible() && !Arrays.asList(inv).contains(actionPerformed)) {
+                System.out.println("test");
                 mask = "mask";
                 features.createMask(currImgName, mask,
                         pane.getVerticalScrollBar().getValue(),
@@ -278,7 +281,10 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
                         currImgName, "prev");
                 return;
               }
-              features.readButtonClick(actionPerformed, mask, currImgName);
+              if (!pane.isVisible()){
+                features.readButtonClick(actionPerformed, mask, currImgName);
+
+              }
             }
         }
 
@@ -321,7 +327,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     t = new javax.swing.Timer(250, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        String[] inv = {"load", "save", "flip-horizontal", "flip-vertical", "resize"};
+        String[] inv = {"load", "save", "horizontal-flip", "vertical-flip", "resize"};
         if (System.currentTimeMillis() - timeOfLastChange > 250
                 && SwingGUIView.this.pane.isVisible()
                 && !Arrays.asList(inv).contains(lastCommand)) {
@@ -345,6 +351,11 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
   }
 
   private void popupButtonAction() {
+    if (pane.isVisible()){
+      pane.setVisible(false);
+      popupButton.setText(pane.isVisible() ? "Close Preview" : "Open Preview");
+      return;
+    }
     if (currImg != null && currImg.getHeight() >= 200 && currImg.getWidth() >= 200) {
       pane.setVisible(!pane.isVisible());
       popupButton.setText(pane.isVisible() ? "Close Preview" : "Open Preview");
