@@ -87,7 +87,7 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
     // Defines all supported commands
     String[] commands = {"load", "save", "red-component", "green-component", "blue-component",
             "value-component", "intensity-component", "luma-component",
-            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia"};
+            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia","blur"};
     radioButtons = new JButton[commands.length];
 
     // Makes add feature buttons
@@ -271,7 +271,6 @@ public class SwingGUIView extends JFrame implements ImageProcessorGUI {
               String mask = "";
               String[] inv = {"horizontal-flip", "vertical-flip", "resize"};
               if (pane.isVisible() && !Arrays.asList(inv).contains(actionPerformed)) {
-                System.out.println("test");
                 mask = "mask";
                 features.createMask(currImgName, mask,
                         pane.getVerticalScrollBar().getValue(),

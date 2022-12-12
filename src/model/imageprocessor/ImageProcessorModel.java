@@ -173,10 +173,10 @@ public class ImageProcessorModel implements ImageProcessor {
   @Override
   public void applyResize(String imgName, String newImgName, int height, int width) {
     Pixel[][] pixelGrid = loadedImages.get(imgName);
-    Pixel[][] newPixelGrid = new Pixel[height][width];
-    if (height > pixelGrid.length || width > pixelGrid[0].length){
+    if (height > pixelGrid.length || width > pixelGrid[0].length || height < 0 || width < 0){
       throw new IllegalArgumentException("Width or Height can not be bigger than original image");
     }
+    Pixel[][] newPixelGrid = new Pixel[height][width];
     for (int row = 0; row < height; row+=1){
       for (int col = 0; col < width; col+=1){
          double cordOnOrgRow= (double)row / height * pixelGrid.length;
