@@ -1,13 +1,15 @@
 package controller;
 
 /**
- * Represents the controller for the ImageProcessor that performs the actions on the image.
+ * Represents a controller for an image processing program, which handles user-input to produce new,
+ * edited photos based off a series of known commands.
  */
 public interface ImageProcessorController {
+
   /**
-   * Runs the processor.
-   *
-   * @throws IllegalStateException if the processor fails
+   * Run the image processor controller.
+   * @throws IllegalStateException if illegal state is encountered
    */
   void run() throws IllegalStateException;
+
 }

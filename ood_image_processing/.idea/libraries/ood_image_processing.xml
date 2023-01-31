@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="ood_image_processing">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/res/ood_image_processing.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

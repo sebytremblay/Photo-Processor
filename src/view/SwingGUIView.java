@@ -1,365 +1,246 @@
 package view;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.util.Arrays;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JSpinner;
+import javax.swing.ImageIcon;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JOptionPane;
 
-import controller.Features;
+import controller.ControllerFeatureSet;
+import model.image.ImageModel;
+import util.ImageUtil;
+import util.Util;
 
 /**
- * Represents the View for an ImageProcessor.
+ * This class represents a GUI view for an image processing program that is implemented using Java
+ * Swing.
  */
-public class SwingGUIView extends JFrame implements ImageProcessorGUI {
+public class SwingGuiView extends JFrame implements ImageProcessorView {
+  private final static String IMG_NAME = "current-image";
+  private ControllerFeatureSet actionObject;
 
-  private final JPanel mainPanel;
-  private JLabel image;
-  private final String currImgName = "curr-img";
-  private JLabel displayLabel;
-  private JButton[] radioButtons;
-  private JTextField brightenByField;
-  private Histogram histogramPanel;
-  private JPanel histogramHousingPanel;
-  private JScrollPane imageScroll;
-  private JPanel radioPanel;
-  private JButton brightenButton;
+  // An image label to display the currently selected image.
+  private final JLabel imageLabel;
+  private HistogramPanel redHistogramPanel;
+  private HistogramPanel greenHistogramPanel;
+  private HistogramPanel blueHistogramPanel;
+  private HistogramPanel intensityHistogramPanel;
 
-  private JButton resizeButton;
-
-  private JButton popupButton;
-
-  private JPanel popup;
-  private JLabel imagePreview;
-  private JScrollPane pane;
-  private String lastCommand;
-
-  private String lastField;
-
-  private BufferedImage currImg;
-  private Features features;
-
-  private boolean changedInLastSecond;
-  private long timeOfLastChange;
-  private javax.swing.Timer t;
-
+  private final JLabel loadFileDisplay;
+  private final JLabel saveFileDisplay;
+  private final JSpinner brightenIncrement;
+  private final JSpinner mosaickIncrement;
 
   /**
-   * Instantiates the GUI to view.
+   * Create a new GUI view for the given state of a marble solitaire game.
    */
-  public SwingGUIView() {
-    // Layout stuff
-    super("Image Processor GUI");
-    this.mainPanel = new JPanel();
-    GridBagConstraints constraints = new GridBagConstraints();
-    mainPanel.setLayout(new GridBagLayout());
-    //this.setSize(1200, 1200);
+  public SwingGuiView() {
+    super("Image Processing Program");
 
-    // Defines and sets up all feature buttons
-    initFeatureButtons();
+    this.setLayout(new BorderLayout());
+    this.setSize(1600, 1200);
 
-    // Sets up display for the histogram
-    initHistogramDisplay();
+    // Add the image view to the center of the view.
+    imageLabel = new JLabel();
+    JScrollPane imageScrollPane = new JScrollPane(imageLabel);
+    imageScrollPane.setPreferredSize(new Dimension(400, 400));
+    this.add(imageScrollPane, BorderLayout.CENTER);
 
-    // Sets up the display for the loaded image
-    initImageDisplay();
+    // Set up histogram panels.
+    this.redHistogramPanel = new HistogramPanel(Color.RED);
+    this.greenHistogramPanel = new HistogramPanel(Color.GREEN);
+    this.blueHistogramPanel = new HistogramPanel(Color.BLUE);
+    this.intensityHistogramPanel = new HistogramPanel(Color.DARK_GRAY);
+    JScrollPane redHistogramScrollable = new JScrollPane(this.redHistogramPanel);
+    redHistogramScrollable.setPreferredSize(new Dimension(300, 150));
+    redHistogramScrollable.setBorder(new TitledBorder("Red histogram"));
+    JScrollPane greenHistogramScrollable = new JScrollPane(this.greenHistogramPanel);
+    greenHistogramScrollable.setPreferredSize(new Dimension(300, 150));
+    greenHistogramScrollable.setBorder(new TitledBorder("Green histogram"));
+    JScrollPane blueHistogramScrollable = new JScrollPane(this.blueHistogramPanel);
+    blueHistogramScrollable.setPreferredSize(new Dimension(300, 150));
+    blueHistogramScrollable.setBorder(new TitledBorder("Blue histogram"));
+    JScrollPane intensityHistogramScrollable = new JScrollPane(this.intensityHistogramPanel);
+    intensityHistogramScrollable.setPreferredSize(new Dimension(300, 150));
+    intensityHistogramScrollable.setBorder(new TitledBorder("Intensity histogram"));
 
-    // Adds all JFrame components to our window and organizes them
-    organizeWindowLayout(constraints);
+    // Add all histograms to a section at the bottom.
+    JPanel histograms = new JPanel();
+    histograms.setLayout(new FlowLayout());
+    this.add(histograms, BorderLayout.SOUTH);
+    histograms.setBorder(BorderFactory.createTitledBorder("Histograms"));
+    histograms.add(redHistogramScrollable);
+    histograms.add(greenHistogramScrollable);
+    histograms.add(blueHistogramScrollable);
+    histograms.add(intensityHistogramScrollable);
 
-    this.add(mainPanel);
-    this.pack();
-    this.setVisible(true);
-    organizeWindowLayout(constraints);
-  }
+    // Create a section for all the GUI program commands on the right side.
+    JPanel processingActions = new JPanel();
+    processingActions.setBorder(BorderFactory.createTitledBorder("Commands"));
+    processingActions.setLayout(new GridLayout(15, 0));
+    this.add(processingActions, BorderLayout.EAST);
 
-  private void initFeatureButtons() {
-    // Initializes panel defaults
-    this.radioPanel = new JPanel();
-    radioPanel.setBorder(BorderFactory.createTitledBorder("Image Transformations"));
-    radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
+    // Add the file loading button.
+    JButton loadBtn = new JButton("Load");
+    this.loadFileDisplay = new JLabel("File path will appear here");
+    loadBtn.addActionListener(actionEvent -> requestAction("load"));
+    JPanel loadSection = new JPanel();
+    loadSection.setLayout(new FlowLayout());
+    loadSection.add(loadBtn);
+    loadSection.add(this.loadFileDisplay);
+    processingActions.add(loadSection);
 
+    // Add the file saving button.
+    JButton saveBtn = new JButton("Save");
+    this.saveFileDisplay = new JLabel("File path will appear here");
+    saveBtn.addActionListener(actionEvent -> requestAction("save"));
+    JPanel saveSection = new JPanel();
+    saveSection.setLayout(new FlowLayout());
+    saveSection.add(saveBtn);
+    saveSection.add(this.saveFileDisplay);
+    processingActions.add(saveSection);
 
-    // Defines all supported commands
-    String[] commands = {"load", "save", "red-component", "green-component", "blue-component",
-            "value-component", "intensity-component", "luma-component",
-            "horizontal-flip", "vertical-flip", "sharpen", "greyscale", "sepia","blur"};
-    radioButtons = new JButton[commands.length];
-
-    // Makes add feature buttons
-    for (int i = 0; i < commands.length; i += 1) {
-      radioButtons[i] = new JButton(commands[i]);
-      radioButtons[i].setActionCommand(commands[i]);
-
-      radioPanel.add(radioButtons[i]);
-      radioButtons[i].setAlignmentX(Component.LEFT_ALIGNMENT);
-
+    // Add all the basic command buttons with as little boilerplate as possible.
+    Map<String, String> basicCommandButtons = new LinkedHashMap<>();
+    basicCommandButtons.put("Flip Horizontally", "horizontal-flip");
+    basicCommandButtons.put("Flip Vertically", "vertical-flip");
+    basicCommandButtons.put("Red component", "red-component");
+    basicCommandButtons.put("Green component", "green-component");
+    basicCommandButtons.put("Blue component", "blue-component");
+    basicCommandButtons.put("Greyscale component", "luma-component");
+    basicCommandButtons.put("Value component", "value-component");
+    basicCommandButtons.put("Intensity component", "intensity-component");
+    basicCommandButtons.put("Gaussian Blur", "gaussian-blur");
+    basicCommandButtons.put("Sharpen", "sharpen");
+    basicCommandButtons.put("Sepia Tone", "sepia-tone");
+    for (Map.Entry<String, String> entry : basicCommandButtons.entrySet()) {
+      JButton btn = new JButton(entry.getKey());
+      btn.addActionListener(actionEvent -> requestAction(entry.getValue()));
+      processingActions.add(btn);
     }
-    //BRIGHTEN BUTTON
-    JPanel brightenPanel = new JPanel();
-    brightenByField = new JTextField("");
-    brightenByField.setPreferredSize(new Dimension(60, 30));
-    brightenByField.setMinimumSize(brightenByField.getPreferredSize());
-    brightenButton = new JButton("brighten");
 
-    brightenPanel.add(brightenButton);
-    brightenPanel.add(brightenByField);
-    brightenPanel.setLayout(new BoxLayout(brightenPanel, BoxLayout.X_AXIS));
+    // Add the button for brighten, which gets special treatment because it needs a spinner for
+    // brighten increment input.
+    JButton brightenBtn = new JButton("Brighten");
+    JLabel brightenLabel = new JLabel("Brighten increment:");
+    this.brightenIncrement = new JSpinner(new SpinnerNumberModel(0, -255,
+            255, 1));
+    brightenBtn.addActionListener(actionEvent -> requestAction("brighten"));
+    JPanel brightenSection = new JPanel();
+    brightenSection.setLayout(new FlowLayout());
+    brightenSection.add(brightenBtn);
+    brightenSection.add(brightenLabel);
+    brightenSection.add(this.brightenIncrement);
+    processingActions.add(brightenSection);
 
-    radioPanel.add(brightenPanel);
-    brightenByField.setAlignmentX(Component.LEFT_ALIGNMENT);
-    brightenPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-    radioPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    // Add the button for mosaic, which gets special treatment because it needs a text input for
+    // number of seeds
+    JButton mosaickBtn = new JButton("Mosaick");
+    JLabel mosaickLabel = new JLabel("Mosaick Increment:");
+    this.mosaickIncrement = new JSpinner(new SpinnerNumberModel());
+    mosaickBtn.addActionListener(actionEvent -> requestAction("mosaick"));
+    JPanel mosaickSection = new JPanel();
+    mosaickSection.setLayout(new FlowLayout());
+    mosaickSection.add(mosaickBtn);
+    mosaickSection.add(mosaickLabel);
+    mosaickSection.add(this.mosaickIncrement);
+    processingActions.add(mosaickSection);
 
-    //RESIZE BUTTON
-    resizeButton = new JButton("resize");
-    radioPanel.add(resizeButton);
-
-
-    // Text label for error logging
-    displayLabel = new JLabel("");
-    radioPanel.add(displayLabel);
-
-    //Button for popup window
-    popupButton = new JButton("Open Preview");
-    radioPanel.add(popupButton);
-    popup = new JPanel();
-    popup.setBorder(BorderFactory.createTitledBorder("The Working Image"));
-    popup.setPreferredSize(new Dimension(200, 200));
-    imagePreview = new JLabel();
-
-    pane = new JScrollPane(imagePreview);
-    pane.setPreferredSize(new Dimension(200, 200));
-    pane.setSize(200, 200);
-
-    changedInLastSecond = false;
-    lastField = "0";
-
-  }
-
-  private void initHistogramDisplay() {
-    int histogramPanelSize = 256;
-
-    this.histogramHousingPanel = new JPanel();
-    histogramHousingPanel.setSize(new Dimension(histogramPanelSize + 2,
-            histogramPanelSize + 2));
-    this.histogramPanel = new Histogram();
-    histogramPanel.setMinimumSize(new Dimension(histogramPanelSize, histogramPanelSize));
-    histogramPanel.setPreferredSize(new Dimension(histogramPanelSize, histogramPanelSize));
-
-    histogramHousingPanel.setBorder(BorderFactory.createTitledBorder("Histogram"));
-    histogramHousingPanel.add(histogramPanel);
-  }
-
-  private void initImageDisplay() {
-    int imagePanelSize = 800;
-    JPanel imagePanel = new JPanel();
-    this.image = new JLabel();
-    imagePanel.add(this.image);
-    imagePanel.setBorder(BorderFactory.createTitledBorder("The Working Image"));
-    this.imageScroll = new JScrollPane(imagePanel);
-    this.imageScroll.setMinimumSize(new Dimension(imagePanelSize, imagePanelSize));
-    this.imageScroll.setPreferredSize(new Dimension(imagePanelSize, imagePanelSize));
-
-  }
-
-  private void organizeWindowLayout(GridBagConstraints constraints) {
-    // adds feature buttons to grid
-    //constraints.fill = GridBagConstraints.BOTH;
-    constraints.gridx = 0;
-    constraints.gridy = 0;
-    constraints.gridheight = 2;
-    mainPanel.add(radioPanel);
-
-    // adds histogram to grid
-    constraints.fill = GridBagConstraints.NONE;
-    constraints.gridx = 3;
-    constraints.gridy = 0;
-    constraints.gridheight = 1;
-    mainPanel.add(histogramHousingPanel, constraints);
-
-    // adds image to grid
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.gridx = 1;
-    constraints.gridy = 0;
-    constraints.gridwidth = 2;
-    constraints.gridheight = 2;
-    mainPanel.add(imageScroll, constraints);
-
-    constraints.fill = GridBagConstraints.NONE;
-    constraints.gridx = 0;
-    constraints.gridy = 1;
-    constraints.gridwidth = 1;
-    constraints.gridheight = 1;
-
-    Panel contain = new Panel();
-    //pane.setVisible(false);
-    contain.setPreferredSize(new Dimension(200, 200));
-    contain.setSize(200, 200);
-    contain.setMaximumSize(new Dimension(200, 200));
-    contain.setBackground(Color.BLUE);
-    mainPanel.add(contain.add(pane), constraints);
-    //pane.setVisible(false);
-  }
-
-
-  @Override
-  public void setImage(BufferedImage source) {
-    if (pane.isVisible() && (!lastCommand.equals("save") && !lastCommand.equals("load"))) {
-      BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
-      Graphics g = b.createGraphics();
-      g.drawImage(source, 0, 0, null);
-      g.dispose();
-      this.imagePreview.setIcon(new ImageIcon(b));
-      return;
-    }
-    BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
-    Graphics g = b.createGraphics();
-    g.drawImage(source, 0, 0, null);
-    g.dispose();
-    this.imagePreview.setIcon(new ImageIcon(b));
-    this.image.setIcon(new ImageIcon(b));
-    currImg = source;
-  }
-
-  @Override
-  public void setHistogram(int[][] histograms) {
-    this.histogramPanel.setHistograms(histograms);
-  }
-
-  @Override
-  public void refresh() {
+    pack();
     this.repaint();
   }
 
   @Override
-  public void renderMessage(String message) {
-    this.displayLabel.setText(message);
-    this.refresh();
+  public void displayImage(ImageModel img) {
+    Util.requireNonNullArg(img);
+    this.imageLabel.setIcon(new ImageIcon(
+            ImageUtil.imageToBufferedImage(img)));
+    this.redHistogramPanel.setHistogram(
+            ImageUtil.imageToHistogram(img, model.color.Color::red));
+    this.greenHistogramPanel.setHistogram(
+            ImageUtil.imageToHistogram(img, model.color.Color::green));
+    this.blueHistogramPanel.setHistogram(
+            ImageUtil.imageToHistogram(img, model.color.Color::blue));
+    this.intensityHistogramPanel.setHistogram(ImageUtil.imageToHistogram(img,
+        (model.color.Color c) -> (c.red() + c.green() + c.blue()) / 3));
+    this.repaint();
   }
-
 
   @Override
-  public void acceptsFeaturesObject(Features features) {
-    this.features = features;
-    for (JButton button : radioButtons) {
-      button.addActionListener(e -> {
-        String actionPerformed = e.getActionCommand();
-        JFileChooser fchooser = new JFileChooser(".");
-        lastCommand = actionPerformed;
-        switch (actionPerformed) {
-
-          case "load":
-            pane.setVisible(false);
-          case "save":
-            int loadRetValueSave = actionPerformed.equals("load") ?
-                    fchooser.showOpenDialog(SwingGUIView.this) :
-                    fchooser.showSaveDialog(SwingGUIView.this);
-            if (loadRetValueSave == JFileChooser.APPROVE_OPTION) {
-              String filePath = fchooser.getSelectedFile().getAbsolutePath();
-              features.readButtonClickFile(actionPerformed,
-                      filePath,
-                      currImgName);
-            }
-            break;
-          default:
-            if (currImg != null) {
-              String mask = "";
-              String[] inv = {"horizontal-flip", "vertical-flip", "resize"};
-              if (pane.isVisible() && !Arrays.asList(inv).contains(actionPerformed)) {
-                mask = "mask";
-                features.createMask(currImgName, mask,
-                        pane.getVerticalScrollBar().getValue(),
-                        pane.getHorizontalScrollBar().getValue());
-                this.imagePreview.setIcon(new ImageIcon(currImg));
-                features.readButtonClickSaveName(actionPerformed, mask,
-                        currImgName, "prev");
-                return;
-              }
-              if (!pane.isVisible()){
-                features.readButtonClick(actionPerformed, mask, currImgName);
-
-              }
-            }
-        }
-
-      });
-    }
-    brightenButton.addActionListener(e -> fieldActions());
-    resizeButton.addActionListener(e -> features.takesInTextField("resize",
-            JOptionPane.showInputDialog("Please enter the width and height in this format" +
-                    " '100 100' <width height>)"), "",
-            currImgName, currImgName));
-
-    popupButton.addActionListener(e -> popupButtonAction());
-    pane.getViewport().addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        timeOfLastChange = System.currentTimeMillis();
-        if (!changedInLastSecond) {
-          changedInLastSecond = true;
-          refreshPreviewPanel();
-        }
-      }
-    });
+  public void setActionObject(ControllerFeatureSet actionObject) {
+    this.actionObject = Util.requireNonNullArg(actionObject);
+    this.setVisible(true);
   }
 
-  private void fieldActions() {
-    lastCommand = "brighten";
-    lastField = brightenByField.getText();
-    if (currImg != null) {
-      features.createMask(currImgName, "mask",
-              pane.getVerticalScrollBar().getValue(),
-              pane.getHorizontalScrollBar().getValue());
-      this.imagePreview.setIcon(new ImageIcon(currImg));
-      features.takesInTextField("brighten",
-              brightenByField.getText(), pane.isVisible() ? "mask" : "", currImgName, pane.isVisible() ? "prev" : currImgName);
-    }
-
-  }
-
-  private void refreshPreviewPanel() {
-    t = new javax.swing.Timer(250, new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        String[] inv = {"load", "save", "horizontal-flip", "vertical-flip", "resize"};
-        if (System.currentTimeMillis() - timeOfLastChange > 250
-                && SwingGUIView.this.pane.isVisible()
-                && !Arrays.asList(inv).contains(lastCommand)) {
-          features.createMask(currImgName, "mask",
-                  pane.getVerticalScrollBar().getValue(),
-                  pane.getHorizontalScrollBar().getValue());
-          SwingGUIView.this.imagePreview.setIcon(new ImageIcon(currImg));
-          if (lastCommand.equals("brighten")) {
-            features.takesInTextField(lastCommand, lastField, "mask", currImgName, "prev");
-
-          } else {
-            features.readButtonClickSaveName(lastCommand, "mask", currImgName, "prev");
-          }
-          changedInLastSecond = false;
-          t.stop();
-        }
-      }
-    });
-    t.start();
-
-  }
-
-  private void popupButtonAction() {
-    if (pane.isVisible()){
-      pane.setVisible(false);
-      popupButton.setText(pane.isVisible() ? "Close Preview" : "Open Preview");
+  /**
+   * Request that the controller feature object perform a particular action based on the input
+   * string.
+   * Separates controller and view responsibility by passing the GUI action to the controller
+   * for respective handling in its command pattern.
+   *
+   * @param action load, save, brighten, or any generic image processing command
+   */
+  private void requestAction(String action) {
+    if (this.actionObject == null) {
       return;
     }
-    if (currImg != null && currImg.getHeight() >= 200 && currImg.getWidth() >= 200) {
-      pane.setVisible(!pane.isVisible());
-      popupButton.setText(pane.isVisible() ? "Close Preview" : "Open Preview");
-      this.imagePreview.setIcon(new ImageIcon(currImg));
+    try {
+      switch (action) {
+        case "load":
+          JFileChooser fChooser = new JFileChooser(".");
+          FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                  "PPM, BMP, JPG, and PNG Images", "ppm", "bmp", "jpg", "png");
+          fChooser.setFileFilter(filter);
+          int retVal = fChooser.showOpenDialog(this);
+          if (retVal == JFileChooser.APPROVE_OPTION) {
+            File f = fChooser.getSelectedFile();
+            this.actionObject.loadFile(f.getAbsolutePath(), IMG_NAME);
+            this.loadFileDisplay.setText(f.getName());
+          }
+          break;
+        case "save":
+          fChooser = new JFileChooser(".");
+          retVal = fChooser.showSaveDialog(this);
+          if (retVal == JFileChooser.APPROVE_OPTION) {
+            File f = fChooser.getSelectedFile();
+            this.actionObject.saveImage(IMG_NAME, f.getAbsolutePath());
+            this.saveFileDisplay.setText(f.getName());
+          }
+          break;
+        case "brighten":
+          String brightenIncrement = Integer.toString((Integer) this.brightenIncrement.getValue());
+          this.actionObject.runProcessingCommand(action, IMG_NAME, IMG_NAME,
+                  new Scanner(brightenIncrement));
+          break;
+        case "mosaick":
+          String mosaickIncrement = Integer.toString((Integer) this.mosaickIncrement.getValue());
+          this.actionObject.runProcessingCommand(action, IMG_NAME, IMG_NAME,
+                  new Scanner(mosaickIncrement));
+          break;
+        default:
+          this.actionObject.runProcessingCommand(action, IMG_NAME, IMG_NAME, null);
+      }
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      JOptionPane.showMessageDialog(null, e.getMessage());
     }
-    this.refresh();
   }
 }
+

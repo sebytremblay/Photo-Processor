@@ -1,76 +1,190 @@
-## Command Lists:
+# Program usage
 
-To start the program, you can give the jar arguments "-file <script-name>" to run a specific script.
-To run using text commands you can give the jar arguments "-text".
-To run the view based image processor, simply include no arguments.
+A script demoing all the functionality of the program at present is located at `res/complete_script`.
 
-If you ran via the script, the program will terminate and five you informative messages.
+To run the complete script using the JAR, navigate to the toplevel directory of this project and run:
+```bash
+java -jar ./res/ood_image_processing.jar -file res/complete_script
+```
 
-If you used the text version, you can use the load command "load file-path img-name", 
-and then you can perform many operations on the image. Additionally, you can also save the 
-image at any point by using the save command: "save
-file-path img-name". 
+Alternatively, configure the args via IntelliJ to be:
+`-file res/complete_script`.
 
-If you are running the GUI, all buttons will appear on the left, where you can first load the image.
-When you click load you will be given a new Panel that will be your directory and you can select, 
-which image you would like to load.
-When you load the image, this image is now stored in the program, and you can perform edits on this
-image. The button commands are listed on the left and they directly edit the loaded image.
-All image process commands are a single button click except for brighten which takes in a value from the text
-field next to that particular button. You may enter an integer.
-When you want to save this image, you click save and then you will have a panel that will appear, 
-where you can specify where you want to save this image in you computer.
+To run interactively in the command line, run with the `-text` option
+and then input commands as you wish until you want to quit with `quit` or `q`.
+```bash
+java -jar ./res/ood_image_processing.jar -text
+```
 
+To run in a graphical user interface mode, run the program without providing any arguments.
 
-Valid file formats include: bmp, jpg, jpeg, png, and ppm.
+### Usage
 
+Program usage is as follows:
+```
+Usage: [option] ...
+-h         : show this help message
+-file path : run the provided script file
+-text      : run in interactive mode
+           : no args to run in GUI mode
+```
 
-List of the commands for the Terminal Based Image Processor:
+In script mode the program will execute image processing commands
+according to the provided script (see below for scripting).
 
-Loads the image at the file path as the given name  
-load file-path img-name
+In interactive mode the program allows the user to enter commands line by line,
+and quit by typing `quit` or `q`.
 
-Saves the image to the given file path  
-save file-path img-name
+### GUI usage
 
-Visualizes the red component of the image and saves as new image name  
-red-component img-name new-img-name
+When the program is run in GUI mode, all the features should be very easy
+to understand. However, we provide a brief explanation of it here:
+- First, an image has to be loaded. See the red arrow in the screencap below
+pointing out the button to press to do this.
+- Then any of the buttons in the right panel (besides load and save) can be used to:
+  - flip the image vertically.
+  - flip the image horizontally.
+  - greyscale on the red component.
+  - greyscale on the green component.
+  - greyscale on the blue component.
+  - greyscale on the luma component.
+  - greyscale on the value component.
+  - greyscale on the intensity component.
+  - perform a gaussian blur.
+  - sharpen the image.
+  - make the image sepia-toned.
+  - brighten or dim the image by setting an increment (-255 to 255) and
+clicking the brighten button.
+  - create a mosaic of an image with a specified amount of seeds
+- Any time a loaded image is manipulated, the four histogram panels (for the RGB values and
+  intensity component) on the bottom will be automatically updated.
+- At any point the displayed image can be saved back to the filesystem by pressing
+the save button and selecting an output destination with an appropriate filetype
+(ppm, png, jpg, or bmp).
 
-Visualizes the green component of the image and saves as new image name  
-green-component img-name new-img-name
+![demo.png](res/demo.png)
 
-Visualizes the blue component of the image and saves as new image name   
-blue-component img-name new-img-name
+### Commands / Scripting
 
-Visualizes the luma component of the image and saves as new image name  
-luma-component img-name new-img-name
+Whether the program is run in script mode or interactive mode, commands are used to
+control how images are processed.
 
-Visualizes the intensity component of the image and saves as new image name  
-intensity-component img-name new-img-name
+#### The available commands are:
+```
+load <file path> <name>
+save <name> <file path>
 
-Visualizes the value component of the image and saves as new image name  
-value-component img-name new-img-name
+horizontal-flip <name> <updated name>
+vertical-flip   <name> <updated name>
 
-Horizontally flips the provided image and saves it's as the new one  
-horizontal-flip img-name new-img-name
+red-component   <name> <updated name>
+green-component <name> <updated name>
+blue-component  <name> <updated name>
 
-Vertically flips the provided image and saves it's as the new one  
-vertical-flip img-name new-img-name
+value-component <name> <updated name>
+intensity-component <name> <updated name>
+luma-component  <name> <updated name>
+sepia-tone      <name> <updated name>
 
-Brightens the image by the provided amount and saves it as new image  
-brighten brighten-by img-name new-img-name  
+gaussian-blur   <name> <updated name>
+sharpen         <name> <updated name>
 
-Sharpens the image and saves it as a new image
-sharpen img-name new-imag-name
+brighten        <name> <updated name> <increment>
+mosaic        <name> <updated name> <number of seeds>
+```
 
-Blurs the image and save it as a new image
-blur img-name new-img-name
+Where:
+- `load <file path> <name>` loads an image from the provided path to a `ppm` file into the program,
+  and labels it with the provided name for future reference
+- `save <name> <file path>` saves the image with the provided internal name to the provided file path
+- The rest of the commands perform their implied action on the image with the given `<name>`,
+  and save the result internally with the `<updated name>`
+    - Note that `brighten` takes a third argument beyond the standard two,
+      and uses it to determine the increment to brighten by.
+      This increment can be negative if the user wishes to dim the image.
+    - 'mosaic' also takes in a third argument, which indicates how many seeds to use.
 
-Visualizes the image in Greyscale and save it as a new image
-greyscale img-name new-img-name
+A script to control the image processing can be typed into any readable file.
+Scripts allow for comments, which may be useful to the user.
+Any lines starting with `#` are ignored.
 
-Visualizes the image in sepia and save it as a new image
-sepia img-name new-img-name
+There are no restrictions on the order in which commands may be entered, except that the first command
+will have to be a load command (before that there are no images in memory), and subsequent commands
+must reference names of images saved in memory.
 
-Resizes the image and saves it as a new image (must be same size or smaller than original image dimensions)
-resize width height img-name new-img-name
+#### Example Script
+
+This script shows all of the commands used in context.
+
+```
+# load the sample image from a ppm
+load res/sample.ppm img
+
+# luma
+luma-component img luma-img
+# dim
+brighten luma-img luma-dim-img -30
+# horizontal flip
+horizontal-flip luma-dim-img luma-dim-horz-img
+# save as a ppm
+save luma-dim-horz-img res/luma-dim-horizontal.ppm
+
+# save original image to all other formats (png/jpg/bmp)
+save img res/sample.png
+save img res/sample.bmp
+save img res/sample.jpg
+
+# load from png
+load res/sample.png png-img
+# sepia-ify the image
+sepia-tone png-img sepia-img
+save sepia-img res/sepia.png
+# vertical flip
+vertical-flip sepia-img sepia-vertical-img
+# save as png
+save sepia-vertical-img res/sepia-vertical.png
+# sharpen
+sharpen png-img sharp-img
+save sharp-img res/sharp.png
+# double sharpen
+sharpen sharp-img very-sharp-img
+save very-sharp-img res/very-sharp.png
+# blur
+gaussian-blur png-img blurry-img
+save blurry-img res/blur.png
+# greyscale
+luma-component png-img grey-img
+save grey-img res/greyscale.png
+
+# load from bmp
+load res/sample.bmp bmp-img
+# brighten the image
+brighten bmp-img bright-img 40
+# blur the image
+gaussian-blur bright-img blurry-bright-img
+# save out
+save blurry-bright-img res/blurry-bright.bmp
+
+# load from jpg
+load res/sample.jpg jpg-img
+# red component
+red-component jpg-img red-img
+save red-img res/red.jpg
+# green component
+green-component jpg-img green-img
+save green-img res/green.jpg
+# blue component
+blue-component jpg-img blue-img
+save blue-img res/blue.jpg
+# value
+value-component jpg-img value-img
+save value-img res/value.jpg
+# intensity
+intensity-component jpg-img int-img
+save int-img res/intensity.jpg
+```
+
+#### Example Images
+
+The images in the `res/` and `test/` directories are of our own creation,
+except for `res/view_of_castello.jpg`, which is [in the public domain](https://www.nga.gov/collection/art-object-page.130897.html).

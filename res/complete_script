@@ -1,0 +1,70 @@
+# a script demonstrating full functionality of the image processing program
+
+# load the sample image from a ppm
+load res/sample.ppm img
+
+# luma
+luma-component img luma-img
+# dim
+brighten luma-img luma-dim-img -30
+# horizontal flip
+horizontal-flip luma-dim-img luma-dim-horz-img
+# save as a ppm
+save luma-dim-horz-img res/luma-dim-horizontal.ppm
+
+# save original image to all other formats (png/jpg/bmp)
+save img res/sample.png
+save img res/sample.bmp
+save img res/sample.jpg
+
+# load from png
+load res/sample.png png-img
+# sepia-ify the image
+sepia-tone png-img sepia-img
+save sepia-img res/sepia.png
+# vertical flip
+vertical-flip sepia-img sepia-vertical-img
+# save as png
+save sepia-vertical-img res/sepia-vertical.png
+# sharpen
+sharpen png-img sharp-img
+save sharp-img res/sharp.png
+# double sharpen
+sharpen sharp-img very-sharp-img
+save very-sharp-img res/very-sharp.png
+# blur
+gaussian-blur png-img blurry-img
+save blurry-img res/blur.png
+# greyscale
+luma-component png-img grey-img
+save grey-img res/greyscale.png
+
+# load from bmp
+load res/sample.bmp bmp-img
+# brighten the image
+brighten bmp-img bright-img 40
+# blur the image
+gaussian-blur bright-img blurry-bright-img
+# save out
+save blurry-bright-img res/blurry-bright.bmp
+
+# load from jpg
+load res/sample.jpg jpg-img
+# red component
+red-component jpg-img red-img
+save red-img res/red.jpg
+# green component
+green-component jpg-img green-img
+save green-img res/green.jpg
+# blue component
+blue-component jpg-img blue-img
+save blue-img res/blue.jpg
+# value
+value-component jpg-img value-img
+save value-img res/value.jpg
+# intensity
+intensity-component jpg-img int-img
+save int-img res/intensity.jpg
+# mosaick
+mosaick jpg-img new-img 100
+save new-img res/seby.jpg
